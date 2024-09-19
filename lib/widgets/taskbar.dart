@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/providers/app_controller.dart';
 import 'package:flutter_windows_11_clone/providers/apps.dart';
 import 'package:flutter_windows_11_clone/providers/running_apps_provider.dart';
 import 'package:flutter_windows_11_clone/widgets/grain_blur_bg.dart';
 import 'package:provider/provider.dart';
+
+import '../os/draggable_window/app_controller.dart';
 
 class Taskbar extends StatelessWidget {
   const Taskbar({super.key});
@@ -38,7 +39,10 @@ class Taskbar extends StatelessWidget {
                     color: e.openCount > 0 ? Colors.white : Colors.grey,
                       onPressed: () {
                     context.read<RunningAppsProvider>().openApp(
-                        SizedBox(), AppController(app: App.fileExplorer));
+                        Container(
+                            width: 600,
+                            height: 600,
+                        ), AppController(app: FileExplorerApp()));
                   }, icon: e.app.icon))
             ],
           ),

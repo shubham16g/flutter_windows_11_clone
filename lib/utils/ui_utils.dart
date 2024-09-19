@@ -5,4 +5,6 @@ extension UiBuildContextExt on BuildContext {
 
   ColorScheme get color => Theme.of(this).colorScheme;
 
+  Size get screenSize => MediaQuery.of(this).size;
+
 }
