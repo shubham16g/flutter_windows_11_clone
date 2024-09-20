@@ -28,7 +28,7 @@ class GrainBlurBg extends StatelessWidget {
                 child: Image.asset(
                   'assets/images/NoiseAsset_256.png',
                   repeat: ImageRepeat.repeat,
-                  fit: BoxFit.contain,
+                  alignment: Alignment.topLeft,
                   // repeat: ImageRepeat.repeat,
                 ),
               ),
