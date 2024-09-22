@@ -52,8 +52,8 @@ class DraggableApp extends StatelessWidget {
                   details.localPosition.dx, details.localPosition.dy);
             },
             child: Container(
-              width: max(c.width, c.minWidth),
-              height: max(c.height, c.minHeight),
+              width: c.width,
+              height: c.height,
               padding: const EdgeInsets.only(bottom: 8, top: 5),
               child: ClipRRect(
                 clipBehavior: Clip.antiAlias,
