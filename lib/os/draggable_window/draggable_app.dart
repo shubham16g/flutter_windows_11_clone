@@ -28,8 +28,9 @@ class DraggableApp extends StatelessWidget {
         top: c.top,
         left: c.left,
         child: MouseRegion(
+          onEnter: c.onHoverEnter,
           onHover: c.onHover,
-          cursor: c.cursor,
+          onExit: c.onHoverExit,
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTapDown: onTapDown == null
@@ -54,7 +55,6 @@ class DraggableApp extends StatelessWidget {
             child: Container(
               width: c.width,
               height: c.height,
-              padding: const EdgeInsets.only(bottom: 8, top: 5),
               child: ClipRRect(
                 clipBehavior: Clip.antiAlias,
                 child: BackdropFilter(

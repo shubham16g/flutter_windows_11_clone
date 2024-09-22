@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/providers/apps.dart';
+import 'package:flutter_windows_11_clone/providers/cursor_controller.dart';
 
 class AppController extends ChangeNotifier {
   double top = 60;
@@ -24,9 +25,10 @@ class AppController extends ChangeNotifier {
 
   /// border padding for resizing
   final double resizeBorderWidth = kIsWeb ? 8 : 15;
-
+  final CursorController cursorController;
   AppController({
     required this.app,
+    required this.cursorController,
     double initialWidth = 700,
     double initialHeight = 520,
   }) {
@@ -47,8 +49,7 @@ class AppController extends ChangeNotifier {
   bool isAppbarDrag = false;
 
   bool isDragging = false;
-
-  MouseCursor cursor = MouseCursor.defer;
+  bool exitWhenStopDragging = false;
 
   void panStart(DragDownDetails details) {
     isUpdateWidthFromStart = details.localPosition.dx < resizeBorderWidth;
@@ -71,14 +72,14 @@ class AppController extends ChangeNotifier {
     if (left + width < 30) {
       left = -width + 30;
     }
-    if (top < 60) {
-      top = 60;
+    if (top < 0) {
+      top = 0;
     }
     if (left > screenSize.width - 30) {
       left = screenSize.width - 30;
     }
-    if (top > screenSize.height - 30) {
-      top = screenSize.height - 30;
+    if (top > screenSize.height - 70) {
+      top = screenSize.height - 70;
     }
     if (width < minWidth) {
       width = minWidth;
@@ -91,30 +92,40 @@ class AppController extends ChangeNotifier {
     _left = left;
     _top = top;
     notifyListeners();
+    if (exitWhenStopDragging) {
+      cursorController.setCursor(MouseCursor.defer);
+    }
   }
 
   void onHover(PointerHoverEvent details) {
+    exitWhenStopDragging = false;
     final atStart = details.localPosition.dx < resizeBorderWidth;
     final atEnd = details.localPosition.dx > width - resizeBorderWidth;
     final atTop = details.localPosition.dy < resizeBorderWidth;
     final atBottom = details.localPosition.dy > height - resizeBorderWidth;
-
+    MouseCursor cursor;
     if (atStart && atTop || atEnd && atBottom) {
       cursor = SystemMouseCursors.resizeDownRight;
-      notifyListeners();
     } else if (atStart && atBottom || atEnd && atTop) {
       cursor = SystemMouseCursors.resizeDownLeft;
-      notifyListeners();
     } else if (atStart || atEnd) {
       cursor = SystemMouseCursors.resizeLeftRight;
-      notifyListeners();
     } else if (atTop || atBottom) {
       cursor = SystemMouseCursors.resizeUpDown;
-      notifyListeners();
     } else {
       cursor = MouseCursor.defer;
-      notifyListeners();
     }
+    cursorController.setCursor(cursor);
+  }
+
+  void onHoverExit(PointerExitEvent details) {
+    exitWhenStopDragging = true;
+    if (isDragging) return;
+    cursorController.setCursor(MouseCursor.defer);
+  }
+
+  void onHoverEnter(PointerEnterEvent details) {
+    exitWhenStopDragging = false;
   }
 
   void onPanUpdate(double dx, double dy, double localDx, double localDy) {

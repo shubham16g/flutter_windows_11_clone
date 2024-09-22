@@ -11,8 +11,7 @@ class Taskbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final runningAppsProvider = context
-        .watch<RunningAppsProvider>();
+    final runningAppsProvider = context.watch<RunningAppsProvider>();
     final taskbarApps = runningAppsProvider.taskbarApps;
     final focusedApp = runningAppsProvider.focusedApp;
     return Container(
@@ -20,11 +19,11 @@ class Taskbar extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(
-              color: const Color(0xFF757575).withOpacity(0.6),
-              width: 1,
-            ),
-          )),
+        top: BorderSide(
+          color: const Color(0xFF757575).withOpacity(0.6),
+          width: 1,
+        ),
+      )),
       child: Stack(children: [
         const GrainBlurBg(),
         Align(
@@ -33,17 +32,19 @@ class Taskbar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(Icons.window),
-              ...taskbarApps
-                  .map((e) =>
-                  IconButton(
-                    color: e.openCount > 0 ? Colors.white : Colors.grey,
-                      onPressed: () {
+              ...taskbarApps.map((e) => IconButton(
+                  color: e.openCount > 0 ? Colors.white : Colors.grey,
+                  onPressed: () {
                     context.read<RunningAppsProvider>().openApp(
                         Container(
-                            width: 600,
-                            height: 600,
-                        ), AppController(app: FileExplorerApp()));
-                  }, icon: e.app.icon))
+                          width: 600,
+                          height: 600,
+                        ),
+                        AppController(
+                            cursorController: context.read(),
+                            app: FileExplorerApp()));
+                  },
+                  icon: e.app.icon))
             ],
           ),
         )
