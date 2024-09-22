@@ -39,6 +39,7 @@ class DraggableApp extends StatelessWidget {
                     onTapDown!();
                   },
             onPanDown: (details) {
+              onTapDown?.call();
               c.panStart(details);
             },
             onPanEnd: (details) {

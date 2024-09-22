@@ -14,13 +14,18 @@ class WindowArea extends StatelessWidget {
     return Stack(
       children: runningAppsProvider.runningAppsControllers
           .map((e) => ChangeNotifierProvider.value(
+        key: ValueKey(e),
                 value: e,
                 child: DraggableApp(
+                    onTapDown: () {
+                      runningAppsProvider.focusApp(e);
+                    },
                     child: Stack(
                       children: [
                         GrainBlurBg(),
                         runningAppsProvider.runningAppsWidgets[
-                        runningAppsProvider.runningAppsControllers.indexOf(e)]
+                            runningAppsProvider.runningAppsControllers
+                                .indexOf(e)]
                       ],
                     )),
               ))

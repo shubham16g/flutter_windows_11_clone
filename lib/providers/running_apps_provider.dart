@@ -72,9 +72,9 @@ class RunningAppsProvider extends ChangeNotifier {
   void focusApp(AppController appController) {
     final index = _runningAppsControllers.indexOf(appController);
     final appWidget = _runningAppsWidgets.removeAt(index);
-    _runningAppsWidgets.insert(0, appWidget);
+    _runningAppsWidgets.add(appWidget);
     final controller = _runningAppsControllers.removeAt(index);
-    _runningAppsControllers.insert(0, controller);
+    _runningAppsControllers.add(controller);
     notifyListeners();
   }
 }
