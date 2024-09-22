@@ -15,7 +15,7 @@ class DraggableApp extends StatelessWidget {
   const DraggableApp(
       {super.key,
       required this.child,
-        this.border,
+      this.border,
       this.backgroundColor,
       this.blur,
       this.onTapDown});
@@ -24,10 +24,10 @@ class DraggableApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.watch<AppController>();
     return AnimatedPositioned(
-        duration:  Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+        duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
         curve: Curves.easeOutCubic,
-        top: c.isFullScreen ? 0 : c.top,
-        left: c.isFullScreen ? 0 : c.left,
+        top: c.isMinimized ? context.screenSize.height : (c.isFullScreen ? 0 : c.top),
+        left: c.isMinimized ? (context.screenSize.width / 2 - 20) : (c.isFullScreen ? 0 : c.left),
         child: MouseRegion(
           onEnter: c.onHoverEnter,
           onHover: c.onHover,
@@ -56,20 +56,24 @@ class DraggableApp extends StatelessWidget {
             },
             onDoubleTapDown: c.onDoubleTapDown,
             child: AnimatedContainer(
-              duration:  Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+              duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
               curve: Curves.easeOutCubic,
-              width: c.isFullScreen ? context.screenSize.width : c.width,
-              height: c.isFullScreen ? context.screenSize.height : c.height,
+              width: c.isMinimized
+                  ? 50
+                  : (c.isFullScreen ? context.screenSize.width : c.width),
+              height: c.isMinimized
+                  ? 1
+                  : (c.isFullScreen ? context.screenSize.height : c.height),
               child: ClipRRect(
                 clipBehavior: Clip.antiAlias,
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                      sigmaX: blur ?? 0, sigmaY: blur ?? 0),
+                  filter:
+                      ImageFilter.blur(sigmaX: blur ?? 0, sigmaY: blur ?? 0),
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      border: border,
-                    ),
+                      decoration: BoxDecoration(
+                        color: backgroundColor,
+                        border: border,
+                      ),
                       child: child),
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/providers/apps.dart';
 import 'package:flutter_windows_11_clone/providers/running_apps_provider.dart';
 import 'package:flutter_windows_11_clone/widgets/grain_blur_bg.dart';
 import 'package:provider/provider.dart';
@@ -35,14 +34,20 @@ class Taskbar extends StatelessWidget {
               ...taskbarApps.map((e) => IconButton(
                   color: e.openCount > 0 ? Colors.white : Colors.grey,
                   onPressed: () {
-                    context.read<RunningAppsProvider>().openApp(
-                        Container(
-                          width: 600,
-                          height: 600,
-                        ),
-                        AppController(
-                            cursorController: context.read(),
-                            app: e.app));
+                    final rap = context.read<RunningAppsProvider>();
+                    if (e.openCount <= 0) {
+                      rap.openApp(
+                          Container(
+                            width: 600,
+                            height: 600,
+                          ),
+                          AppController(
+                              cursorController: context.read(), app: e.app));
+                    } else if (!rap.isFocused(e.app)) {
+                      rap.focusByApp(e.app);
+                    } else {
+                      rap.toggleMinimizeMaximize(e.app);
+                    }
                   },
                   icon: e.app.icon))
             ],

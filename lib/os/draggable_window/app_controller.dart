@@ -199,6 +199,8 @@ class AppController extends ChangeNotifier {
   bool isFullScreen = false;
   bool isFullScreenAnim = false;
 
+  bool isMinimized = false;
+
   void onDoubleTapDown(TapDownDetails details) {
     if (details.localPosition.dy < appBarHeight) {
       debugPrint('double tap');
@@ -215,5 +217,35 @@ class AppController extends ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  void toggleMinimizeMaximize() {
+    if (isMinimized) {
+      maximize();
+    } else {
+      minimize();
+    }
+  }
+
+  void maximize() {
+    isMinimized = false;
+    isFullScreenAnim = true;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (isMinimized) return;
+      isFullScreenAnim = false;
+      notifyListeners();
+    });
+    notifyListeners();
+  }
+
+  void minimize() {
+    isMinimized = true;
+    isFullScreenAnim = true;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!isMinimized) return;
+      isFullScreenAnim = false;
+      notifyListeners();
+    });
+    notifyListeners();
   }
 }

@@ -45,17 +45,27 @@ class RunningAppsProvider extends ChangeNotifier {
       : FileExplorerApp();
 
   void openApp(Widget appWidget, AppController appController) {
-    _runningAppsWidgets.add(appWidget);
-    _runningAppsControllers.add(appController);
     final index = taskbarApps.indexWhere(
         (element) => element.app.runtimeType == appController.app.runtimeType);
     if (index == -1) {
+      /// not found in taskbar, open new app
+      _runningAppsWidgets.add(appWidget);
+      _runningAppsControllers.add(appController);
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
-    } else {
+    } else if (appController.app.isMultiInstance || taskbarApps[index].openCount == 0) {
+      /// found in taskbar, open new instance (isMultiInstance = true)
+      /// or fixed on taskbar but not opened yet
+      _runningAppsWidgets.add(appWidget);
+      _runningAppsControllers.add(appController);
       taskbarApps[index] = taskbarApps[index]
           .copyWith(openCount: taskbarApps[index].openCount + 1);
     }
     notifyListeners();
+  }
+
+  bool isFocused(App app) {
+    return _runningAppsControllers.isNotEmpty &&
+        _runningAppsControllers.last.app.runtimeType == app.runtimeType;
   }
 
   void closeApp(AppController appController) {
@@ -69,6 +79,25 @@ class RunningAppsProvider extends ChangeNotifier {
           .copyWith(openCount: taskbarApps[taskbarIndex].openCount - 1);
     }
     notifyListeners();
+  }
+
+  void focusByApp(App app) {
+    final index = _runningAppsControllers.indexWhere((element) => element.app == app);
+    if (index != -1) {
+      final appWidget = _runningAppsWidgets.removeAt(index);
+      _runningAppsWidgets.add(appWidget);
+      final controller = _runningAppsControllers.removeAt(index);
+      _runningAppsControllers.add(controller);
+      notifyListeners();
+    }
+  }
+
+  void toggleMinimizeMaximize(App app) {
+    final index = _runningAppsControllers.indexWhere((element) => element.app == app);
+    if (index != -1) {
+      final controller = _runningAppsControllers[index];
+      controller.toggleMinimizeMaximize();
+    }
   }
 
   void focusApp(AppController appController) {
