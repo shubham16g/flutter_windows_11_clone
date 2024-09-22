@@ -94,11 +94,22 @@ class AppController extends ChangeNotifier {
   }
 
   void onHover(PointerHoverEvent details) {
-    if (details.localPosition.dx < resizeBorderWidth ||
-        details.localPosition.dy < resizeBorderWidth ||
-        details.localPosition.dx > width - resizeBorderWidth ||
-        details.localPosition.dy > height - resizeBorderWidth) {
-      cursor = SystemMouseCursors.precise;
+    final atStart = details.localPosition.dx < resizeBorderWidth;
+    final atEnd = details.localPosition.dx > width - resizeBorderWidth;
+    final atTop = details.localPosition.dy < resizeBorderWidth;
+    final atBottom = details.localPosition.dy > height - resizeBorderWidth;
+
+    if (atStart && atTop || atEnd && atBottom) {
+      cursor = SystemMouseCursors.resizeDownRight;
+      notifyListeners();
+    } else if (atStart && atBottom || atEnd && atTop) {
+      cursor = SystemMouseCursors.resizeDownLeft;
+      notifyListeners();
+    } else if (atStart || atEnd) {
+      cursor = SystemMouseCursors.resizeLeftRight;
+      notifyListeners();
+    } else if (atTop || atBottom) {
+      cursor = SystemMouseCursors.resizeUpDown;
       notifyListeners();
     } else {
       cursor = MouseCursor.defer;
