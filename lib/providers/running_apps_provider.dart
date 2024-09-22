@@ -41,7 +41,7 @@ class RunningAppsProvider extends ChangeNotifier {
   List<AppController> get runningAppsControllers => _runningAppsControllers;
 
   App get focusedApp => _runningAppsControllers.isNotEmpty
-      ? _runningAppsControllers.first.app
+      ? _runningAppsControllers.last.app
       : FileExplorerApp();
 
   void openApp(Widget appWidget, AppController appController) {

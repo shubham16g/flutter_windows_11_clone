@@ -31,8 +31,9 @@ class Taskbar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(Icons.window),
-              ...taskbarApps.map((e) => IconButton(
-                  color: e.openCount > 0 ? Colors.white : Colors.grey,
+              ...taskbarApps.map((e) => TaskbarButton(
+                  isFocused: focusedApp == e.app,
+                  openCount: e.openCount,
                   onPressed: () {
                     final rap = context.read<RunningAppsProvider>();
                     if (e.openCount <= 0) {
@@ -54,6 +55,113 @@ class Taskbar extends StatelessWidget {
           ),
         )
       ]),
+    );
+  }
+}
+
+class TaskbarButton extends StatefulWidget {
+  final Widget icon;
+  final bool isFocused;
+  final int openCount;
+  final VoidCallback onPressed;
+
+  const TaskbarButton(
+      {super.key,
+      required this.icon,
+      required this.isFocused,
+      required this.openCount,
+      required this.onPressed});
+
+  @override
+  State<TaskbarButton> createState() => _TaskbarButtonState();
+}
+
+class _TaskbarButtonState extends State<TaskbarButton> {
+  bool isHovered = false;
+  bool isTapDown = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            isHovered = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            isHovered = false;
+          });
+        },
+        child: GestureDetector(
+          onTapDown: (_) {
+            setState(() {
+              isTapDown = true;
+            });
+          },
+          onTapUp: (_) {
+            setState(() {
+              isTapDown = false;
+            });
+          },
+          onTapCancel: () {
+            setState(() {
+              isTapDown = false;
+            });
+          },
+          onTap: widget.onPressed,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(isHovered && widget.isFocused
+                  ? 0.08
+                  : widget.isFocused
+                      ? 0.06
+                      : isHovered
+                          ? 0.05
+                          : 0),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                  color: const Color(0xFFFFFFFF)
+                      .withOpacity(isHovered && widget.isFocused
+                          ? 0.15
+                          : widget.isFocused
+                              ? 0.1
+                              : isHovered
+                                  ? 0.08
+                                  : 0),
+                  width: 0.5),
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Expanded(
+                  child: AnimatedScale(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOutCubic,
+                      scale: isTapDown ? 0.7 : 1,
+                      child: widget.icon),
+                ),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOutCubic,
+                  width: widget.isFocused ? 16 : 6,
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: widget.isFocused ? Colors.blue : Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(5),
+                  )
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
