@@ -26,6 +26,7 @@ class AppController extends ChangeNotifier {
   /// border padding for resizing
   final double resizeBorderWidth = kIsWeb ? 8 : 15;
   final CursorController cursorController;
+
   AppController({
     required this.app,
     required this.cursorController,
@@ -98,6 +99,10 @@ class AppController extends ChangeNotifier {
   }
 
   void onHover(PointerHoverEvent details) {
+    if (isFullScreen) {
+      cursorController.setCursor(MouseCursor.defer);
+      return;
+    }
     exitWhenStopDragging = false;
     final atStart = details.localPosition.dx < resizeBorderWidth;
     final atEnd = details.localPosition.dx > width - resizeBorderWidth;
@@ -187,6 +192,27 @@ class AppController extends ChangeNotifier {
       _left += dx;
       top = _top;
       left = _left;
+      notifyListeners();
+    }
+  }
+
+  bool isFullScreen = false;
+  bool isFullScreenAnim = false;
+
+  void onDoubleTapDown(TapDownDetails details) {
+    if (details.localPosition.dy < appBarHeight) {
+      debugPrint('double tap');
+      isFullScreen = !isFullScreen;
+      if (isFullScreen) {
+        cursorController.setCursor(MouseCursor.defer);
+        isFullScreenAnim = true;
+      } else {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (isFullScreen) return;
+          isFullScreenAnim = false;
+          notifyListeners();
+        });
+      }
       notifyListeners();
     }
   }

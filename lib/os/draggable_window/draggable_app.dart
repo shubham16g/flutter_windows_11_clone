@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
@@ -24,9 +23,11 @@ class DraggableApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.watch<AppController>();
-    return Positioned(
-        top: c.top,
-        left: c.left,
+    return AnimatedPositioned(
+        duration:  Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+        curve: Curves.easeOutCubic,
+        top: c.isFullScreen ? 0 : c.top,
+        left: c.isFullScreen ? 0 : c.left,
         child: MouseRegion(
           onEnter: c.onHoverEnter,
           onHover: c.onHover,
@@ -53,9 +54,12 @@ class DraggableApp extends StatelessWidget {
               c.onPanUpdate(details.delta.dx, details.delta.dy,
                   details.localPosition.dx, details.localPosition.dy);
             },
-            child: Container(
-              width: c.width,
-              height: c.height,
+            onDoubleTapDown: c.onDoubleTapDown,
+            child: AnimatedContainer(
+              duration:  Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+              curve: Curves.easeOutCubic,
+              width: c.isFullScreen ? context.screenSize.width : c.width,
+              height: c.isFullScreen ? context.screenSize.height : c.height,
               child: ClipRRect(
                 clipBehavior: Clip.antiAlias,
                 child: BackdropFilter(
