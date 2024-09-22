@@ -33,9 +33,11 @@ class RunningAppsProvider extends ChangeNotifier {
 
   final List<TaskbarAppState> taskbarApps = [
     TaskbarAppState(app: FileExplorerApp(), fixed: true),
+    TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
 
   List<Widget> get runningAppsWidgets => _runningAppsWidgets;
+
   List<AppController> get runningAppsControllers => _runningAppsControllers;
 
   App get focusedApp => _runningAppsControllers.isNotEmpty
@@ -45,8 +47,8 @@ class RunningAppsProvider extends ChangeNotifier {
   void openApp(Widget appWidget, AppController appController) {
     _runningAppsWidgets.add(appWidget);
     _runningAppsControllers.add(appController);
-    final index =
-        taskbarApps.indexWhere((element) => element.app == appController.app);
+    final index = taskbarApps.indexWhere(
+        (element) => element.app.runtimeType == appController.app.runtimeType);
     if (index == -1) {
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
     } else {

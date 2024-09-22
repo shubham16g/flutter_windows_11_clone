@@ -42,7 +42,7 @@ class Taskbar extends StatelessWidget {
                         ),
                         AppController(
                             cursorController: context.read(),
-                            app: FileExplorerApp()));
+                            app: e.app));
                   },
                   icon: e.app.icon))
             ],
