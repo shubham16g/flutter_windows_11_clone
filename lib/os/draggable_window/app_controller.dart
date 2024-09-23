@@ -213,7 +213,13 @@ class AppController extends ChangeNotifier {
     if (isFullScreen) {
       cursorController.setCursor(MouseCursor.defer);
       isFullScreenAnim = true;
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (!isFullScreen) return;
+        isFullScreenAnim = false;
+        notifyListeners();
+      });
     } else {
+      isFullScreenAnim = true;
       Future.delayed(const Duration(milliseconds: 300), () {
         if (isFullScreen) return;
         isFullScreenAnim = false;
