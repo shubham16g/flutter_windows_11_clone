@@ -57,20 +57,25 @@ class DraggableApp extends StatelessWidget {
               c.onPanUpdate(details.delta.dx, details.delta.dy,
                   details.localPosition.dx, details.localPosition.dy);
             },
-            child: AnimatedScale(
-              duration: Duration(
-                  milliseconds:
-                      c.isFullScreenAnim ? 300 : (c.isOpenCloseAnim ? 200 : 0)),
-              curve: c.isOpenClose ? Curves.easeIn : Curves.easeOutCubic,
-              scale: c.isMinimized ? 0 : (c.isOpenClose ? 0.9 : 1),
-              alignment:
-                  c.isFullScreenAnim ? Alignment.topLeft : Alignment.center,
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
-                curve: Curves.easeOutCubic,
-                width: c.isFullScreen ? context.screenSize.width : c.width,
-                height: c.isFullScreen ? context.screenSize.height : c.height,
-                child: child,
+            child: AnimatedOpacity(
+              duration: Duration(milliseconds: c.isOpenClose ? 200 : 0),
+              opacity: c.isOpenClose ? 0 : 1,
+              curve: Curves.easeIn,
+              child: AnimatedScale(
+                duration: Duration(
+                    milliseconds:
+                        c.isFullScreenAnim ? 300 : (c.isOpenCloseAnim ? 200 : 0)),
+                curve: c.isOpenClose ? Curves.easeIn : Curves.easeOutCubic,
+                scale: c.isMinimized ? 0 : (c.isOpenClose ? 0.9 : 1),
+                alignment:
+                    c.isFullScreenAnim ? Alignment.topLeft : Alignment.center,
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+                  curve: Curves.easeOutCubic,
+                  width: c.isFullScreen ? context.screenSize.width : c.width,
+                  height: c.isFullScreen ? context.screenSize.height : c.height,
+                  child: child,
+                ),
               ),
             ),
           ),
