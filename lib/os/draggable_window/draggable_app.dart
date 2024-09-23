@@ -26,8 +26,12 @@ class DraggableApp extends StatelessWidget {
     return AnimatedPositioned(
         duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
         curve: Curves.easeOutCubic,
-        top: c.isMinimized ? context.screenSize.height : (c.isFullScreen ? 0 : c.top),
-        left: c.isMinimized ? (context.screenSize.width / 2 - 20) : (c.isFullScreen ? 0 : c.left),
+        top: c.isMinimized
+            ? context.screenSize.height
+            : (c.isFullScreen ? 0 : c.top),
+        left: c.isMinimized
+            ? (context.screenSize.width / 2 - 20)
+            : (c.isFullScreen ? 0 : c.left),
         child: MouseRegion(
           onEnter: c.onHoverEnter,
           onHover: c.onHover,
@@ -53,16 +57,21 @@ class DraggableApp extends StatelessWidget {
               c.onPanUpdate(details.delta.dx, details.delta.dy,
                   details.localPosition.dx, details.localPosition.dy);
             },
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
-              curve: Curves.easeOutCubic,
-              width: c.isMinimized
-                  ? 50
-                  : (c.isFullScreen ? context.screenSize.width : c.width),
-              height: c.isMinimized
-                  ? 1
-                  : (c.isFullScreen ? context.screenSize.height : c.height),
-              child: child,
+            child: AnimatedScale(
+              duration: Duration(
+                  milliseconds:
+                      c.isFullScreenAnim ? 300 : (c.isOpenCloseAnim ? 200 : 0)),
+              curve: c.isOpenClose ? Curves.easeIn : Curves.easeOutCubic,
+              scale: c.isMinimized ? 0 : (c.isOpenClose ? 0.9 : 1),
+              alignment:
+                  c.isFullScreenAnim ? Alignment.topLeft : Alignment.center,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+                curve: Curves.easeOutCubic,
+                width: c.isFullScreen ? context.screenSize.width : c.width,
+                height: c.isFullScreen ? context.screenSize.height : c.height,
+                child: child,
+              ),
             ),
           ),
         ));

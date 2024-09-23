@@ -73,7 +73,8 @@ class RunningAppsProvider extends ChangeNotifier {
     return focusedApp?.runtimeType == app.runtimeType;
   }
 
-  void closeApp(AppController appController) {
+  Future<void> closeApp(AppController appController) async {
+    await appController.closeAppAnim();
     final index = _runningAppsControllers.indexOf(appController);
     _runningAppsWidgets.removeAt(index);
     _runningAppsControllers.removeAt(index);

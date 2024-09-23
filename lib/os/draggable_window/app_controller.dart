@@ -41,6 +41,8 @@ class AppController extends ChangeNotifier {
     left = 100; // todo center of screen
     _top = 100;
     top = 100;
+
+    _openAppAnim();
   }
 
   bool isUpdateWidthFromStart = false;
@@ -201,6 +203,9 @@ class AppController extends ChangeNotifier {
 
   bool isMinimized = false;
 
+  bool isOpenClose = true;
+  bool isOpenCloseAnim = true;
+
   void onDoubleTapDown(TapDownDetails details) {
     if (details.localPosition.dy < appBarHeight) {
       debugPrint('double tap');
@@ -256,6 +261,29 @@ class AppController extends ChangeNotifier {
       isFullScreenAnim = false;
       notifyListeners();
     });
+    notifyListeners();
+  }
+
+  void _openAppAnim() {
+    WidgetsBinding.instance.addPostFrameCallback((value) {
+      isOpenClose = false;
+      isOpenCloseAnim = true;
+      Future.delayed(const Duration(milliseconds: 200), () {
+        if (!isOpenClose) return;
+        isOpenCloseAnim = false;
+        notifyListeners();
+      });
+      notifyListeners();
+    });
+  }
+
+  Future<void> closeAppAnim() async {
+    isOpenClose = true;
+    isOpenCloseAnim = true;
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (isOpenClose) return;
+    isOpenCloseAnim = false;
     notifyListeners();
   }
 }
