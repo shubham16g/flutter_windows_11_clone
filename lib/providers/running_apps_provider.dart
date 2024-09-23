@@ -112,15 +112,22 @@ class RunningAppsProvider extends ChangeNotifier {
     appController.toggleMinimizeMaximize();
     if (appController.isMinimized) {
       final index = _runningAppsControllers.indexOf(appController);
-      if (index != _runningAppsControllers.length - 1 &&
-          _runningAppsControllers.length > 1) return;
+      if (index != _runningAppsControllers.length - 1) {
+        notifyListeners();
+        return;
+      };
+      final focusAppIndex = _runningAppsControllers
+          .lastIndexWhere((element) => !element.isMinimized);
+      if (focusAppIndex == -1) {
+        notifyListeners();
+        return;
+      }
 
       /// if it is not in focus
       final controller = _runningAppsControllers.removeAt(index);
-      _runningAppsControllers.insert(
-          _runningAppsControllers.length - 1, controller);
+      _runningAppsControllers.insert(focusAppIndex, controller);
       final appWidget = _runningAppsWidgets.removeAt(index);
-      _runningAppsWidgets.insert(_runningAppsWidgets.length - 1, appWidget);
+      _runningAppsWidgets.insert(focusAppIndex, appWidget);
     } else {
       final index = _runningAppsControllers.indexOf(appController);
       final controller = _runningAppsControllers.removeAt(index);
