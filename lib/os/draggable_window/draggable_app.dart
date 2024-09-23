@@ -33,7 +33,6 @@ class DraggableApp extends StatelessWidget {
           onHover: c.onHover,
           onExit: c.onHoverExit,
           child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
             onTapDown: onTapDown == null
                 ? null
                 : (details) {
@@ -54,7 +53,6 @@ class DraggableApp extends StatelessWidget {
               c.onPanUpdate(details.delta.dx, details.delta.dy,
                   details.localPosition.dx, details.localPosition.dy);
             },
-            onDoubleTapDown: c.onDoubleTapDown,
             child: AnimatedContainer(
               duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
               curve: Curves.easeOutCubic,
@@ -64,19 +62,7 @@ class DraggableApp extends StatelessWidget {
               height: c.isMinimized
                   ? 1
                   : (c.isFullScreen ? context.screenSize.height : c.height),
-              child: ClipRRect(
-                clipBehavior: Clip.antiAlias,
-                child: BackdropFilter(
-                  filter:
-                      ImageFilter.blur(sigmaX: blur ?? 0, sigmaY: blur ?? 0),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: backgroundColor,
-                        border: border,
-                      ),
-                      child: child),
-                ),
-              ),
+              child: child,
             ),
           ),
         ));

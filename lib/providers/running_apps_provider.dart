@@ -40,10 +40,6 @@ class RunningAppsProvider extends ChangeNotifier {
 
   List<AppController> get runningAppsControllers => _runningAppsControllers;
 
-  App get focusedApp => _runningAppsControllers.isNotEmpty
-      ? _runningAppsControllers.last.app
-      : FileExplorerApp();
-
   void openApp(Widget appWidget, AppController appController) {
     final index = taskbarApps.indexWhere(
         (element) => element.app.runtimeType == appController.app.runtimeType);
@@ -52,7 +48,8 @@ class RunningAppsProvider extends ChangeNotifier {
       _runningAppsWidgets.add(appWidget);
       _runningAppsControllers.add(appController);
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
-    } else if (appController.app.isMultiInstance || taskbarApps[index].openCount == 0) {
+    } else if (appController.app.isMultiInstance ||
+        taskbarApps[index].openCount == 0) {
       /// found in taskbar, open new instance (isMultiInstance = true)
       /// or fixed on taskbar but not opened yet
       _runningAppsWidgets.add(appWidget);
@@ -63,9 +60,17 @@ class RunningAppsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  App? get focusedApp {
+    if (_runningAppsControllers.isEmpty) return null;
+    final index = _runningAppsControllers
+        .lastIndexWhere((element) => !element.isMinimized);
+    if (index == -1) return null;
+    final controller = _runningAppsControllers[index];
+    return controller.app;
+  }
+
   bool isFocused(App app) {
-    return _runningAppsControllers.isNotEmpty &&
-        _runningAppsControllers.last.app.runtimeType == app.runtimeType;
+    return focusedApp?.runtimeType == app.runtimeType;
   }
 
   void closeApp(AppController appController) {
@@ -82,22 +87,48 @@ class RunningAppsProvider extends ChangeNotifier {
   }
 
   void focusByApp(App app) {
-    final index = _runningAppsControllers.indexWhere((element) => element.app == app);
+    final index =
+        _runningAppsControllers.indexWhere((element) => element.app == app);
     if (index != -1) {
       final appWidget = _runningAppsWidgets.removeAt(index);
       _runningAppsWidgets.add(appWidget);
       final controller = _runningAppsControllers.removeAt(index);
       _runningAppsControllers.add(controller);
+      controller.maximize();
       notifyListeners();
     }
   }
 
-  void toggleMinimizeMaximize(App app) {
-    final index = _runningAppsControllers.indexWhere((element) => element.app == app);
+  void toggleMinimizeMaximizeByApp(App app) {
+    final index =
+        _runningAppsControllers.indexWhere((element) => element.app == app);
     if (index != -1) {
       final controller = _runningAppsControllers[index];
-      controller.toggleMinimizeMaximize();
+      toggleMinimizeMaximize(controller);
     }
+  }
+
+  void toggleMinimizeMaximize(AppController appController) {
+    appController.toggleMinimizeMaximize();
+    if (appController.isMinimized) {
+      final index = _runningAppsControllers.indexOf(appController);
+      if (index != _runningAppsControllers.length - 1 &&
+          _runningAppsControllers.length > 1) return;
+
+      /// if it is not in focus
+      final controller = _runningAppsControllers.removeAt(index);
+      _runningAppsControllers.insert(
+          _runningAppsControllers.length - 1, controller);
+      final appWidget = _runningAppsWidgets.removeAt(index);
+      _runningAppsWidgets.insert(_runningAppsWidgets.length - 1, appWidget);
+    } else {
+      final index = _runningAppsControllers.indexOf(appController);
+      final controller = _runningAppsControllers.removeAt(index);
+      _runningAppsControllers.add(controller);
+      final appWidget = _runningAppsWidgets.removeAt(index);
+      _runningAppsWidgets.add(appWidget);
+    }
+    notifyListeners();
   }
 
   void focusApp(AppController appController) {

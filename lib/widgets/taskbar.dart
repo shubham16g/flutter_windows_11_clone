@@ -47,7 +47,7 @@ class Taskbar extends StatelessWidget {
                     } else if (!rap.isFocused(e.app)) {
                       rap.focusByApp(e.app);
                     } else {
-                      rap.toggleMinimizeMaximize(e.app);
+                      rap.toggleMinimizeMaximizeByApp(e.app);
                     }
                   },
                   icon: e.app.icon))
@@ -148,15 +148,20 @@ class _TaskbarButtonState extends State<TaskbarButton> {
                       child: widget.icon),
                 ),
                 AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOutCubic,
-                  width: widget.isFocused ? 16 : 6,
-                  height: 3,
-                  decoration: BoxDecoration(
-                    color: widget.isFocused ? Colors.blue : Colors.white.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(5),
-                  )
-                )
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutCubic,
+                    width: widget.openCount == 0
+                        ? 0
+                        : widget.isFocused
+                            ? 16
+                            : 6,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      color: widget.isFocused
+                          ? Colors.blue
+                          : Colors.white.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(5),
+                    ))
               ],
             ),
           ),

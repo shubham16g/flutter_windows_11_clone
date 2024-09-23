@@ -204,19 +204,23 @@ class AppController extends ChangeNotifier {
   void onDoubleTapDown(TapDownDetails details) {
     if (details.localPosition.dy < appBarHeight) {
       debugPrint('double tap');
-      isFullScreen = !isFullScreen;
-      if (isFullScreen) {
-        cursorController.setCursor(MouseCursor.defer);
-        isFullScreenAnim = true;
-      } else {
-        Future.delayed(const Duration(milliseconds: 300), () {
-          if (isFullScreen) return;
-          isFullScreenAnim = false;
-          notifyListeners();
-        });
-      }
-      notifyListeners();
+      toggleFullScreen();
     }
+  }
+
+  void toggleFullScreen() {
+    isFullScreen = !isFullScreen;
+    if (isFullScreen) {
+      cursorController.setCursor(MouseCursor.defer);
+      isFullScreenAnim = true;
+    } else {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (isFullScreen) return;
+        isFullScreenAnim = false;
+        notifyListeners();
+      });
+    }
+    notifyListeners();
   }
 
   void toggleMinimizeMaximize() {
