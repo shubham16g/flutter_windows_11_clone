@@ -20,15 +20,19 @@ class DraggableApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.watch<AppController>();
+    final width = c.isFullScreen ? context.screenSize.width : c.width;
+    final height = c.isFullScreen ? context.screenSize.height : c.height;
+    final double top = c.isFullScreen ? 0 : c.top;
+    final double left = c.isFullScreen ? 0 : c.left;
     return AnimatedPositioned(
         duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
         curve: Curves.easeOutCubic,
         top: c.isMinimized
             ? context.screenSize.height
-            : (c.isFullScreen ? 0 : c.top),
+            : top,
         left: c.isMinimized
             ? (context.screenSize.width / 2 - 20)
-            : (c.isFullScreen ? 0 : c.left),
+            : left,
         child: MouseRegion(
           onEnter: c.onHoverEnter,
           onHover: c.onHover,
@@ -54,28 +58,33 @@ class DraggableApp extends StatelessWidget {
               c.onPanUpdate(details.delta.dx, details.delta.dy,
                   details.localPosition.dx, details.localPosition.dy);
             },
-            child: AnimatedOpacity(
-              duration: Duration(milliseconds: c.isOpenClose ? 200 : 0),
-              opacity: c.isOpenClose ? 0 : 1,
-              curve: Curves.easeIn,
-              child: AnimatedScale(
-                duration: Duration(
-                    milliseconds: c.isFullScreenAnim
-                        ? 300
-                        : (c.isOpenCloseAnim ? 200 : 0)),
-                curve: c.isOpenClose ? Curves.easeIn : Curves.easeOutCubic,
-                scale: c.isMinimized ? 0 : (c.isOpenClose ? 0.9 : 1),
-                alignment:
-                    c.isFullScreenAnim ? Alignment.topLeft : Alignment.center,
-                child: AnimatedContainer(
-                  duration:
-                      Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
-                  curve: Curves.easeOutCubic,
-                  width: c.isFullScreen ? context.screenSize.width : c.width,
-                  height: c.isFullScreen ? context.screenSize.height : c.height,
-                  child: c.app.builder(context, Rect.fromLTWH(c.left, c.top, c.width, c.height)),
-                ),
-              ),
+            child: Builder(
+              builder: (context) {
+                return AnimatedOpacity(
+                  duration: Duration(milliseconds: c.isOpenClose ? 200 : 0),
+                  opacity: c.isOpenClose ? 0 : 1,
+                  curve: Curves.easeIn,
+                  child: AnimatedScale(
+                    duration: Duration(
+                        milliseconds: c.isFullScreenAnim
+                            ? 300
+                            : (c.isOpenCloseAnim ? 200 : 0)),
+                    curve: c.isOpenClose ? Curves.easeIn : Curves.easeOutCubic,
+                    scale: c.isMinimized ? 0 : (c.isOpenClose ? 0.9 : 1),
+                    alignment:
+                        c.isFullScreenAnim ? Alignment.topLeft : Alignment.center,
+                    child: AnimatedContainer(
+                      duration:
+                          Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+                      curve: Curves.easeOutCubic,
+                      width: width,
+                      height: height,
+                      child: c.app.builder(
+                          context, Rect.fromLTWH(left, top, width, height)),
+                    ),
+                  ),
+                );
+              }
             ),
           ),
         ));

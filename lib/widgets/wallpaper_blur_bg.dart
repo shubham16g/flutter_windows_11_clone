@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/widgets/blend_mask.dart';
+import 'package:flutter_windows_11_clone/widgets/wallpaper_wrapper.dart';
+import 'package:provider/provider.dart';
 
 class WallpaperBlurBg extends StatelessWidget {
   final Rect rect;
@@ -11,9 +13,11 @@ class WallpaperBlurBg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final blurredWallpaper = context.watch<WallpaperWrapper>().blurredWallpaper;
     return ClipRRect(
       child: Stack(
         children: [
+          if (blurredWallpaper != null)
           Positioned(
               // top: 0,
               // left: 0,
@@ -22,12 +26,9 @@ class WallpaperBlurBg extends StatelessWidget {
               child: SizedBox(
                 width: context.screenSize.width,
                 height: context.screenSize.height,
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                  child: Image.asset(
-                      'assets/images/wall_${context.isDark ? 'dark' : 'light'}.jpg',
-                      fit: BoxFit.cover),
-                ),
+                child: Image(
+                    image: blurredWallpaper.image,
+                    fit: BoxFit.cover),
               )),
           Positioned.fill(
               child: Container(color: const Color(0xFF1F282E).withOpacity(.8))),

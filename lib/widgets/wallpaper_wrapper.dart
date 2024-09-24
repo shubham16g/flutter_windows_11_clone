@@ -1,48 +1,56 @@
-import 'dart:ui';
+import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:flutter/services.dart';
 
 class WallpaperWrapper extends ChangeNotifier {
-  final BuildContext context;
 
   Image? wallpaper;
   Image? blurredWallpaper;
 
-  WallpaperWrapper(this.context) {
-    loadImageFromAsset('assets/images/wall_${context.isDark ? 'dark' : 'light'}.jpg').then((value) {
+  WallpaperWrapper({String? initialPath}) {
+    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_dark.jpg');
+  }
+
+
+  Future<void> loadWallpaperFromAsset(String path) async {
+    final baseImage = await _loadBaseImage(path);
+    loadImageFromAsset(baseImage).then((value) {
       wallpaper = value;
       notifyListeners();
     });
-    loadImageFromAssetAndBlurIt('assets/images/wall_${context.isDark ? 'dark' : 'light'}.jpg').then((value) {
+    loadImageFromAssetAndBlurIt(baseImage).then((value) {
       blurredWallpaper = value;
       notifyListeners();
     });
 
   }
 
-  Future<Image> loadImageFromAsset(String path) async {
-    final byteDataRaw = await DefaultAssetBundle.of(context).load(path);
-    final image = await decodeImageFromList(byteDataRaw.buffer.asUint8List());
-    final byteData = await image.toByteData(format: ImageByteFormat.png);
+  Future<ui.Image> _loadBaseImage(String path) async {
+    final data = await rootBundle.load(path);
+    final bytes = Uint8List.view(data.buffer);
+    return await decodeImageFromList(bytes);
+  }
+
+  Future<Image> loadImageFromAsset(ui.Image image) async {
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     final buffer = byteData!.buffer.asUint8List();
 
     return Image.memory(buffer);
   }
 
-  Future<Image> loadImageFromAssetAndBlurIt(String path) async {
-  final byteDataRaw = await DefaultAssetBundle.of(context).load(path);
-  final image = await decodeImageFromList(byteDataRaw.buffer.asUint8List());
-  final recorder = PictureRecorder();
-  final canvas = Canvas(recorder);
-  final paint = Paint()
-    ..imageFilter = ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0);
-  canvas.drawImage(image, Offset.zero, paint);
-  final picture = recorder.endRecording();
-  final img = await picture.toImage(image.width, image.height);
-  final byteData = await img.toByteData(format: ImageByteFormat.png);
-  final buffer = byteData!.buffer.asUint8List();
+  Future<Image> loadImageFromAssetAndBlurIt(ui.Image image) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint()
+      ..imageFilter = ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50);
+    canvas.drawImage(image, Offset.zero, paint);
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(image.width, image.height);
+    final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+    final buffer = byteData!.buffer.asUint8List();
 
-  return Image.memory(buffer);
-}
+    return Image.memory(buffer);
+  }
 }
