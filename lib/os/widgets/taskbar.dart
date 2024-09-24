@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
-import 'package:flutter_windows_11_clone/widgets/grain_blur_bg.dart';
 import 'package:provider/provider.dart';
 
 import '../app/controller/app_controller.dart';
@@ -24,7 +24,7 @@ class Taskbar extends StatelessWidget {
         ),
       )),
       child: Stack(children: [
-        const GrainBlurBg(),
+        const GlassBlurBg(),
         Align(
           alignment: Alignment.center,
           child: Row(

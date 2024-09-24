@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/os/app/widgets/blend_mask.dart';
+import 'package:flutter_windows_11_clone/os/common_widgets/blend_mask.dart';
 import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
 import 'package:provider/provider.dart';
 

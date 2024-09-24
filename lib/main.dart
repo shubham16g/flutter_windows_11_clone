@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'os/controllers/wallpaper_controller.dart';
 
 void main() {
+  // ensure
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => CursorController()),
         ChangeNotifierProvider(create: (context) => RunningAppsProvider()),
-        ChangeNotifierProvider(create: (context) => WallpaperWrapper()),
+        ChangeNotifierProvider(
+            create: (context) => WallpaperWrapper(), lazy: true),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
