@@ -28,15 +28,12 @@ class TaskbarAppState {
 }
 
 class RunningAppsProvider extends ChangeNotifier {
-  final List<Widget> _runningAppsWidgets = [];
   final List<AppController> _runningAppsControllers = [];
 
   final List<TaskbarAppState> taskbarApps = [
     TaskbarAppState(app: FileExplorerApp(), fixed: true),
     TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
-
-  List<Widget> get runningAppsWidgets => _runningAppsWidgets;
 
   List<AppController> get runningAppsControllers => _runningAppsControllers;
 
@@ -45,14 +42,12 @@ class RunningAppsProvider extends ChangeNotifier {
         (element) => element.app.runtimeType == appController.app.runtimeType);
     if (index == -1) {
       /// not found in taskbar, open new app
-      _runningAppsWidgets.add(appWidget);
       _runningAppsControllers.add(appController);
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
     } else if (appController.app.isMultiInstance ||
         taskbarApps[index].openCount == 0) {
       /// found in taskbar, open new instance (isMultiInstance = true)
       /// or fixed on taskbar but not opened yet
-      _runningAppsWidgets.add(appWidget);
       _runningAppsControllers.add(appController);
       taskbarApps[index] = taskbarApps[index]
           .copyWith(openCount: taskbarApps[index].openCount + 1);
@@ -76,7 +71,6 @@ class RunningAppsProvider extends ChangeNotifier {
   Future<void> closeApp(AppController appController) async {
     await appController.closeAppAnim();
     final index = _runningAppsControllers.indexOf(appController);
-    _runningAppsWidgets.removeAt(index);
     _runningAppsControllers.removeAt(index);
     final taskbarIndex =
         taskbarApps.indexWhere((element) => element.app == appController.app);
@@ -91,8 +85,6 @@ class RunningAppsProvider extends ChangeNotifier {
     final index =
         _runningAppsControllers.indexWhere((element) => element.app == app);
     if (index != -1) {
-      final appWidget = _runningAppsWidgets.removeAt(index);
-      _runningAppsWidgets.add(appWidget);
       final controller = _runningAppsControllers.removeAt(index);
       _runningAppsControllers.add(controller);
       controller.maximize();
@@ -127,22 +119,16 @@ class RunningAppsProvider extends ChangeNotifier {
       /// if it is not in focus
       final controller = _runningAppsControllers.removeAt(index);
       _runningAppsControllers.insert(focusAppIndex, controller);
-      final appWidget = _runningAppsWidgets.removeAt(index);
-      _runningAppsWidgets.insert(focusAppIndex, appWidget);
     } else {
       final index = _runningAppsControllers.indexOf(appController);
       final controller = _runningAppsControllers.removeAt(index);
       _runningAppsControllers.add(controller);
-      final appWidget = _runningAppsWidgets.removeAt(index);
-      _runningAppsWidgets.add(appWidget);
     }
     notifyListeners();
   }
 
   void focusApp(AppController appController) {
     final index = _runningAppsControllers.indexOf(appController);
-    final appWidget = _runningAppsWidgets.removeAt(index);
-    _runningAppsWidgets.add(appWidget);
     final controller = _runningAppsControllers.removeAt(index);
     _runningAppsControllers.add(controller);
     notifyListeners();

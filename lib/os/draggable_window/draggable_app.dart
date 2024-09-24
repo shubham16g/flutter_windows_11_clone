@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'app_controller.dart';
 
 class DraggableApp extends StatelessWidget {
-  final Widget child;
   final double? blur;
   final Color? backgroundColor;
   final VoidCallback? onTapDown;
@@ -14,7 +12,6 @@ class DraggableApp extends StatelessWidget {
 
   const DraggableApp(
       {super.key,
-      required this.child,
       this.border,
       this.backgroundColor,
       this.blur,
@@ -63,18 +60,20 @@ class DraggableApp extends StatelessWidget {
               curve: Curves.easeIn,
               child: AnimatedScale(
                 duration: Duration(
-                    milliseconds:
-                        c.isFullScreenAnim ? 300 : (c.isOpenCloseAnim ? 200 : 0)),
+                    milliseconds: c.isFullScreenAnim
+                        ? 300
+                        : (c.isOpenCloseAnim ? 200 : 0)),
                 curve: c.isOpenClose ? Curves.easeIn : Curves.easeOutCubic,
                 scale: c.isMinimized ? 0 : (c.isOpenClose ? 0.9 : 1),
                 alignment:
                     c.isFullScreenAnim ? Alignment.topLeft : Alignment.center,
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
+                  duration:
+                      Duration(milliseconds: c.isFullScreenAnim ? 300 : 0),
                   curve: Curves.easeOutCubic,
                   width: c.isFullScreen ? context.screenSize.width : c.width,
                   height: c.isFullScreen ? context.screenSize.height : c.height,
-                  child: child,
+                  child: c.app.builder(context, Rect.fromLTWH(c.left, c.top, c.width, c.height)),
                 ),
               ),
             ),
