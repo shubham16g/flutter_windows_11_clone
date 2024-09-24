@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/main_page.dart';
-import 'package:flutter_windows_11_clone/providers/cursor_controller.dart';
-import 'package:flutter_windows_11_clone/providers/running_apps_provider.dart';
+import 'package:flutter_windows_11_clone/os/main_page.dart';
+import 'package:flutter_windows_11_clone/os/controllers/cursor_controller.dart';
+import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 import 'package:provider/provider.dart';
+
+import 'os/controllers/wallpaper_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => CursorController()),
         ChangeNotifierProvider(create: (context) => RunningAppsProvider()),
+        ChangeNotifierProvider(create: (context) => WallpaperWrapper()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

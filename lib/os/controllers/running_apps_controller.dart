@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../os/draggable_window/app_controller.dart';
-import 'apps.dart';
+import '../app/controller/app_controller.dart';
+import '../app/apps.dart';
 
 class TaskbarAppState {
   final App app;
@@ -27,7 +27,7 @@ class TaskbarAppState {
   }
 }
 
-class RunningAppsProvider extends ChangeNotifier {
+class RunningAppsProvider extends ChangeNotifier { 
   final List<AppController> _runningAppsControllers = [];
 
   final List<TaskbarAppState> taskbarApps = [

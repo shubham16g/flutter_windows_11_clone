@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/providers/running_apps_provider.dart';
+import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 import 'package:provider/provider.dart';
 
-import '../os/draggable_window/app_controller.dart';
+import '../controller/app_controller.dart';
 
 class AppbarCornerButtons extends StatelessWidget {
   const AppbarCornerButtons({super.key});

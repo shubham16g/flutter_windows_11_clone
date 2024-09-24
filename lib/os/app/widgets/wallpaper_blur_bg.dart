@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/widgets/blend_mask.dart';
-import 'package:flutter_windows_11_clone/widgets/wallpaper_wrapper.dart';
+import 'package:flutter_windows_11_clone/os/app/widgets/blend_mask.dart';
+import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
 import 'package:provider/provider.dart';
 
 class WallpaperBlurBg extends StatelessWidget {
@@ -30,6 +30,13 @@ class WallpaperBlurBg extends StatelessWidget {
                     image: blurredWallpaper.image,
                     fit: BoxFit.cover),
               )),
+          Positioned.fill(
+            child: BlendMask(
+              blendMode: BlendMode.overlay,
+              opacity: 1,    child: Container(
+                color: const Color(0xff888888).withOpacity(0.96)),
+            ),
+          ),
           Positioned.fill(
               child: Container(color: const Color(0xFF1F282E).withOpacity(.8))),
           Positioned.fill(

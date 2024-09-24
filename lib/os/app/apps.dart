@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/widgets/wallpaper_blur_bg.dart';
+import 'package:flutter_windows_11_clone/os/app/widgets/wallpaper_blur_bg.dart';
 
-import '../widgets/appbar_corner_buttons.dart';
+import 'widgets/appbar_corner_buttons.dart';
 
 abstract class App {
   String get title;
