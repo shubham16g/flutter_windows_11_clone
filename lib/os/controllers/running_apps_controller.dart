@@ -27,7 +27,7 @@ class TaskbarAppState {
   }
 }
 
-class RunningAppsProvider extends ChangeNotifier { 
+class RunningAppsProvider extends ChangeNotifier {
   final List<AppController> _runningAppsControllers = [];
 
   final List<TaskbarAppState> taskbarApps = [
@@ -35,7 +35,14 @@ class RunningAppsProvider extends ChangeNotifier {
     TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
 
+  bool isStartMenuOpened = false;
+
   List<AppController> get runningAppsControllers => _runningAppsControllers;
+
+  void toggleStartMenu() {
+    isStartMenuOpened = !isStartMenuOpened;
+    notifyListeners();
+  }
 
   void openApp(Widget appWidget, AppController appController) {
     final index = taskbarApps.indexWhere(
@@ -108,7 +115,8 @@ class RunningAppsProvider extends ChangeNotifier {
       if (index != _runningAppsControllers.length - 1) {
         notifyListeners();
         return;
-      };
+      }
+      ;
       final focusAppIndex = _runningAppsControllers
           .lastIndexWhere((element) => !element.isMinimized);
       if (focusAppIndex == -1) {

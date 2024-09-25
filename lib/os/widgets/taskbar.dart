@@ -30,7 +30,14 @@ class Taskbar extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.window),
+              TaskbarButton(
+                icon: const Icon(Icons.window),
+                onPressed: () {
+                  runningAppsProvider.toggleStartMenu();
+                },
+                openCount: 0,
+                isFocused: runningAppsProvider.isStartMenuOpened,
+              ),
               ...taskbarApps.map((e) => TaskbarButton(
                   isFocused: focusedApp == e.app,
                   openCount: e.openCount,
