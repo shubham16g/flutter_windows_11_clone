@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
 import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
 import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
 import 'package:flutter_windows_11_clone/os/widgets/window_area.dart';
@@ -30,7 +31,14 @@ class MainPage extends StatelessWidget {
               child: const WindowArea(),
             ),
           ),
-
+          const Positioned.fill(
+            bottom: 47,
+            child: Stack(
+              children: [
+                StartMenu(),
+              ],
+            ),
+          ),
           /// taskbar
           const Positioned(left: 0, right: 0, bottom: 0, child: Taskbar())
         ],

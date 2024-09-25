@@ -21,24 +21,7 @@ class WindowArea extends StatelessWidget {
                       runningAppsProvider.focusApp(e);
                     },),
               ))
-          .toList() + [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 47),
-              child: ClipRRect(
-                child: AnimatedAlign(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOutCubic,
-                  alignment: Alignment(0, runningAppsProvider.isStartMenuOpened ? 1 : 8),
-                  child: Container(
-                    width: 400,
-                    height: 500,
-                    margin: const EdgeInsets.only(bottom: 20),
-                    child: GlassBlurBg(),
-                  ),
-                ),
-              ),
-            )
-      ],
+          .toList(),
     );
   }
 }

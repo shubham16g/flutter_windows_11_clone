@@ -10,7 +10,7 @@ class WallpaperWrapper extends ChangeNotifier {
   Image? blurredWallpaper;
 
   WallpaperWrapper({String? initialPath}) {
-    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_dark.jpg');
+    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_light.jpg');
   }
 
 
