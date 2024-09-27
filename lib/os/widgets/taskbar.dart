@@ -147,6 +147,7 @@ class _TaskbarButtonState extends State<TaskbarButton> {
             alignment: Alignment.center,
             child: Column(
               children: [
+                const SizedBox(height: 3),
                 Expanded(
                   child: AnimatedScale(
                       duration: const Duration(milliseconds: 200),
