@@ -33,17 +33,20 @@ class AppController extends ChangeNotifier {
     required this.app,
     required this.cursorController,
     required this.runningAppsController,
-    double initialWidth = 700,
-    double initialHeight = 520,
+    required double initialWidth,
+    required double initialHeight,
+    required Size windowAreaSize,
+    required bool initialIsFullScreen,
   }) {
     _width = initialWidth;
-    width = initialWidth;
     _height = initialHeight;
-    height = initialHeight;
-    _left = 100; // todo center of screen
-    left = 100; // todo center of screen
-    _top = 100;
-    top = 100;
+    _left = windowAreaSize.width / 2 - _width / 2;
+    _top = windowAreaSize.height / 2 - _height / 2;
+    height = _height;
+    width = _width;
+    left = _left;
+    top = _top;
+    isFullScreen = initialIsFullScreen;
 
     _openAppAnim();
     runningAppsController.addListener(_listenRunningApps);

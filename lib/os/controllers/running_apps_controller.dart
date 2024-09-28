@@ -36,7 +36,7 @@ class RunningAppsController extends ChangeNotifier {
     TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
 
-  bool isStartMenuOpened = true;
+  bool isStartMenuOpened = false;
 
   List<AppController> get runningAppsControllers => _runningAppsControllers;
 

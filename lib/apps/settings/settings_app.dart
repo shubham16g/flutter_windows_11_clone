@@ -15,5 +15,11 @@ class SettingsApp extends App {
   );
 
   @override
+  double get initialHeight => 800;
+
+  @override
+  double get initialWidth => 1000;
+
+  @override
   Widget builder(BuildContext context, Rect rect) =>  SettingsPage(rect: rect);
 }
