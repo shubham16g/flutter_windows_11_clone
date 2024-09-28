@@ -11,7 +11,7 @@ class WallpaperWrapper extends ChangeNotifier {
   Color dominantColor = const Color(0xFF202020);
 
   WallpaperWrapper({String? initialPath}) {
-    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_light.jpg');
+    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_dark.jpg');
   }
 
 

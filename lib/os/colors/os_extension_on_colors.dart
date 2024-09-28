@@ -8,7 +8,7 @@ final osColorLight = OsColorLight();
 final osColorDark = OsColorDark();
 
 extension OxExtensionOnColor on BuildContext {
-  OsColor get osColor => Theme.of(this).brightness == Brightness.light
-      ? osColorLight
-      : osColorDark;
+  OsColor get osColor => getOsColor(isDark: Theme.of(this).brightness == Brightness.dark);
+
+  OsColor getOsColor({required bool isDark}) => isDark ? osColorDark : osColorLight;
 }

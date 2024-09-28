@@ -18,8 +18,6 @@ abstract class App {
 
   double get minHeight => 150;
 
-
-
   double get appBarHeight => 40;
 
   bool get isMultiInstance => false;
@@ -31,15 +29,20 @@ abstract class App {
 
   static void tryOpen(BuildContext context, App app) {
     final rap = context.read<RunningAppsController>();
-    final windowAreaSize = Size(context.screenSize.width, context.screenSize.height - 48);
+    final windowAreaSize =
+        Size(context.screenSize.width, context.screenSize.height - 48);
     final windowPaddedWidth = windowAreaSize.width - 20;
     final windowPaddedHeight = windowAreaSize.height - 20;
     if (!rap.isAppOpen(app)) {
       rap.openApp(AppController(
           runningAppsController: rap,
           cursorController: context.read(),
-          initialHeight: app.initialHeight > windowPaddedHeight ? windowPaddedHeight : app.initialHeight,
-          initialWidth: app.initialWidth > windowPaddedWidth ? windowPaddedWidth : app.initialWidth,
+          initialHeight: app.initialHeight > windowPaddedHeight
+              ? windowPaddedHeight
+              : app.initialHeight,
+          initialWidth: app.initialWidth > windowPaddedWidth
+              ? windowPaddedWidth
+              : app.initialWidth,
           windowAreaSize: windowAreaSize,
           initialIsFullScreen: false,
           app: app));
@@ -66,10 +69,15 @@ class FileExplorerApp extends App {
 
   @override
   Widget builder(BuildContext context, Rect rect) {
-    return const AppBackground(
+    return AppBackground(
       child: Stack(
         children: [
-          Positioned(top: 0, right: 0, child: AppbarCornerButtons()),
+          Positioned(
+              top: 0,
+              right: 0,
+              child: AppbarCornerButtons(
+                isDark: context.isDark,
+              )),
         ],
       ),
     );

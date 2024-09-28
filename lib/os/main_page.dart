@@ -20,9 +20,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      App.tryOpen(context, SettingsApp());
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   App.tryOpen(context, SettingsApp());
+    // });
     super.initState();
   }
 
@@ -44,6 +44,11 @@ class _MainPageState extends State<MainPage> {
           Positioned.fill(
             child: MouseRegion(
               cursor: context.watch<CursorController>().cursor,
+              onEnter: (event) {
+                context.read<CursorController>().setCursor(MouseCursor.defer);
+              },
+              onExit: (event) {
+              },
               child: const WindowArea(),
             ),
           ),

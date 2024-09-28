@@ -1,35 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/app_controller.dart';
 
 class AppbarCornerButtons extends StatelessWidget {
-  const AppbarCornerButtons({super.key});
+  final bool isDark;
+
+  const AppbarCornerButtons({super.key, this.isDark = false});
 
   @override
   Widget build(BuildContext context) {
     final appController = context.watch<AppController>();
+    final iconColor = appController.isFocused
+        ? context.getOsColor(isDark: isDark).iconColor
+        : context.getOsColor(isDark: isDark).iconColorUnFocus;
     return Row(
       children: [
-        if (appController.isFocused)
-          const Icon(Icons.circle, size: 10, color: Colors.green),
-        _button(const Icon(Icons.minimize), () {
+        _button(
+            Icon(
+              Icons.minimize,
+              size: 16,
+              color: iconColor,
+            ), () {
           appController.toggleMinimizeMaximize();
         }),
         _button(
             appController.isFullScreen
                 ? Transform.rotate(
                     angle: 3.14,
-                    child: const Icon(
+                    child: Icon(
                       Icons.filter_none,
                       size: 13,
-                      color: Colors.white,
+                      color: iconColor,
                     ))
-                : const Icon(Icons.crop_square), () {
+                : Icon(
+                    Icons.crop_square,
+                    size: 16,
+                    color: iconColor,
+                  ), () {
           appController.toggleFullScreen();
         }),
-        _button(const Icon(Icons.close), () {
+        _button(
+            Icon(
+              Icons.close,
+              size: 16,
+              color: iconColor,
+            ), () {
           appController.closeApp();
         }, splashColor: Colors.red),
       ],
@@ -47,9 +65,7 @@ class AppbarCornerButtons extends StatelessWidget {
           width: 40,
           height: 30,
           alignment: Alignment.center,
-          child: IconTheme(
-              data: const IconThemeData(size: 16, color: Colors.white),
-              child: icon),
+          child: icon,
         ),
       ),
     );

@@ -17,7 +17,7 @@ class WallpaperBlurBg extends StatelessWidget {
     final blurredWallpaper = wallpaperController.blurredWallpaper;
     return ClipRRect(
       child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 200),
         opacity: isFocused ? 1 : 0,
         curve: Curves.ease,
         child: Stack(

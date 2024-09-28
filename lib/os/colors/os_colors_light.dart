@@ -9,4 +9,10 @@ class OsColorLight with OsColor {
   @override
   Color get appBorder => const Color(0xFF7A7A7A).withOpacity(0.6);
 
+  @override
+  Color get iconColor => const Color(0xFF000000);
+
+  @override
+  Color get iconColorUnFocus => const Color(0xB6171717);
+
 }
