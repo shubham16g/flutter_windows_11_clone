@@ -75,7 +75,7 @@ class WallpaperWrapper extends ChangeNotifier {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     final paint = Paint()
-      ..imageFilter = ui.ImageFilter.blur(sigmaX: 200, sigmaY: 200);
+      ..imageFilter = ui.ImageFilter.blur(sigmaX: 300, sigmaY: 300);
     canvas.drawImage(image, Offset.zero, paint);
     final picture = recorder.endRecording();
     final img = await picture.toImage(image.width, image.height);
