@@ -10,7 +10,7 @@ class StartMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final runningAppsProvider = context.watch<RunningAppsProvider>();
+    final runningAppsProvider = context.watch<RunningAppsController>();
     final screenHeight = context.screenSize.height - 48;
     final double height = screenHeight - 26 > 726 ? 726 : screenHeight - 26;
     return AnimatedPositioned(

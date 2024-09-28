@@ -10,15 +10,12 @@ class AppbarCornerButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appController = context.watch<AppController>();
-    final rap = context.watch<RunningAppsProvider>();
     return Row(
       children: [
-        if (rap.isFocused(appController.app))
-          Icon(Icons.circle, size: 10, color: Colors.green),
+        if (appController.isFocused)
+          const Icon(Icons.circle, size: 10, color: Colors.green),
         _button(const Icon(Icons.minimize), () {
-          context
-              .read<RunningAppsProvider>()
-              .toggleMinimizeMaximize(appController);
+          appController.toggleMinimizeMaximize();
         }),
         _button(
             appController.isFullScreen
@@ -33,7 +30,7 @@ class AppbarCornerButtons extends StatelessWidget {
           appController.toggleFullScreen();
         }),
         _button(const Icon(Icons.close), () {
-          context.read<RunningAppsProvider>().closeApp(appController);
+          appController.closeApp();
         }, splashColor: Colors.red),
       ],
     );

@@ -10,7 +10,7 @@ class WindowArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final runningAppsProvider = context.watch<RunningAppsProvider>();
+    final runningAppsProvider = context.watch<RunningAppsController>();
     return Stack(
       children: runningAppsProvider.runningAppsControllers
           .map<Widget>((e) => ChangeNotifierProvider.value(

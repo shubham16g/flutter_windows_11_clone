@@ -28,7 +28,7 @@ class TaskbarAppState {
   }
 }
 
-class RunningAppsProvider extends ChangeNotifier {
+class RunningAppsController extends ChangeNotifier {
   final List<AppController> _runningAppsControllers = [];
 
   final List<TaskbarAppState> taskbarApps = [
@@ -63,21 +63,27 @@ class RunningAppsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  App? get focusedApp {
+  AppController? get focusedController {
     if (_runningAppsControllers.isEmpty) return null;
     final index = _runningAppsControllers
         .lastIndexWhere((element) => !element.isMinimized);
     if (index == -1) return null;
     final controller = _runningAppsControllers[index];
-    return controller.app;
+    return controller;
   }
 
-  bool isFocused(App app) {
+  App? get focusedApp => focusedController?.app;
+
+  bool isFocusedByApp(App app) {
     return focusedApp?.runtimeType == app.runtimeType;
   }
 
+  bool isFocused(AppController appController) {
+    return focusedController == appController;
+  }
+
   Future<void> closeApp(AppController appController) async {
-    await appController.closeAppAnim();
+    await appController.internalCloseAppAnim();
     final index = _runningAppsControllers.indexOf(appController);
     _runningAppsControllers.removeAt(index);
     final taskbarIndex =
@@ -95,7 +101,7 @@ class RunningAppsProvider extends ChangeNotifier {
     if (index != -1) {
       final controller = _runningAppsControllers.removeAt(index);
       _runningAppsControllers.add(controller);
-      controller.maximize();
+      controller.internalMaximize();
       notifyListeners();
     }
   }
@@ -110,14 +116,18 @@ class RunningAppsProvider extends ChangeNotifier {
   }
 
   void toggleMinimizeMaximize(AppController appController) {
-    appController.toggleMinimizeMaximize();
+    if (appController.isMinimized) {
+      appController.internalMaximize();
+    } else {
+      appController.internalMinimize();
+    }
     if (appController.isMinimized) {
       final index = _runningAppsControllers.indexOf(appController);
       if (index != _runningAppsControllers.length - 1) {
         notifyListeners();
         return;
       }
-      ;
+
       final focusAppIndex = _runningAppsControllers
           .lastIndexWhere((element) => !element.isMinimized);
       if (focusAppIndex == -1) {

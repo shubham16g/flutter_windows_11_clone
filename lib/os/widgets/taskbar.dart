@@ -10,7 +10,7 @@ class Taskbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final runningAppsProvider = context.watch<RunningAppsProvider>();
+    final runningAppsProvider = context.watch<RunningAppsController>();
     final taskbarApps = runningAppsProvider.taskbarApps;
     final focusedApp = runningAppsProvider.focusedApp;
     return Container(
@@ -42,7 +42,7 @@ class Taskbar extends StatelessWidget {
                   isFocused: focusedApp == e.app,
                   openCount: e.openCount,
                   onPressed: () {
-                    final rap = context.read<RunningAppsProvider>();
+                    final rap = context.read<RunningAppsController>();
                     if (e.openCount <= 0) {
                       rap.openApp(
                           Container(
@@ -50,8 +50,9 @@ class Taskbar extends StatelessWidget {
                             height: 600,
                           ),
                           AppController(
+                            runningAppsController: rap,
                               cursorController: context.read(), app: e.app));
-                    } else if (!rap.isFocused(e.app)) {
+                    } else if (!rap.isFocusedByApp(e.app)) {
                       rap.focusByApp(e.app);
                     } else {
                       rap.toggleMinimizeMaximizeByApp(e.app);

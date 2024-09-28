@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/os/app/apps.dart';
 import 'package:flutter_windows_11_clone/os/controllers/cursor_controller.dart';
+import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 
 class AppController extends ChangeNotifier {
   double top = 60;
@@ -26,10 +27,12 @@ class AppController extends ChangeNotifier {
   /// border padding for resizing
   final double resizeBorderWidth = kIsWeb ? 8 : 15;
   final CursorController cursorController;
+  final RunningAppsController runningAppsController;
 
   AppController({
     required this.app,
     required this.cursorController,
+    required this.runningAppsController,
     double initialWidth = 700,
     double initialHeight = 520,
   }) {
@@ -43,7 +46,14 @@ class AppController extends ChangeNotifier {
     top = 100;
 
     _openAppAnim();
+    runningAppsController.addListener(_listenRunningApps);
   }
+
+  void _listenRunningApps() {
+    notifyListeners();
+  }
+
+  bool get isFocused => runningAppsController.isFocused(this);
 
   bool isUpdateWidthFromStart = false;
   bool isUpdateHeightFromStart = false;
@@ -235,14 +245,10 @@ class AppController extends ChangeNotifier {
   }
 
   void toggleMinimizeMaximize() {
-    if (isMinimized) {
-      maximize();
-    } else {
-      minimize();
-    }
+    runningAppsController.toggleMinimizeMaximize(this);
   }
 
-  void maximize() {
+  void internalMaximize() {
     isMinimized = false;
     isFullScreenAnim = true;
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -253,7 +259,7 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void minimize() {
+  void internalMinimize() {
     isMinimized = true;
     isFullScreenAnim = true;
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -277,7 +283,11 @@ class AppController extends ChangeNotifier {
     });
   }
 
-  Future<void> closeAppAnim() async {
+  Future<void> closeApp() {
+    return runningAppsController.closeApp(this);
+  }
+
+  Future<void> internalCloseAppAnim() async {
     isOpenClose = true;
     isOpenCloseAnim = true;
     notifyListeners();
@@ -285,5 +295,11 @@ class AppController extends ChangeNotifier {
     if (isOpenClose) return;
     isOpenCloseAnim = false;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    runningAppsController.removeListener(_listenRunningApps);
+    super.dispose();
   }
 }

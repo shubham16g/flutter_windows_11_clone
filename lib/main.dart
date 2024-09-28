@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CursorController()),
-        ChangeNotifierProvider(create: (context) => RunningAppsProvider()),
+        ChangeNotifierProvider(create: (context) => RunningAppsController()),
         ChangeNotifierProvider(
             create: (context) => WallpaperWrapper(), lazy: true),
       ],
