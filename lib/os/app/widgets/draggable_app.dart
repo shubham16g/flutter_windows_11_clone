@@ -3,7 +3,7 @@ import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/os/app/widgets/value_animated_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/app_controller.dart';
+import '../../controllers/app_controller.dart';
 
 class DraggableApp extends StatelessWidget {
   final double? blur;

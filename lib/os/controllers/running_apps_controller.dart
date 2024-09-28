@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../app/controller/app_controller.dart';
+import '../../apps/settings/settings_app.dart';
+import 'app_controller.dart';
 import '../app/apps.dart';
 
 class TaskbarAppState {

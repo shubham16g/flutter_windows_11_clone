@@ -3,7 +3,7 @@ import 'package:flutter_windows_11_clone/os/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 import 'package:provider/provider.dart';
 
-import '../app/controller/app_controller.dart';
+import '../controllers/app_controller.dart';
 
 class Taskbar extends StatelessWidget {
   const Taskbar({super.key});

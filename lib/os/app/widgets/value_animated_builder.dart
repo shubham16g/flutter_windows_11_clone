@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ValueAnimatedBuilder extends ImplicitlyAnimatedWidget {
   /// Creates a container that animates its parameters implicitly.
-  ValueAnimatedBuilder({
+  const ValueAnimatedBuilder({
     super.key,
     required this.top,
     required this.left,

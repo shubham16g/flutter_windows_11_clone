@@ -44,27 +44,6 @@ class FileExplorerApp extends App {
 
 }
 
-class SettingsApp extends App {
-  @override
-  String get title => 'Settings';
-
-  @override
-  Widget get icon => const Icon(Icons.settings);
-
-  @override
-  Widget builder(BuildContext context, Rect rect) {
-    return  Stack(
-      children: [
-        WallpaperBlurBg(rect: rect),
-        const Positioned(
-            top: 0,
-            right: 0,
-            child: AppbarCornerButtons()),
-      ],
-    );
-  }
-}
-
 class EdgeApp extends App {
   @override
   String get title => 'Edge';
