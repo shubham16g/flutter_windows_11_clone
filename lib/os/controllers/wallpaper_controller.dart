@@ -8,6 +8,7 @@ class WallpaperWrapper extends ChangeNotifier {
 
   Image? wallpaper;
   Image? blurredWallpaper;
+  Color dominantColor = const Color(0xFF202020);
 
   WallpaperWrapper({String? initialPath}) {
     loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_light.jpg');
@@ -16,6 +17,7 @@ class WallpaperWrapper extends ChangeNotifier {
 
   Future<void> loadWallpaperFromAsset(String path) async {
     final baseImage = await _loadBaseImage(path);
+    dominantColor = await getDominantColor(baseImage);
     loadImageFromAsset(baseImage).then((value) {
       wallpaper = value;
       notifyListeners();
@@ -25,6 +27,35 @@ class WallpaperWrapper extends ChangeNotifier {
       notifyListeners();
     });
 
+  }
+
+  Future<Color> getDominantColor(ui.Image image) async {
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+    final bytes = byteData!.buffer.asUint8List();
+
+    final pixelCount = bytes.lengthInBytes ~/ 4;
+    final r = List<int>.filled(256, 0);
+    final g = List<int>.filled(256, 0);
+    final b = List<int>.filled(256, 0);
+    for (var i = 0; i < pixelCount; i++) {
+      final alpha = bytes[i * 4 + 3];
+      if (alpha == 0) {
+        continue;
+      }
+      r[bytes[i * 4]]++;
+      g[bytes[i * 4 + 1]]++;
+      b[bytes[i * 4 + 2]]++;
+    }
+    final maxR = r.reduce((value, element) => value > element ? value : element);
+    final maxG = g.reduce((value, element) => value > element ? value : element);
+    final maxB = b.reduce((value, element) => value > element ? value : element);
+    final max = [maxR, maxG, maxB].reduce((value, element) => value > element ? value : element);
+    final dominantColor = max == maxR
+        ? Color.fromARGB(255, r.indexOf(max), 0, 0)
+        : max == maxG
+            ? Color.fromARGB(255, 0, g.indexOf(max), 0)
+            : Color.fromARGB(255, 0, 0, b.indexOf(max));
+    return dominantColor;
   }
 
   Future<ui.Image> _loadBaseImage(String path) async {
