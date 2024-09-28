@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/app/apps.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 import 'package:provider/provider.dart';
-
-import '../controllers/app_controller.dart';
 
 class Taskbar extends StatelessWidget {
   const Taskbar({super.key});
@@ -42,21 +41,7 @@ class Taskbar extends StatelessWidget {
                   isFocused: focusedApp == e.app,
                   openCount: e.openCount,
                   onPressed: () {
-                    final rap = context.read<RunningAppsController>();
-                    if (e.openCount <= 0) {
-                      rap.openApp(
-                          Container(
-                            width: 600,
-                            height: 600,
-                          ),
-                          AppController(
-                            runningAppsController: rap,
-                              cursorController: context.read(), app: e.app));
-                    } else if (!rap.isFocusedByApp(e.app)) {
-                      rap.focusByApp(e.app);
-                    } else {
-                      rap.toggleMinimizeMaximizeByApp(e.app);
-                    }
+                    App.tryOpen(context, e.app);
                   },
                   icon: e.app.icon))
             ],

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/wallpaper_blur_bg.dart';
+import 'package:provider/provider.dart';
 
+import '../controllers/app_controller.dart';
+import '../controllers/running_apps_controller.dart';
 import 'widgets/appbar_corner_buttons.dart';
 
 abstract class App {
@@ -17,6 +20,21 @@ abstract class App {
   bool get isMultiInstance => false;
 
   Widget builder(BuildContext context, Rect rect);
+
+  static void tryOpen(BuildContext context, App app) {
+    final rap = context.read<RunningAppsController>();
+    if (!rap.isAppOpen(app)) {
+      rap.openApp(
+          AppController(
+              runningAppsController: rap,
+              cursorController: context.read(), app: app));
+    } else if (!rap.isFocusedByApp(app)) {
+      rap.focusByApp(app);
+    } else {
+      rap.toggleMinimizeMaximizeByApp(app);
+    }
+
+  }
 }
 
 class FileExplorerApp extends App {

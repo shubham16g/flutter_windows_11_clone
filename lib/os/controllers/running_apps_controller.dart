@@ -45,25 +45,27 @@ class RunningAppsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void openApp(Widget appWidget, AppController appController) {
+  void openApp(AppController appController) {
     final index = taskbarApps.indexWhere(
         (element) => element.app.runtimeType == appController.app.runtimeType);
     if (index == -1) {
       /// not found in taskbar, open new app
       _runningAppsControllers.add(appController);
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
-    } else if (appController.app.isMultiInstance ||
-        taskbarApps[index].openCount == 0) {
+      isStartMenuOpened = false;
+    } else if (taskbarApps[index].openCount == 0) {
       /// found in taskbar, open new instance (isMultiInstance = true)
       /// or fixed on taskbar but not opened yet
       _runningAppsControllers.add(appController);
       taskbarApps[index] = taskbarApps[index]
           .copyWith(openCount: taskbarApps[index].openCount + 1);
+      isStartMenuOpened = false;
     }
     notifyListeners();
   }
 
   AppController? get focusedController {
+    if (isStartMenuOpened) return null;
     if (_runningAppsControllers.isEmpty) return null;
     final index = _runningAppsControllers
         .lastIndexWhere((element) => !element.isMinimized);
@@ -95,14 +97,20 @@ class RunningAppsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void focusApp(AppController appController) {
+    final index = _runningAppsControllers.indexOf(appController);
+    final controller = _runningAppsControllers.removeAt(index);
+    _runningAppsControllers.add(controller);
+    controller.internalMaximize();
+    isStartMenuOpened = false;
+    notifyListeners();
+  }
+
   void focusByApp(App app) {
     final index =
         _runningAppsControllers.indexWhere((element) => element.app == app);
     if (index != -1) {
-      final controller = _runningAppsControllers.removeAt(index);
-      _runningAppsControllers.add(controller);
-      controller.internalMaximize();
-      notifyListeners();
+      focusApp(_runningAppsControllers[index]);
     }
   }
 
@@ -146,10 +154,7 @@ class RunningAppsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void focusApp(AppController appController) {
-    final index = _runningAppsControllers.indexOf(appController);
-    final controller = _runningAppsControllers.removeAt(index);
-    _runningAppsControllers.add(controller);
-    notifyListeners();
+  bool isAppOpen(App app) {
+    return _runningAppsControllers.any((element) => element.app == app);
   }
 }
