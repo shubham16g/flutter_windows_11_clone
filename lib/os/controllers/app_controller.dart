@@ -65,6 +65,7 @@ class AppController extends ChangeNotifier {
   bool exitWhenStopDragging = false;
 
   void panStart(DragDownDetails details) {
+    debugPrint('panStart');
     isUpdateWidthFromStart = details.localPosition.dx < resizeBorderWidth;
     isUpdateHeightFromStart = details.localPosition.dy < resizeBorderWidth;
     isUpdateWidthFromEnd = details.localPosition.dx > width - resizeBorderWidth;
@@ -75,6 +76,7 @@ class AppController extends ChangeNotifier {
   }
 
   void panEnd(Size screenSize) {
+    debugPrint('panEnd');
     isUpdateWidthFromStart = false;
     isUpdateHeightFromStart = false;
     isUpdateWidthFromEnd = false;
@@ -146,7 +148,9 @@ class AppController extends ChangeNotifier {
   }
 
   void onPanUpdate(double dx, double dy, double localDx, double localDy) {
-    debugPrint('dx: $dx, dy: $dy, localDx: $localDx, localDy: $localDy');
+    debugPrint(
+        'isOpenCloseAnim: $isOpenCloseAnim, isFullScreenAnim: $isFullScreenAnim, isDragging: $isDragging');
+    // debugPrint('dx: $dx, dy: $dy, localDx: $localDx, localDy: $localDy');
     if (isUpdateWidthFromStart ||
         isUpdateHeightFromStart ||
         isUpdateWidthFromEnd ||
@@ -216,78 +220,77 @@ class AppController extends ChangeNotifier {
   bool isOpenClose = true;
   bool isOpenCloseAnim = true;
 
-  void onDoubleTapDown(TapDownDetails details) {
-    if (details.localPosition.dy < appBarHeight) {
-      debugPrint('double tap');
-      toggleFullScreen();
-    }
-  }
-
-  void toggleFullScreen() {
+  Future<void> toggleFullScreen() async {
+    debugPrint('toggleFullScreen');
     isFullScreen = !isFullScreen;
     if (isFullScreen) {
       cursorController.setCursor(MouseCursor.defer);
       isFullScreenAnim = true;
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (!isFullScreen) return;
-        isFullScreenAnim = false;
-        notifyListeners();
-      });
+      notifyListeners();
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (!isFullScreen) return;
+      isFullScreenAnim = false;
+      notifyListeners();
     } else {
       isFullScreenAnim = true;
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (isFullScreen) return;
-        isFullScreenAnim = false;
-        notifyListeners();
-      });
+      notifyListeners();
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (isFullScreen) return;
+      isFullScreenAnim = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void toggleMinimizeMaximize() {
+    debugPrint('toggleMinimizeMaximize');
     runningAppsController.toggleMinimizeMaximize(this);
   }
 
-  void internalMaximize() {
+  Future<void> internalMaximize() async {
+    if (!isMinimized) return;
+    debugPrint('internalMaximize');
     isMinimized = false;
     isFullScreenAnim = true;
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (isMinimized) return;
-      isFullScreenAnim = false;
-      notifyListeners();
-    });
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (isMinimized) return;
+    isFullScreenAnim = false;
     notifyListeners();
   }
 
-  void internalMinimize() {
+  Future<void> internalMinimize() async {
+    if (isMinimized) return;
+    debugPrint('internalMinimize');
     isMinimized = true;
     isFullScreenAnim = true;
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (!isMinimized) return;
-      isFullScreenAnim = false;
-      notifyListeners();
-    });
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (!isMinimized) return;
+    isFullScreenAnim = false;
     notifyListeners();
   }
 
   void _openAppAnim() {
-    WidgetsBinding.instance.addPostFrameCallback((value) {
+    debugPrint('_openAppAnim');
+    WidgetsBinding.instance.addPostFrameCallback((value) async {
+      debugPrint('_openAppAnim POST FRAME');
       isOpenClose = false;
       isOpenCloseAnim = true;
-      Future.delayed(const Duration(milliseconds: 200), () {
-        if (!isOpenClose) return;
-        isOpenCloseAnim = false;
-        notifyListeners();
-      });
+      notifyListeners();
+      await Future.delayed(const Duration(milliseconds: 200));
+      if (!isOpenClose) return;
+      isOpenCloseAnim = false;
       notifyListeners();
     });
   }
 
   Future<void> closeApp() {
+    debugPrint('closeApp');
     return runningAppsController.closeApp(this);
   }
 
   Future<void> internalCloseAppAnim() async {
+    debugPrint('internalCloseAppAnim');
     isOpenClose = true;
     isOpenCloseAnim = true;
     notifyListeners();
@@ -299,6 +302,7 @@ class AppController extends ChangeNotifier {
 
   @override
   void dispose() {
+    debugPrint('dispose');
     runningAppsController.removeListener(_listenRunningApps);
     super.dispose();
   }
