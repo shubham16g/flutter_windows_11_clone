@@ -18,42 +18,48 @@ class WallpaperBlurBg extends StatelessWidget {
         duration: const Duration(milliseconds: 100),
         opacity: isFocused ? 1 : 0,
         curve: Curves.ease,
-        child: Stack(
-          children: [
-            if (blurredWallpaper != null)
-            Positioned(
-                // top: 0,
-                // left: 0,
-                top: -rect.top,
-                left: -rect.left,
-                child: SizedBox(
-                  width: context.screenSize.width,
-                  height: context.screenSize.height,
-                  child: Image(
-                      image: blurredWallpaper.image,
-                      fit: BoxFit.cover),
-                )),
-            Positioned.fill(
-              child: BlendMask(
-                blendMode: BlendMode.overlay,
-                opacity: 1,    child: Container(
-                  color: const Color(0xff888888).withOpacity(0.96)),
-              ),
-            ),
-            Positioned.fill(
-                child: Container(color: const Color(0xFF1F282E).withOpacity(.8))),
-            Positioned.fill(
-              child: Opacity(
-                opacity: 0.02,
-                child: Image.asset(
-                  'assets/images/NoiseAsset_256.png',
-                  repeat: ImageRepeat.repeat,
-                  alignment: Alignment.topLeft,
-                  // repeat: ImageRepeat.repeat,
+        child: Opacity(
+          opacity: 0.2,
+          child: Stack(
+            children: [
+              if (blurredWallpaper != null)
+              Positioned(
+                  // top: 0,
+                  // left: 0,
+                  top: -rect.top,
+                  left: -rect.left,
+                  child: SizedBox(
+                    width: context.screenSize.width,
+                    height: context.screenSize.height,
+                    child: Transform.scale(
+                      scale: 1.1,
+                      child: Image(
+                          image: blurredWallpaper.image,
+                          fit: BoxFit.cover),
+                    ),
+                  )),
+              Positioned.fill(
+                child: BlendMask(
+                  blendMode: BlendMode.overlay,
+                  opacity: 1,    child: Container(
+                    color: const Color(0xff888888).withOpacity(0.96)),
                 ),
               ),
-            ),
-          ],
+              // Positioned.fill(
+              //     child: Container(color: const Color(0xFF1F282E).withOpacity(.8))),
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.02,
+                  child: Image.asset(
+                    'assets/images/NoiseAsset_256.png',
+                    repeat: ImageRepeat.repeat,
+                    alignment: Alignment.topLeft,
+                    // repeat: ImageRepeat.repeat,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -10,7 +10,7 @@ class WallpaperWrapper extends ChangeNotifier {
   Image? blurredWallpaper;
 
   WallpaperWrapper({String? initialPath}) {
-    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_dark.jpg');
+    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_light.jpg');
   }
 
 
@@ -44,7 +44,7 @@ class WallpaperWrapper extends ChangeNotifier {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     final paint = Paint()
-      ..imageFilter = ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50);
+      ..imageFilter = ui.ImageFilter.blur(sigmaX: 200, sigmaY: 200);
     canvas.drawImage(image, Offset.zero, paint);
     final picture = recorder.endRecording();
     final img = await picture.toImage(image.width, image.height);

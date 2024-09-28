@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/apps/settings/settings_app.dart';
+import 'package:flutter_windows_11_clone/os/app/apps.dart';
 import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
 import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
 import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
@@ -7,8 +9,22 @@ import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      App.tryOpen(context, SettingsApp());
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
