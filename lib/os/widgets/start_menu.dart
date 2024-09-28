@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,11 @@ class StartMenu extends StatelessWidget {
             width: 642,
             height: height,
             margin: const EdgeInsets.symmetric(vertical: 13),
-            child: const GlassBlurBg(),
+            child: const AppBackground(
+              isFocused: true,
+              isFullScreen: false,
+              backgroundColor: Colors.transparent,
+                child: GlassBlurBg()),
           ),
         ),
       ),

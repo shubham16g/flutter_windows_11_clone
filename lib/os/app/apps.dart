@@ -69,7 +69,10 @@ class FileExplorerApp extends App {
 
   @override
   Widget builder(BuildContext context, Rect rect) {
+    final appController = context.watch<AppController>();
     return AppBackground(
+      isFullScreen: appController.isFullScreen,
+      isFocused: appController.isFocused,
       child: Stack(
         children: [
           Positioned(
