@@ -47,11 +47,11 @@ jobs:
       - run: flutter pub get
       - run: flutter build web --base-href /${{ github.event.repository.name }}/
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           name: web-build
           #          path: sub-folder/build/web // if working-directory is changed
           path: build/web
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
