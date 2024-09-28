@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/wallpaper_blur_bg.dart';
-import 'package:provider/provider.dart';
 
 import 'widgets/appbar_corner_buttons.dart';
 
@@ -17,7 +16,7 @@ abstract class App {
 
   bool get isMultiInstance => false;
 
-  Widget builder(BuildContext context);
+  Widget builder(BuildContext context, Rect rect);
 }
 
 class FileExplorerApp extends App {
@@ -31,10 +30,10 @@ class FileExplorerApp extends App {
   bool get isMultiInstance => true;
 
   @override
-  Widget builder(BuildContext context) {
+  Widget builder(BuildContext context, Rect rect) {
     return Stack(
       children: [
-        WallpaperBlurBg(rect: context.watch()),
+        WallpaperBlurBg(rect: rect),
         const Positioned(
             top: 0,
             right: 0,
@@ -53,7 +52,7 @@ class EdgeApp extends App {
   Widget get icon => const Icon(Icons.web);
 
   @override
-  Widget builder(BuildContext context) {
+  Widget builder(BuildContext context, Rect rect) {
     return Container(
       color: Colors.red,
     );
@@ -68,7 +67,7 @@ class CopilotApp extends App {
   Widget get icon => const Icon(Icons.assistant);
 
   @override
-  Widget builder(BuildContext context) {
+  Widget builder(BuildContext context, Rect rect) {
     return Container(
       color: Colors.red,
     );

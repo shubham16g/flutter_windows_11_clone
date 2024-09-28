@@ -11,5 +11,5 @@ class SettingsApp extends App {
   Widget get icon => const Icon(Icons.settings);
 
   @override
-  Widget builder(BuildContext context) =>  const SettingsPage();
+  Widget builder(BuildContext context, Rect rect) =>  SettingsPage(rect: rect);
 }

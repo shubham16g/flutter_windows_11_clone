@@ -76,11 +76,8 @@ class DraggableApp extends StatelessWidget {
                   child: SizedBox(
                     width: width,
                     height: height,
-                    child: Provider.value(
-                      value: Rect.fromLTWH(left, top, width, height),
-                      builder: (context,w)=> c.app.builder(
-                          context),
-                    ),
+                    child: c.app.builder(
+                        context, Rect.fromLTWH(left, top, width, height)),
                   ),
                 ),
               ),
