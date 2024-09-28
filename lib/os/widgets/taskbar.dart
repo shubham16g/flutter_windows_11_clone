@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_windows_11_clone/os/app/apps.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
@@ -30,7 +31,10 @@ class Taskbar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               TaskbarButton(
-                icon: const Icon(Icons.window),
+                icon: SvgPicture.asset(
+                  'assets/icons/windows_light.svg',
+                  width: 24,
+                ),
                 onPressed: () {
                   runningAppsProvider.toggleStartMenu();
                 },

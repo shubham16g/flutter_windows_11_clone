@@ -6,23 +6,18 @@ import 'package:provider/provider.dart';
 import '../../controllers/app_controller.dart';
 
 class DraggableApp extends StatelessWidget {
-  final double? blur;
-  final Color? backgroundColor;
+
   final VoidCallback? onTapDown;
-  final Border? border;
 
   const DraggableApp(
       {super.key,
-      this.border,
-      this.backgroundColor,
-      this.blur,
       this.onTapDown});
 
   @override
   Widget build(BuildContext context) {
     final c = context.watch<AppController>();
     final width = c.isFullScreen ? context.screenSize.width : c.width;
-    final height = c.isFullScreen ? context.screenSize.height : c.height;
+    final height = c.isFullScreen ? context.screenSize.height - 47 : c.height;
     final double top = c.isFullScreen ? 0 : c.top;
     final double left = c.isFullScreen ? 0 : c.left;
     return ValueAnimatedBuilder(

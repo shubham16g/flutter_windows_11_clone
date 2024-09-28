@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_windows_11_clone/os/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/wallpaper_blur_bg.dart';
 import 'package:provider/provider.dart';
 
@@ -42,21 +44,25 @@ class FileExplorerApp extends App {
   String get title => 'File Explorer';
 
   @override
-  Widget get icon => const Icon(Icons.folder);
+  Widget get icon => SvgPicture.asset(
+    'assets/icons/file_explorer_app.svg',
+    width: 24,
+  );
 
   @override
   bool get isMultiInstance => true;
 
   @override
   Widget builder(BuildContext context, Rect rect) {
-    return Stack(
-      children: [
-        WallpaperBlurBg(rect: rect),
-        const Positioned(
-            top: 0,
-            right: 0,
-            child: AppbarCornerButtons()),
-      ],
+    return const AppBackground(
+      child: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              right: 0,
+              child: AppbarCornerButtons()),
+        ],
+      ),
     );
   }
 
@@ -67,7 +73,10 @@ class EdgeApp extends App {
   String get title => 'Edge';
 
   @override
-  Widget get icon => const Icon(Icons.web);
+  Widget get icon => SvgPicture.asset(
+    'assets/icons/edge_app.svg',
+    width: 30,
+  );
 
   @override
   Widget builder(BuildContext context, Rect rect) {
