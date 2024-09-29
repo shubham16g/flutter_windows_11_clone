@@ -63,6 +63,7 @@
   height: 35px;
   padding: 3px;
   overflow: visible;
+    animation: delay-opacity 200ms;
 }
 .spinner > circle {
   fill: none;
@@ -74,6 +75,17 @@
   stroke-linecap: round;
   transform-origin: center;
 }
+        @keyframes delay-opacity {
+          0% {
+            opacity: 0;
+          }
+            90% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
