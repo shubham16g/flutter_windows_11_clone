@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/apps/settings/settings_app.dart';
 import 'package:flutter_windows_11_clone/os/app/apps.dart';
+import 'package:flutter_windows_11_clone/os/controllers/theme_controller.dart';
 import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
 import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
 import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
@@ -20,9 +21,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     //   App.tryOpen(context, SettingsApp());
-    // });
+      context.read<ThemeController>().startApp();
+    });
     super.initState();
   }
 
