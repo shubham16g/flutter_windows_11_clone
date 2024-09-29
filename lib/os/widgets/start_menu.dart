@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
@@ -19,19 +20,18 @@ class StartMenu extends StatelessWidget {
       curve: Curves.easeOutCubic,
       left: 0,
       right: 0,
-      bottom: runningAppsProvider.isStartMenuOpened ? 0 : -height - 13,
+      bottom: runningAppsProvider.isStartMenuOpened ? 0 : -height - 13 - 20,
       child: Center(
-        child: ClipRRect(
-          child: Container(
-            width: 642,
-            height: height,
-            margin: const EdgeInsets.symmetric(vertical: 13),
-            child: const AppBackground(
-              isFocused: true,
-              isFullScreen: false,
-              backgroundColor: Colors.transparent,
-                child: GlassBlurBg()),
-          ),
+        child: Container(
+          width: 642,
+          height: height,
+          margin: const EdgeInsets.symmetric(vertical: 13),
+          child: AppBackground(
+            borderColor: context.osColor.taskbarBorder,
+            isFocused: true,
+            isFullScreen: false,
+            backgroundColor: Colors.transparent,
+              child: const GlassBlurBg()),
         ),
       ),
     );

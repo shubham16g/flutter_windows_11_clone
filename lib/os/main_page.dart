@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   App.tryOpen(context, SettingsApp());
+      //   App.tryOpen(context, SettingsApp());
       context.read<ThemeController>().startApp();
     });
     super.initState();
@@ -31,6 +31,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     final wallpaperWrapper = context.watch<WallpaperWrapper>();
+    final themeController = context.watch<ThemeController>();
     return Material(
       child: Stack(
         children: [
@@ -45,12 +46,13 @@ class _MainPageState extends State<MainPage> {
           /// desktop area
           Positioned.fill(
             child: MouseRegion(
-              cursor: context.watch<CursorController>().cursor,
+              cursor: context
+                  .watch<CursorController>()
+                  .cursor,
               onEnter: (event) {
                 context.read<CursorController>().setCursor(MouseCursor.defer);
               },
-              onExit: (event) {
-              },
+              onExit: (event) {},
               child: const WindowArea(),
             ),
           ),
@@ -62,8 +64,19 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
+
           /// taskbar
-          const Positioned(left: 0, right: 0, bottom: 0, child: Taskbar())
+          const Positioned(left: 0, right: 0, bottom: 0, child: Taskbar()),
+
+          Positioned.fill(
+            child: IgnorePointer(
+              ignoring: themeController.appStarted,
+              child: AnimatedOpacity(opacity: themeController.appStarted ? 0 : 1,
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeOutCubic,
+                child: Container(color: Colors.black),),
+            ),
+          )
         ],
       ),
     );

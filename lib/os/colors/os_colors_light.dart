@@ -7,7 +7,10 @@ class OsColorLight with OsColor {
   Color get appBackground => const Color(0xFFf3f3f3);
 
   @override
-  Color get appBorder => const Color(0xFF7A7A7A).withOpacity(0.6);
+  Color get appBorder => const Color(0x5F393939);
+
+  @override
+  Color get taskbarBorder => const Color(0x28474747);
 
   @override
   Color get iconColor => const Color(0xFF000000);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_windows_11_clone/os/app/apps.dart';
+import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class Taskbar extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(
         top: BorderSide(
-          color: const Color(0xFF757575).withOpacity(0.6),
+          color: context.osColor.taskbarBorder,
           width: 1,
         ),
       )),

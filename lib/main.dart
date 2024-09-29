@@ -30,25 +30,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (context) => WallpaperWrapper(context.read())),
       ],
-      builder: (context, w) => AnimatedOpacity(
-        duration: const Duration(milliseconds: 540),
-        opacity: context.watch<ThemeController>().appStarted ? 1 : 0,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Windows 11 Clone',
-          themeMode: context.watch<ThemeController>().themeMode,
-          darkTheme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.blue, brightness: Brightness.dark),
-            useMaterial3: true,
-          ),
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-            canvasColor: Colors.transparent,
-            useMaterial3: true,
-          ),
-          home: const MainPage(),
+      builder: (context, w) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Windows 11 Clone',
+        themeMode: context.watch<ThemeController>().themeMode,
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue, brightness: Brightness.dark),
+          useMaterial3: true,
         ),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          canvasColor: Colors.black,
+          useMaterial3: true,
+        ),
+        home: const MainPage(),
       ),
     );
   }

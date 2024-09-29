@@ -9,6 +9,7 @@ class AppBackground extends StatelessWidget {
   final bool blurBackground;
   final List<BoxShadow>? boxShadow;
   final Rect? rect;
+  final Color? borderColor;
   final double borderRadius;
   final Color? backgroundColor;
   final bool isFullScreen;
@@ -20,7 +21,11 @@ class AppBackground extends StatelessWidget {
     this.blurBackground = false,
     this.rect,
     this.borderRadius = 8,
-    this.boxShadow, this.backgroundColor, required this.isFullScreen, required this.isFocused,
+    this.boxShadow,
+    this.backgroundColor,
+    required this.isFullScreen,
+    required this.isFocused,
+    this.borderColor,
   }) : assert(!blurBackground || rect != null);
 
   @override
@@ -31,7 +36,8 @@ class AppBackground extends StatelessWidget {
         color: backgroundColor ?? context.osColor.appBackground,
         border: isFullScreen
             ? null
-            : Border.all(color: context.osColor.appBorder, width: 1),
+            : Border.all(
+                color: borderColor ?? context.osColor.appBorder, width: 1),
         borderRadius: BorderRadius.circular(isFullScreen ? 0 : borderRadius),
         boxShadow: isFocused
             ? boxShadow ??
@@ -49,8 +55,7 @@ class AppBackground extends StatelessWidget {
         child: Stack(
           children: [
             if (blurBackground)
-              WallpaperBlurBg(
-                  rect: rect!, isFocused: isFocused),
+              WallpaperBlurBg(rect: rect!, isFocused: isFocused),
             child,
           ],
         ),

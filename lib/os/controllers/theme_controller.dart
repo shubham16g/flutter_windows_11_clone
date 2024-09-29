@@ -14,7 +14,7 @@ class ThemeController extends ChangeNotifier {
     notifyListeners();
   }
   Future<void> startApp() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1500));
     appStarted = true;
     notifyListeners();
   }

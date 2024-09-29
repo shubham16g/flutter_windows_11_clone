@@ -10,6 +10,9 @@ class OsColorDark with OsColor {
   Color get appBorder => const Color(0xFF757575).withOpacity(0.6);
 
   @override
+  Color get taskbarBorder => const Color(0xFF757575).withOpacity(0.6);
+
+  @override
   Color get iconColor => const Color(0xFFFFFFFF);
 
   @override

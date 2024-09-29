@@ -17,6 +17,8 @@ class AppbarCornerButtons extends StatelessWidget {
         ? context.getOsColor(isDark: isDark).iconColor
         : context.getOsColor(isDark: isDark).iconColorUnFocus;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _button(
             Icon(
