@@ -8,7 +8,15 @@ class WinAppBar extends StatelessWidget {
   final Widget? child;
   final double appbarHeight;
   final Widget? leading;
-  const WinAppBar({super.key, this.child,  this.appbarHeight = 40, this.leading});
+  final bool isDark;
+
+  const WinAppBar({
+    super.key,
+    this.child,
+    this.appbarHeight = 40,
+    this.leading,
+    this.isDark = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,7 @@ class WinAppBar extends StatelessWidget {
               child: child,
             ),
           ),
-          const AppbarCornerButtons(),
+          AppbarCornerButtons(isDark: isDark),
         ],
       ),
     );

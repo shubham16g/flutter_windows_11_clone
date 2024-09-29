@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../controllers/app_controller.dart';
 import '../controllers/running_apps_controller.dart';
 import 'widgets/appbar_corner_buttons.dart';
+import 'widgets/win_app_bar.dart';
 
 abstract class App {
   String get title;
@@ -73,14 +74,9 @@ class FileExplorerApp extends App {
     return AppBackground(
       isFullScreen: appController.isFullScreen,
       isFocused: appController.isFocused,
-      child: Stack(
+      child: Column(
         children: [
-          Positioned(
-              top: 0,
-              right: 0,
-              child: AppbarCornerButtons(
-                isDark: context.isDark,
-              )),
+          WinAppBar(isDark: context.isDark),
         ],
       ),
     );
