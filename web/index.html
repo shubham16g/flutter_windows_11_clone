@@ -50,19 +50,48 @@
         }
 
         .win-logo {
-          background-image: url('assets/icon/win_logo.png');
+          background-image: url('./win_flutter.svg');
           background-size: contain;
-          background-color: #FFFFFF;
           background-repeat: no-repeat;
-          width: 100px;
-          height: 100px;
+          width: 160px;
+          height: 160px;
+          margin-bottom: 120px;
         }
+        .spinner {
+  box-sizing: border-box;
+  width: 35px;
+  height: 35px;
+  padding: 3px;
+  overflow: visible;
+}
+.spinner > circle {
+  fill: none;
+  stroke: #ffffff;
+  cx: 50%;
+  cy: 50%;
+  r: 50%;
+  stroke-width: 5px;
+  stroke-linecap: round;
+  transform-origin: center;
+}
     </style>
 </head>
 <body>
 <div id="loader-container">
     <div class="win-logo"></div>
-    <div class="loader"></div>
+    <svg class="spinner">
+        <circle>
+            <animateTransform attributeName="transform" type="rotate" values="-90;810"
+                              keyTimes="0;1" dur="4s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
+                     keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="4s"
+                     repeatCount="indefinite"></animate>
+            <animate attributeName="stroke-dasharray"
+                     values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline"
+                     keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="4s"
+                     repeatCount="indefinite"></animate>
+        </circle>
+    </svg>
 </div>
 <script src="flutter_bootstrap.js" async></script>
 </body>
