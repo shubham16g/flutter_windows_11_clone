@@ -29,8 +29,9 @@ class WallpaperBlurBg extends StatelessWidget {
                 child: SizedBox(
                   width: context.screenSize.width,
                   height: context.screenSize.height,
-                  child: Image(
-                      image: blurredWallpaper.image, fit: BoxFit.cover),
+                  child: FadeInImage( placeholder: blurredWallpaper.image,
+                    image: blurredWallpaper.image,
+                       fit: BoxFit.cover),
                 )),
           Positioned.fill(
               child: Container(

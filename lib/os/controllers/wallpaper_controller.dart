@@ -69,7 +69,7 @@ class WallpaperWrapper extends ChangeNotifier {
   }
 
   Future<Image> loadImageFromAssetAndBlurIt(ui.Image image) async {
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 300));
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     final paint = Paint()
