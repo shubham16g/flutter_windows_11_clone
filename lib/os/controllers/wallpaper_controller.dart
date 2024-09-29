@@ -2,26 +2,40 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_windows_11_clone/os/controllers/theme_controller.dart';
 
 class WallpaperWrapper extends ChangeNotifier {
 
-  Image? wallpaper;
+  String? wallpaperPath;
   Image? blurredWallpaper;
   Color dominantColor = const Color(0xFF202020);
+  final ThemeController themeController;
 
-  WallpaperWrapper({String? initialPath}) {
-    loadWallpaperFromAsset(initialPath ?? 'assets/images/wall_dark.jpg');
+  WallpaperWrapper(this.themeController, {String? initialPath}) {
+    _listenTheme();
+    themeController.addListener(_listenTheme);
+  }
+
+  void _listenTheme() {
+    if (themeController.isDark) {
+      loadWallpaperFromAsset('assets/images/wall_dark.jpg');
+    } else {
+      loadWallpaperFromAsset('assets/images/wall_light.jpg');
+    }
   }
 
 
   Future<void> loadWallpaperFromAsset(String path) async {
     final baseImage = await _loadBaseImage(path);
     dominantColor = await getDominantColor(baseImage);
-    loadImageFromAsset(baseImage).then((value) {
-      wallpaper = value;
-      notifyListeners();
-    });
+    wallpaperPath = path;
+    notifyListeners();
+    // loadImageFromAsset(baseImage).then((value) {
+    //   wallpaper = value;
+    //   notifyListeners();
+    // });
     loadImageFromAssetAndBlurIt(baseImage).then((value) {
       blurredWallpaper = value;
       notifyListeners();
@@ -30,32 +44,15 @@ class WallpaperWrapper extends ChangeNotifier {
   }
 
   Future<Color> getDominantColor(ui.Image image) async {
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-    final bytes = byteData!.buffer.asUint8List();
-
-    final pixelCount = bytes.lengthInBytes ~/ 4;
-    final r = List<int>.filled(256, 0);
-    final g = List<int>.filled(256, 0);
-    final b = List<int>.filled(256, 0);
-    for (var i = 0; i < pixelCount; i++) {
-      final alpha = bytes[i * 4 + 3];
-      if (alpha == 0) {
-        continue;
-      }
-      r[bytes[i * 4]]++;
-      g[bytes[i * 4 + 1]]++;
-      b[bytes[i * 4 + 2]]++;
-    }
-    final maxR = r.reduce((value, element) => value > element ? value : element);
-    final maxG = g.reduce((value, element) => value > element ? value : element);
-    final maxB = b.reduce((value, element) => value > element ? value : element);
-    final max = [maxR, maxG, maxB].reduce((value, element) => value > element ? value : element);
-    final dominantColor = max == maxR
-        ? Color.fromARGB(255, r.indexOf(max), 0, 0)
-        : max == maxG
-            ? Color.fromARGB(255, 0, g.indexOf(max), 0)
-            : Color.fromARGB(255, 0, 0, b.indexOf(max));
-    return dominantColor;
+    // final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+    // final bytes = byteData!.buffer.asUint8List();
+    //
+    // final pixelCount = bytes.lengthInBytes ~/ 4;
+    // final r = List<int>.filled(256, 0);
+    // final g = List<int>.filled(256, 0);
+    // final b = List<int>.filled(256, 0);
+    // get brightest and primary color
+   return Colors.blue;
   }
 
   Future<ui.Image> _loadBaseImage(String path) async {
@@ -72,10 +69,11 @@ class WallpaperWrapper extends ChangeNotifier {
   }
 
   Future<Image> loadImageFromAssetAndBlurIt(ui.Image image) async {
+    await Future.delayed(const Duration(milliseconds: 100));
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     final paint = Paint()
-      ..imageFilter = ui.ImageFilter.blur(sigmaX: 300, sigmaY: 300);
+      ..imageFilter = ui.ImageFilter.blur(sigmaX: 70, sigmaY: 70);
     canvas.drawImage(image, Offset.zero, paint);
     final picture = recorder.endRecording();
     final img = await picture.toImage(image.width, image.height);
@@ -83,5 +81,11 @@ class WallpaperWrapper extends ChangeNotifier {
     final buffer = byteData!.buffer.asUint8List();
 
     return Image.memory(buffer);
+  }
+
+  @override
+  void dispose() {
+    themeController.removeListener(_listenTheme);
+    super.dispose();
   }
 }

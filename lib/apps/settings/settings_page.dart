@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../os/app/widgets/appbar_corner_buttons.dart';
 import '../../os/controllers/app_controller.dart';
+import '../../os/controllers/theme_controller.dart';
 
 class SettingsPage extends StatelessWidget {
   final Rect rect;
@@ -14,19 +15,32 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appController = context.watch<AppController>();
+    final themeController = context.watch<ThemeController>();
     return AppBackground(
       blurBackground: true,
       isFocused: appController.isFocused,
       isFullScreen: appController.isFullScreen,
       rect: rect,
-      child: Stack(
+      child: Column(
         children: [
-          Positioned(
-              top: 0,
-              right: 0,
-              child: AppbarCornerButtons(
+          Row(
+            children: [
+              const Spacer(),
+              AppbarCornerButtons(
                 isDark: context.isDark,
-              )),
+              ),
+            ],
+          ),
+          Expanded(
+              child: Center(
+            child: Switch(
+                value: themeController.isDark,
+                onChanged: (value) {
+                  value
+                      ? themeController.setDark()
+                      : themeController.setLight();
+                }),
+          ))
         ],
       ),
     );

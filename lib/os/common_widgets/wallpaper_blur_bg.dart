@@ -16,6 +16,7 @@ class WallpaperBlurBg extends StatelessWidget {
   Widget build(BuildContext context) {
     final wallpaperController = context.watch<WallpaperWrapper>();
     final blurredWallpaper = wallpaperController.blurredWallpaper;
+    final isDark = context.isDark;
     return ClipRRect(
       child: Stack(
         children: [
@@ -32,33 +33,39 @@ class WallpaperBlurBg extends StatelessWidget {
                       image: blurredWallpaper.image, fit: BoxFit.cover),
                 )),
           Positioned.fill(
-            child: BlendMask(
-              blendMode: BlendMode.colorBurn,
-              opacity: 1,
               child: Container(
-                  color: wallpaperController.dominantColor.withOpacity(0.6)),
-            ),
-          ),
+                  color: isDark
+                      ? Color.lerp(const Color(0xFF202020),
+                      context.watch<WallpaperWrapper>().dominantColor, 0.06)?.withOpacity(.65)
+                      : const Color(0xFFFFFFFF).withOpacity(.8))),
+          // Positioned.fill(
+          //   child: BlendMask(
+          //     blendMode: BlendMode.colorBurn,
+          //     opacity: 1,
+          //     child: Container(
+          //         color: wallpaperController.dominantColor.withOpacity(0.6)),
+          //   ),
+          // ),
           Positioned.fill(
             child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 100),
               opacity: isFocused ? 0.8 : 1,
               curve: Curves.ease,
               child: Container(
                   color: context.osColor.appBackground),
             ),
           ),
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.02,
-              child: Image.asset(
-                'assets/images/NoiseAsset_256.png',
-                repeat: ImageRepeat.repeat,
-                alignment: Alignment.topLeft,
-                // repeat: ImageRepeat.repeat,
-              ),
-            ),
-          ),
+          // Positioned.fill(
+          //   child: Opacity(
+          //     opacity: 0.02,
+          //     child: Image.asset(
+          //       'assets/images/NoiseAsset_256.png',
+          //       repeat: ImageRepeat.repeat,
+          //       alignment: Alignment.topLeft,
+          //       // repeat: ImageRepeat.repeat,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

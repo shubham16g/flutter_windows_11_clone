@@ -32,10 +32,10 @@ class _MainPageState extends State<MainPage> {
     return Material(
       child: Stack(
         children: [
-          if (wallpaperWrapper.wallpaper != null)
+          if (wallpaperWrapper.wallpaperPath != null)
             Positioned.fill(
-              child: Image(
-                image: wallpaperWrapper.wallpaper!.image,
+              child: Image.asset(
+                wallpaperWrapper.wallpaperPath!,
                 fit: BoxFit.cover,
               ),
             ),
