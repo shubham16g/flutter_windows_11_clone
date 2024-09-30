@@ -15,6 +15,7 @@ class OsBuilder extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => OsThemeController()),
       ChangeNotifierProvider(create: (context) => CursorController()),
       ChangeNotifierProvider(create: (context) => RunningAppsController()),
+      ChangeNotifierProvider(create: (context) => TaskbarController()),
       ChangeNotifierProvider(
           create: (context) => WallpaperController(context.read())),
     ], builder: (context, _) => builder(context));

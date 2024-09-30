@@ -5,31 +5,10 @@ import 'package:provider/provider.dart';
 import 'controllers/cursor_controller.dart';
 import 'window_area.dart';
 
-enum OsTaskbarAlignment {
-  bottom,
-  top,
-  left,
-  right;
-
-  Alignment get alignment {
-    switch (this) {
-      case OsTaskbarAlignment.bottom:
-        return Alignment.bottomCenter;
-      case OsTaskbarAlignment.top:
-        return Alignment.topCenter;
-      case OsTaskbarAlignment.left:
-        return Alignment.centerLeft;
-      case OsTaskbarAlignment.right:
-        return Alignment.centerRight;
-    }
-  }
-}
-
 class OsScreen extends StatefulWidget {
   final Widget Function(BuildContext context, bool isStartMenuOpened)
       startMenuBuilder;
   final PreferredSizeWidget taskBar;
-  final OsTaskbarAlignment taskBarAlignment;
   final bool startMenuOverTaskbar;
   final List<App> fixedTaskbarApps;
 
@@ -38,7 +17,6 @@ class OsScreen extends StatefulWidget {
     required this.startMenuBuilder,
     required this.taskBar,
     this.startMenuOverTaskbar = false,
-    this.taskBarAlignment = OsTaskbarAlignment.bottom,
     this.fixedTaskbarApps = const [],
   });
 
@@ -59,7 +37,7 @@ class _OsScreenState extends State<OsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tbAlign = widget.taskBarAlignment;
+    final tbAlign = context.watch<TaskbarController>().alignment;
     final taskbarHeight = widget.taskBar.preferredSize.height;
     final taskbarWidth = widget.taskBar.preferredSize.width;
     final wallpaperWrapper = context.watch<WallpaperController>();
@@ -91,13 +69,13 @@ class _OsScreenState extends State<OsScreen> {
           /// start menu
           if (!widget.startMenuOverTaskbar)
             Positioned.fill(
-                top: tbAlign == OsTaskbarAlignment.top ? taskbarHeight - 1 : 0,
-                bottom: tbAlign == OsTaskbarAlignment.bottom
+                top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
+                bottom: tbAlign == TaskbarAlignment.bottom
                     ? taskbarHeight - 1
                     : 0,
-                left: tbAlign == OsTaskbarAlignment.left ? taskbarWidth - 1 : 0,
+                left: tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
                 right:
-                    tbAlign == OsTaskbarAlignment.right ? taskbarWidth - 1 : 0,
+                    tbAlign == TaskbarAlignment.right ? taskbarWidth - 1 : 0,
                 child: Stack(
                   children: [
                     widget.startMenuBuilder(context, rap.isStartMenuOpened),
@@ -106,7 +84,7 @@ class _OsScreenState extends State<OsScreen> {
 
           /// taskbar
           Align(
-            alignment: widget.taskBarAlignment.alignment,
+            alignment: tbAlign.alignment,
             child: SizedBox(
                 height: widget.taskBar.preferredSize.height,
                 width: widget.taskBar.preferredSize.width,

@@ -6,8 +6,6 @@ import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
-
-
 class FileExplorerApp extends App {
   @override
   String get title => 'File Explorer';
@@ -27,9 +25,9 @@ class FileExplorerApp extends App {
     return AppBackground(
       isFullScreen: appController.isFullScreen,
       isFocused: appController.isFocused,
-      child: const Column(
+      child: Column(
         children: [
-          AppTitleBar(trailing: AppbarCornerButtons()),
+          AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
         ],
       ),
     );
