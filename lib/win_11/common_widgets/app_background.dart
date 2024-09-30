@@ -50,7 +50,7 @@ class AppBackground extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius:
-            BorderRadius.circular(isFullScreen ? 0 : borderRadius + 1),
+            BorderRadius.circular(isFullScreen ? 0 : borderRadius),
         child: Stack(
           children: [
             if (blurBackground)

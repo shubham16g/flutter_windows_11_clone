@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +25,8 @@ class SettingsPage extends StatelessWidget {
           AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
           Expanded(
               child: Center(
-            child: Switch(
-                value: themeController.isDark,
+            child: ToggleSwitch(
+                checked: themeController.isDark,
                 onChanged: (value) {
                   value
                       ? themeController.setDark()
