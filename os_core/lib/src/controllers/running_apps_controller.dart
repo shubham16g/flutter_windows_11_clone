@@ -45,6 +45,13 @@ class RunningAppsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setFixedApps(List<App> fixedTaskbarApps) {
+    taskbarApps.clear();
+    taskbarApps.addAll(fixedTaskbarApps
+        .map((e) => TaskbarAppState(app: e, openCount: 0, fixed: true)));
+    notifyListeners();
+  }
+
   void openApp(AppController appController) {
     final index = taskbarApps.indexWhere(
         (element) => element.app.runtimeType == appController.app.runtimeType);

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/os/app/apps.dart';
 import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
 import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
 import 'package:os_core/os_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'apps/settings/settings_app.dart';
+
 Future<void> main() async {
   // ensure
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox<String>('os');
+  await OsCore.init();
   runApp(const MyApp());
 }
 
@@ -35,6 +37,10 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: OsScreen(
+          fixedTaskbarApps: [
+            FileExplorerApp(),
+            SettingsApp(),
+          ],
           startMenuBuilder: (context, isStartMenuOpened) =>
               StartMenu(isStartMenuOpened: isStartMenuOpened),
           taskBar: Taskbar(),

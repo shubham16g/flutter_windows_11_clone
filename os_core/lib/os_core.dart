@@ -1,5 +1,6 @@
 library os_core;
 
+export './src/os_core.dart';
 export './src/app.dart';
 export './src/app_title_bar.dart';
 export './src/controllers/app_controller.dart';
