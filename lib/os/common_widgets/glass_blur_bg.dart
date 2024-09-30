@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/apps/settings/settings_page.dart';
-import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import 'blend_mask.dart';
@@ -56,7 +56,7 @@ class GlassBlurBg extends StatelessWidget {
                 child: Container(
                     color: isDark
                         ? Color.lerp(const Color(0xFF202020),
-                                       context.watch<WallpaperWrapper>().dominantColor, 0.03)?.withOpacity(.6)
+                                       context.watch<WallpaperController>().dominantColor, 0.03)?.withOpacity(.6)
                         : const Color(0xFFFFFFFF).withOpacity(.8))),
 
           ],

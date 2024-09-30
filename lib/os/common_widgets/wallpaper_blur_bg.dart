@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/os/controllers/wallpaper_controller.dart';
+import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import 'blend_mask.dart';
@@ -14,7 +14,7 @@ class WallpaperBlurBg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallpaperController = context.watch<WallpaperWrapper>();
+    final wallpaperController = context.watch<WallpaperController>();
     final blurredWallpaper = wallpaperController.blurredWallpaper;
     final isDark = context.isDark;
     return ClipRRect(
@@ -37,7 +37,7 @@ class WallpaperBlurBg extends StatelessWidget {
               child: Container(
                   color: isDark
                       ? Color.lerp(const Color(0xFF202020),
-                      context.watch<WallpaperWrapper>().dominantColor, 0.06)?.withOpacity(.65)
+                      context.watch<WallpaperController>().dominantColor, 0.06)?.withOpacity(.65)
                       : const Color(0xFFFFFFFF).withOpacity(.8))),
           // Positioned.fill(
           //   child: BlendMask(

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/os/controllers/theme_controller.dart';
-import 'package:flutter_windows_11_clone/os/main_page.dart';
-import 'package:flutter_windows_11_clone/os/controllers/cursor_controller.dart';
-import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
+import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
+import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
+import 'package:os_core/os_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-
-import 'os/controllers/wallpaper_controller.dart';
 
 Future<void> main() async {
   // ensure
@@ -22,18 +19,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ThemeController()),
-        ChangeNotifierProvider(create: (context) => CursorController()),
-        ChangeNotifierProvider(create: (context) => RunningAppsController()),
-        ChangeNotifierProvider(
-            create: (context) => WallpaperWrapper(context.read())),
-      ],
-      builder: (context, w) => MaterialApp(
+    return OsBuilder(
+      builder: (context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Windows 11 Clone',
-        themeMode: context.watch<ThemeController>().themeMode,
+        themeMode: context.watch<OsThemeController>().themeMode,
         darkTheme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.blue, brightness: Brightness.dark),
@@ -44,7 +34,11 @@ class MyApp extends StatelessWidget {
           canvasColor: Colors.black,
           useMaterial3: true,
         ),
-        home: const MainPage(),
+        home: OsScreen(
+          startMenuBuilder: (context, isStartMenuOpened) =>
+              StartMenu(isStartMenuOpened: isStartMenuOpened),
+          taskBar: Taskbar(),
+        ),
       ),
     );
   }

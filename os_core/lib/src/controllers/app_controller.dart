@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/os/app/apps.dart';
-import 'package:flutter_windows_11_clone/os/controllers/cursor_controller.dart';
-import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
+
+import '../app.dart';
+import 'cursor_controller.dart';
+import 'running_apps_controller.dart';
 
 class AppController extends ChangeNotifier {
   double top = 60;

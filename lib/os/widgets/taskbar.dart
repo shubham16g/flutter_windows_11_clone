@@ -3,11 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_windows_11_clone/os/app/apps.dart';
 import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/glass_blur_bg.dart';
-import 'package:flutter_windows_11_clone/os/controllers/running_apps_controller.dart';
+import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
-class Taskbar extends StatelessWidget {
+class Taskbar extends StatelessWidget implements PreferredSizeWidget {
   const Taskbar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(48);
 
   @override
   Widget build(BuildContext context) {

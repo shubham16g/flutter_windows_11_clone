@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/wallpaper_blur_bg.dart';
-import 'package:flutter_windows_11_clone/os/controllers/app_controller.dart';
+import 'package:os_core/src/controllers/app_controller.dart';
 import 'package:provider/provider.dart';
 
 class AppBackground extends StatelessWidget {

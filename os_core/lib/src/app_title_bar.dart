@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/os/app/widgets/appbar_corner_buttons.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/app_controller.dart';
+import 'controllers/app_controller.dart';
 
-class WinAppBar extends StatelessWidget {
+class AppTitleBar extends StatelessWidget {
   final Widget? child;
   final double appbarHeight;
   final Widget? leading;
-  final bool isDark;
+  final Widget? trailing;
 
-  const WinAppBar({
+  const AppTitleBar({
     super.key,
     this.child,
     this.appbarHeight = 40,
-    this.leading,
-    this.isDark = false,
+    this.leading, this.trailing,
   });
 
   @override
@@ -34,7 +32,7 @@ class WinAppBar extends StatelessWidget {
               child: child,
             ),
           ),
-          AppbarCornerButtons(isDark: isDark),
+          if (trailing != null) trailing!,
         ],
       ),
     );

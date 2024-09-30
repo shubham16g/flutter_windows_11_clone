@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../apps/settings/settings_app.dart';
+
 import 'app_controller.dart';
-import '../app/apps.dart';
+import '../app.dart';
 
 class TaskbarAppState {
   final App app;
@@ -32,8 +32,8 @@ class RunningAppsController extends ChangeNotifier {
   final List<AppController> _runningAppsControllers = [];
 
   final List<TaskbarAppState> taskbarApps = [
-    TaskbarAppState(app: FileExplorerApp(), fixed: true),
-    TaskbarAppState(app: SettingsApp(), fixed: true),
+    // TaskbarAppState(app: FileExplorerApp(), fixed: true),
+    // TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
 
   bool isStartMenuOpened = false;

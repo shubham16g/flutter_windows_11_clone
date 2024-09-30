@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_windows_11_clone/os/controllers/theme_controller.dart';
 
-class WallpaperWrapper extends ChangeNotifier {
+import 'os_theme_controller.dart';
+
+class WallpaperController extends ChangeNotifier {
 
   String? wallpaperPath;
   Image? blurredWallpaper;
   Color dominantColor = const Color(0xFF202020);
-  final ThemeController themeController;
+  final OsThemeController themeController;
 
-  WallpaperWrapper(this.themeController, {String? initialPath}) {
+  WallpaperController(this.themeController, {String? initialPath}) {
     _listenTheme();
     themeController.addListener(_listenTheme);
   }
