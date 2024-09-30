@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/os/colors/os_extension_on_colors.dart';
-import 'package:flutter_windows_11_clone/os/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 
+import '../common_widgets/app_background.dart';
 import '../common_widgets/glass_blur_bg.dart';
 
 class StartMenu extends StatelessWidget {

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/os/app/apps.dart';
-import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
-import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/start_menu.dart';
 import 'package:os_core/os_core.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'apps/apps.dart';
 import 'apps/settings/settings_app.dart';
+import 'win_11/widgets/taskbar.dart';
 
 Future<void> main() async {
   // ensure
@@ -43,7 +42,7 @@ class MyApp extends StatelessWidget {
           ],
           startMenuBuilder: (context, isStartMenuOpened) =>
               StartMenu(isStartMenuOpened: isStartMenuOpened),
-          taskBar: Taskbar(),
+          taskBar: const Taskbar(),
         ),
       ),
     );
