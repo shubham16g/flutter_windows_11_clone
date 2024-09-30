@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/os/app/apps.dart';
-import 'package:flutter_windows_11_clone/os/widgets/start_menu.dart';
-import 'package:flutter_windows_11_clone/os/widgets/taskbar.dart';
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/start_menu.dart';
 import 'package:os_core/os_core.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'apps/apps.dart';
 import 'apps/settings/settings_app.dart';
+import 'win_11/widgets/taskbar.dart';
 
 Future<void> main() async {
   // ensure
@@ -22,19 +21,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OsBuilder(
-      builder: (context) => MaterialApp(
+      builder: (context) => FluentApp(
         debugShowCheckedModeBanner: false,
         title: 'Windows 11 Clone',
         themeMode: context.watch<OsThemeController>().themeMode,
-        darkTheme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue, brightness: Brightness.dark),
-          useMaterial3: true,
+        darkTheme: FluentThemeData(
+          brightness: Brightness.dark,
+          accentColor: Colors.blue,
+          visualDensity: VisualDensity.standard,
         ),
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          canvasColor: Colors.black,
-          useMaterial3: true,
+        theme:  FluentThemeData(
+          accentColor: Colors.blue,
+          visualDensity: VisualDensity.standard,
+
         ),
         home: OsScreen(
           fixedTaskbarApps: [
@@ -42,8 +41,8 @@ class MyApp extends StatelessWidget {
             SettingsApp(),
           ],
           startMenuBuilder: (context, isStartMenuOpened) =>
-              StartMenu(isStartMenuOpened: isStartMenuOpened),
-          taskBar: Taskbar(),
+              StartMenuWrapper(isStartMenuOpened: isStartMenuOpened),
+          taskBar: const Taskbar(),
         ),
       ),
     );

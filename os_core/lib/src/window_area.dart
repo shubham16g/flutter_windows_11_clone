@@ -8,17 +8,23 @@ class WindowArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final runningAppsProvider = context.watch<RunningAppsController>();
-    return Stack(
-      children: runningAppsProvider.runningAppsControllers
-          .map<Widget>((e) => ChangeNotifierProvider.value(
-                key: ValueKey(e),
-                value: e,
-                child: DraggableApp(
-                    onTapDown: () {
-                      runningAppsProvider.focusApp(e);
-                    },),
-              ))
-          .toList(),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap:() {
+        runningAppsProvider.focusDesktop();
+      },
+      child: Stack(
+        children: runningAppsProvider.runningAppsControllers
+            .map<Widget>((e) => ChangeNotifierProvider.value(
+                  key: ValueKey(e),
+                  value: e,
+                  child: DraggableApp(
+                      onTapDown: () {
+                        runningAppsProvider.focusApp(e);
+                      },),
+                ))
+            .toList(),
+      ),
     );
   }
 }

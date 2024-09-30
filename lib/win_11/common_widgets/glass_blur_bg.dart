@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 import 'blend_mask.dart';
 
 class GlassBlurBg extends StatelessWidget {
-  const GlassBlurBg({super.key});
+  const GlassBlurBg({super.key, this.child});
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +59,8 @@ class GlassBlurBg extends StatelessWidget {
                         ? Color.lerp(const Color(0xFF202020),
                                        context.watch<WallpaperController>().dominantColor, 0.03)?.withOpacity(.6)
                         : const Color(0xFFFFFFFF).withOpacity(.8))),
+
+            if (child != null) Positioned.fill(child: child!),
 
           ],
         ),

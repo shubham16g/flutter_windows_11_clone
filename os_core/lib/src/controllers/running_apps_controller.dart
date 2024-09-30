@@ -36,7 +36,7 @@ class RunningAppsController extends ChangeNotifier {
     // TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
 
-  bool isStartMenuOpened = false;
+  bool isStartMenuOpened = true;
 
   List<AppController> get runningAppsControllers => _runningAppsControllers;
 
@@ -60,6 +60,7 @@ class RunningAppsController extends ChangeNotifier {
       _runningAppsControllers.add(appController);
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
       isStartMenuOpened = false;
+      isDesktopFocused = false;
     } else if (taskbarApps[index].openCount == 0) {
       /// found in taskbar, open new instance (isMultiInstance = true)
       /// or fixed on taskbar but not opened yet
@@ -67,12 +68,14 @@ class RunningAppsController extends ChangeNotifier {
       taskbarApps[index] = taskbarApps[index]
           .copyWith(openCount: taskbarApps[index].openCount + 1);
       isStartMenuOpened = false;
+      isDesktopFocused = false;
     }
     notifyListeners();
   }
 
   AppController? get focusedController {
     if (isStartMenuOpened) return null;
+    if (isDesktopFocused) return null;
     if (_runningAppsControllers.isEmpty) return null;
     final index = _runningAppsControllers
         .lastIndexWhere((element) => !element.isMinimized);
@@ -80,6 +83,8 @@ class RunningAppsController extends ChangeNotifier {
     final controller = _runningAppsControllers[index];
     return controller;
   }
+
+  bool isDesktopFocused = true;
 
   App? get focusedApp => focusedController?.app;
 
@@ -104,12 +109,19 @@ class RunningAppsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void focusDesktop() {
+    isDesktopFocused = true;
+    isStartMenuOpened = false;
+    notifyListeners();
+  }
+
   void focusApp(AppController appController) {
     final index = _runningAppsControllers.indexOf(appController);
     final controller = _runningAppsControllers.removeAt(index);
     _runningAppsControllers.add(controller);
     controller.internalMaximize();
     isStartMenuOpened = false;
+    isDesktopFocused = false;
     notifyListeners();
   }
 
@@ -157,6 +169,7 @@ class RunningAppsController extends ChangeNotifier {
       final index = _runningAppsControllers.indexOf(appController);
       final controller = _runningAppsControllers.removeAt(index);
       _runningAppsControllers.add(controller);
+      isDesktopFocused = false;
     }
     notifyListeners();
   }
