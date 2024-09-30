@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/os/common_widgets/app_background.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class SettingsPage extends StatelessWidget {
       rect: rect,
       child: Column(
         children: [
-          const AppTitleBar(trailing: AppbarCornerButtons()),
+          AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
           Expanded(
               child: Center(
             child: Switch(
