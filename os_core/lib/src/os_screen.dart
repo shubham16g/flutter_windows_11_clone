@@ -27,9 +27,9 @@ class OsScreen extends StatefulWidget {
 class _OsScreenState extends State<OsScreen> {
   @override
   void initState() {
-    context.read<RunningAppsController>().setFixedApps(widget.fixedTaskbarApps);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //   App.tryOpen(context, SettingsApp());
+      context.read<RunningAppsController>().setFixedApps(widget.fixedTaskbarApps);
       context.read<OsThemeController>().startApp();
     });
     super.initState();

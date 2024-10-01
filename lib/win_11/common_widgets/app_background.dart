@@ -22,8 +22,8 @@ class AppBackground extends StatelessWidget {
     this.borderRadius = 8,
     this.boxShadow,
     this.backgroundColor,
-    required this.isFullScreen,
-    required this.isFocused,
+    this.isFullScreen = false,
+    this.isFocused = false,
     this.borderColor,
   }) : assert(!blurBackground || rect != null);
 

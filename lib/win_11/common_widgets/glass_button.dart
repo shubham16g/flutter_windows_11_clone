@@ -5,13 +5,21 @@ class GlassButton extends StatefulWidget {
   final Widget Function(BuildContext context, bool isTapDown) builder;
   final double pressedScale;
   final bool isFocused;
+  final double? width;
+  final double? height;
+  final EdgeInsets? padding;
+  final bool showOutline;
 
   const GlassButton(
       {super.key,
       this.onPressed,
       required this.builder,
       this.isFocused = false,
-      this.pressedScale = 0.7});
+      this.pressedScale = 0.7,
+      this.showOutline = true,
+      this.width,
+      this.height,
+      this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 6)});
 
   @override
   State<GlassButton> createState() => _GlassButtonState();
@@ -56,8 +64,9 @@ class _GlassButtonState extends State<GlassButton> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOutCubic,
-            width: 40,
-            height: 40,
+            width: widget.width,
+            padding: widget.padding,
+            height: widget.height,
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(isHovered && widget.isFocused
                   ? 0.08
@@ -67,7 +76,7 @@ class _GlassButtonState extends State<GlassButton> {
                           ? 0.05
                           : 0),
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(
+              border: widget.showOutline ? Border.all(
                   color: const Color(0xFFFFFFFF)
                       .withOpacity(isHovered && widget.isFocused
                           ? 0.15
@@ -76,9 +85,8 @@ class _GlassButtonState extends State<GlassButton> {
                               : isHovered
                                   ? 0.08
                                   : 0),
-                  width: 0.5),
+                  width: 0.5) : null,
             ),
-            alignment: Alignment.center,
             child: widget.builder(context, isTapDown),
           ),
         ),
