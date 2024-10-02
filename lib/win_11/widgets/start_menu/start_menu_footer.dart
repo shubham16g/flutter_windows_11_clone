@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
 
@@ -56,7 +57,7 @@ class StartMenuFooter extends StatelessWidget {
           overlayBuilder: (context) {
             return const PreferredSize(
               preferredSize: Size(350, 220),
-              child: GlassBlurBg(),
+              child: AppBackground(glassBlur: true, borderColor: Colors.transparent, child: SizedBox()),
             );
           },
         ),
@@ -79,7 +80,7 @@ class StartMenuFooter extends StatelessWidget {
           overlayBuilder: (context) {
             return const PreferredSize(
               preferredSize: Size(130, 160),
-              child: GlassBlurBg(),
+              child: AppBackground(glassBlur: true, borderColor: Colors.transparent, child: SizedBox()),
             );
           },
         ),

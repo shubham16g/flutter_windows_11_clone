@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
     final appController = context.watch<AppController>();
     final themeController = context.watch<OsThemeController>();
     return AppBackground(
-      blurBackground: true,
+      wallpaperBlur: true,
       isFocused: appController.isFocused,
       isFullScreen: appController.isFullScreen,
       rect: rect,

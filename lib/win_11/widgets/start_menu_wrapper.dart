@@ -21,7 +21,8 @@ class StartMenuWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = context.screenSize.height - 48;
     final double height = screenHeight > 726 ? 726 : screenHeight;
-    return Center(
+    return Align(
+      alignment: Alignment.bottomCenter ,
       child: SizedBox(
         width: 642,
         height: height,
@@ -31,37 +32,10 @@ class StartMenuWrapper extends StatelessWidget {
             opened: isStartMenuOpened,
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 13),
-              child: AppBackground(
-                  borderColor: context.osColor.taskbarBorder,
-                  isFocused: true,
-                  isFullScreen: false,
-                  backgroundColor: Colors.transparent,
-                  child: const GlassBlurBg(
-                    child: StartMenu(),
-                  )),
+              child: const AppBackground(
+                  glassBlur: true,
+                  child: StartMenu()),
             )),
-      ),
-    );
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutCubic,
-      left: 0,
-      right: 0,
-      bottom: isStartMenuOpened ? 0 : -height - 13 - 20,
-      child: Center(
-        child: Container(
-          width: 642,
-          height: height,
-          margin: const EdgeInsets.symmetric(vertical: 13),
-          child: AppBackground(
-              borderColor: context.osColor.taskbarBorder,
-              isFocused: true,
-              isFullScreen: false,
-              backgroundColor: Colors.transparent,
-              child: const GlassBlurBg(
-                child: StartMenu(),
-              )),
-        ),
       ),
     );
   }

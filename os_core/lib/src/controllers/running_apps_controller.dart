@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-
 import 'app_controller.dart';
 import '../app.dart';
 
@@ -31,10 +30,7 @@ class TaskbarAppState {
 class RunningAppsController extends ChangeNotifier {
   final List<AppController> _runningAppsControllers = [];
 
-  final List<TaskbarAppState> taskbarApps = [
-    // TaskbarAppState(app: FileExplorerApp(), fixed: true),
-    // TaskbarAppState(app: SettingsApp(), fixed: true),
-  ];
+  final List<TaskbarAppState> taskbarApps = [];
 
   bool isStartMenuOpened = true;
 

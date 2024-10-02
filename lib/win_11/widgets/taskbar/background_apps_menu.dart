@@ -1,19 +1,38 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 
+import '../../common_widgets/app_background.dart';
 import '../../common_widgets/custom_overlay_animated.dart';
 import '../../common_widgets/glass_button.dart';
 
 class BackgroundAppsMenu extends StatelessWidget
     implements PreferredSizeWidget {
-  const BackgroundAppsMenu({super.key});
+  final List<String> items;
+
+  const BackgroundAppsMenu({super.key, required this.items});
+
+  final bottomMargin = 16.0;
+  final itemSize = 40;
+  final padding = 3;
+  final itemInRow = 5;
 
   @override
-  Size get preferredSize => const Size(360, 394);
+  Size get preferredSize => Size(
+      items.length < itemInRow
+          ? items.length * itemSize + padding * 2
+          : itemInRow * itemSize + padding * 2,
+      (items.length / itemInRow).ceil() * itemSize +
+          padding * 2 +
+          bottomMargin);
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const AppBackground(
+      borderColor: Colors.transparent,
+      glassBlur: true,
+      child: SizedBox(),
+    ).pad(bottom: bottomMargin);
   }
 }
 
@@ -27,7 +46,7 @@ class BackgroundAppsMenuButton extends StatelessWidget {
         offset: const Offset(0, -4),
         exitAnim: CustomOverlayAnim.slide,
         barrierColor: Colors.transparent,
-        overlayBuilder: (context) => const BackgroundAppsMenu(),
+        overlayBuilder: (context) => BackgroundAppsMenu(items: ['', '', '', '', '', ''],),
         builder: (context, callback) {
           return GlassButton(
             height: 40,
