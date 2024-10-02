@@ -26,23 +26,30 @@ class CustomOverlayAnimated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const duration = Duration(milliseconds: 150);
+    const curve = Curves.easeOutCubic;
     return CustomOverlay(
-      closeDelay: const Duration(milliseconds: 1150),
+      closeDelay: duration,
       targetAnchor: targetAnchor,
       followerAnchor: followerAnchor,
       offset: offset,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
-      overlayBuilder: (context) {
+      overlayBuilder: (context, isOpened) {
         final widget = overlayBuilder(context);
         return PreferredSize(
           preferredSize: widget.preferredSize,
-          child: SlideAnimWrapper(
-            from: 0.6,
-            curve: Curves.easeOutCubic,
-            duration: const Duration(milliseconds: 450),
-            opened: true,
-            child: widget,
+          child: AnimatedOpacity(
+            duration: duration,
+            curve: curve,
+            opacity: isOpened ? 1 : 0,
+            child: SlideAnimWrapper(
+              from: 0.6,
+              duration: duration,
+              curve: curve,
+              opened: true,
+              child: widget,
+            ),
           ),
         );
       },

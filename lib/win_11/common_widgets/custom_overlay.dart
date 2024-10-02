@@ -3,18 +3,40 @@ import 'package:flutter/material.dart';
 class CustomOverlayCallback {
   final OverlayEntry overlayEntry;
   final OverlayState overlayState;
+  final Duration? closeDelay;
+  bool opened = false;
+  Key? _openKey;
 
-  CustomOverlayCallback(
-      {required this.overlayEntry, required this.overlayState});
+  CustomOverlayCallback({
+    required this.overlayEntry,
+    required this.overlayState,
+    this.closeDelay,
+  });
 
   bool get mounted => overlayEntry.mounted;
 
   void showOverlay() {
+    opened = true;
+    _openKey = UniqueKey();
     overlayState.insert(overlayEntry);
   }
 
-  void hideOverlay() {
-    overlayEntry.mounted ? overlayEntry.remove() : null;
+  Future<void> hideOverlay() async {
+    opened = false;
+    overlayEntry.markNeedsBuild();
+    final closeKey = _openKey;
+    if (closeDelay != null) {
+      await Future.delayed(closeDelay!);
+    }
+    if (mounted && closeKey == _openKey) {
+      overlayEntry.remove();
+    }
+  }
+
+  void removeOverlay() {
+    if (mounted) {
+      overlayEntry.remove();
+    }
   }
 }
 
@@ -25,7 +47,8 @@ class CustomOverlay extends StatefulWidget {
   final bool barrierDismissible;
   final Color? barrierColor;
   final Duration? closeDelay;
-  final PreferredSizeWidget Function(BuildContext context) overlayBuilder;
+  final PreferredSizeWidget Function(BuildContext context, bool opened)
+      overlayBuilder;
   final Widget Function(BuildContext context, CustomOverlayCallback callback)
       builder;
 
@@ -53,13 +76,15 @@ class _CustomOverlayState extends State<CustomOverlay> {
   void initState() {
     super.initState();
     overlayCallback = CustomOverlayCallback(
-        overlayEntry: buildOverlay(), overlayState: Overlay.of(context));
+        closeDelay: widget.closeDelay,
+        overlayEntry: buildOverlay(),
+        overlayState: Overlay.of(context));
   }
 
   @override
   void dispose() {
     // Make sure to remove OverlayEntry when the widget is disposed.
-    overlayCallback.hideOverlay();
+    overlayCallback.removeOverlay();
     super.dispose();
   }
 
@@ -72,7 +97,7 @@ class _CustomOverlayState extends State<CustomOverlay> {
   }
 
   buildOverlay() => OverlayEntry(builder: (_) {
-        final overlay = widget.overlayBuilder(context);
+        final overlay = widget.overlayBuilder(context, overlayCallback.opened);
         return Stack(
           children: [
             Positioned.fill(
@@ -80,10 +105,7 @@ class _CustomOverlayState extends State<CustomOverlay> {
                   behavior: HitTestBehavior.opaque,
                   onTap: widget.barrierDismissible
                       ? () async {
-                          if (widget.closeDelay != null) {
-                            await Future.delayed(widget.closeDelay!);
-                          }
-                          if (mounted && overlayCallback.mounted) {
+                          if (mounted) {
                             overlayCallback.hideOverlay();
                           }
                         }

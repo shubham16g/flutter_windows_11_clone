@@ -60,7 +60,7 @@ class StartMenuFooter extends StatelessWidget {
             );
           },
         ),
-        CustomOverlay(
+        CustomOverlayAnimated(
           barrierColor: Colors.transparent,
           targetAnchor: Alignment.topCenter,
           followerAnchor: Alignment.bottomCenter,
