@@ -17,7 +17,7 @@ class StartMenu extends StatelessWidget {
             child: Container(
               color: context.isDark
                   ? Colors.transparent
-                  : Colors.white.withOpacity(0.4),
+                  : Colors.white.withOpacity(0.3),
               child: Column(
                 children: [
                   TextFormBox(

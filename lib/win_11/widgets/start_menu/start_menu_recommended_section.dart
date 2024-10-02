@@ -39,7 +39,7 @@ class StartMenuRecommendedSection extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       pressedScale: 0.85,
                       onPressed: () {},
-                      builder: (context, isTapDown) => ListTile(
+                      child: ListTile(
                         leading:
                             SvgPicture.asset('assets/icons/edge_app.svg', width: 38),
                         title: Text('Edge',

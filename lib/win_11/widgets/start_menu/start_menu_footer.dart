@@ -19,7 +19,7 @@ class StartMenuFooter extends StatelessWidget {
           builder: (context, callback) {
             return GlassButton(
               showOutline: false,
-              builder: (context, _) => const Text('Account'),
+              child: const Text('Account'),
               onPressed: () {
                 callback.showOverlay();
               },
@@ -42,7 +42,7 @@ class StartMenuFooter extends StatelessWidget {
               padding: EdgeInsets.zero,
               width: 40,
               height: 40,
-              builder: (context, _) => const Icon(FluentIcons.power_button),
+              child: const Icon(FluentIcons.power_button),
               onPressed: () {
                 callback.showOverlay();
               },

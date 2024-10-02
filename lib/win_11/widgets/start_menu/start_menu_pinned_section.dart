@@ -34,7 +34,7 @@ class StartMenuPinnedSection extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   itemCount: 18,
                   itemBuilder: (context, index) {
-                    return GlassButton(
+                    return GlassButton.builder(
                       pressedScale: 0.85,
                       onPressed: () {},
                       builder: (context, isTapDown) => _buildTile(

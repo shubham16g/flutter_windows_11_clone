@@ -58,7 +58,7 @@ class GlassBlurBg extends StatelessWidget {
                     color: isDark
                         ? Color.lerp(const Color(0xFF202020),
                                        context.watch<WallpaperController>().dominantColor, 0.03)?.withOpacity(.6)
-                        : const Color(0xFFFFFFFF).withOpacity(.8))),
+                        : const Color(0xFFFFFFFF).withOpacity(.86))),
 
             if (child != null) Positioned.fill(child: child!),
 
