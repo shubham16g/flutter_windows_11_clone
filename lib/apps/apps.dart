@@ -6,6 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../win_11/common_widgets/app_background.dart';
 import '../win_11/common_widgets/appbar_corner_buttons.dart';
+import '../win_11/common_widgets/custom_overlay_animated.dart';
+import '../win_11/common_widgets/glass_blur_bg.dart';
+import '../win_11/common_widgets/glass_button.dart';
 
 class FileExplorerApp extends App {
   @override
@@ -28,7 +31,24 @@ class FileExplorerApp extends App {
       isFocused: appController.isFocused,
       child: Column(
         children: [
-          AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
+          AppTitleBar(
+            leading: CustomOverlayAnimated(
+              barrierColor: Colors.transparent,
+          overlayBuilder: (context) {
+            return const PreferredSize(
+              preferredSize: Size(100, 220),
+              child: GlassBlurBg(),
+            );
+          },
+          builder: (context, callback) {
+            return GlassButton(
+              onPressed: () {callback.showOverlay();},
+              isFocused: false,
+              child: const Text('19:32'),
+            );
+          }
+      ),
+              trailing: AppbarCornerButtons(isDark: context.isDark)),
         ],
       ),
     );

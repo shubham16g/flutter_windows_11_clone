@@ -59,9 +59,13 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.centerLeft,
           child: SizedBox(
             width: 300,
-            child: Slider(value: runningAppsProvider.temp, onChanged: (value) {
-              runningAppsProvider.onChangedTemp(value);
-            }, min: 0, max: 1),
+            child: Slider(
+                value: runningAppsProvider.temp,
+                onChanged: (value) {
+                  runningAppsProvider.onChangedTemp(value);
+                },
+                min: 0,
+                max: 1),
           ),
         ),
         Positioned(
@@ -70,21 +74,51 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomOverlayAnimated(
-              useBarrier: false,
-                overlayBuilder: (context) {
-                  return const PreferredSize(
-                    preferredSize: Size(100, 220),
-                    child: GlassBlurBg(),
-                  );
-                },
-                builder: (context, callback) {
-                  return GlassButton(
-                    onPressed: () {callback.showOverlay();},
-                    isFocused: false,
-                    child: const Text('19:32'),
-                  );
-                }
-              ),
+                  useBarrier: true,
+                  exitAnim: CustomOverlayAnim.slide,
+                  barrierColor: Colors.transparent,
+                  overlayBuilder: (context) {
+                    return  PreferredSize(
+                      preferredSize: Size(100, 220),
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 16),
+                        child: GlassBlurBg(
+                          child: CustomOverlayAnimated(
+                              useBarrier: true,
+                              exitAnim: CustomOverlayAnim.slide,
+                              barrierColor: Colors.transparent,
+                              overlayBuilder: (context) {
+                                return const PreferredSize(
+                                  preferredSize: Size(100, 220),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 16),
+                                    child: GlassBlurBg(
+                                    ),
+                                  ),
+                                );
+                              },
+                              builder: (context, callback) {
+                                return GlassButton(
+                                  onPressed: () {
+                                    callback.showOverlay();
+                                  },
+                                  isFocused: false,
+                                  child: const Text('19:32'),
+                                );
+                              }),
+                        ),
+                      ),
+                    );
+                  },
+                  builder: (context, callback) {
+                    return GlassButton(
+                      onPressed: () {
+                        callback.showOverlay();
+                      },
+                      isFocused: false,
+                      child: const Text('19:32'),
+                    );
+                  }),
             ],
           ),
         )

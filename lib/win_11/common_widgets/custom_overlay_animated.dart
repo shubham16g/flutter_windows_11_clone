@@ -3,12 +3,24 @@ import 'package:flutter/material.dart';
 import 'custom_overlay.dart';
 import 'slide_anim_wrapper.dart';
 
+/// this widget should be host on pub.dev
+
+enum CustomOverlayAnim {
+  fade,
+  slide,
+  fadeAndSlide,
+}
+
 class CustomOverlayAnimated extends StatelessWidget {
   final Alignment targetAnchor;
   final Alignment followerAnchor;
   final Offset offset;
   final bool barrierDismissible;
   final bool useBarrier;
+  final double openFrom;
+  final CustomOverlayAnim exitAnim;
+  final Duration duration;
+  final Curve curve;
   final Color? barrierColor;
   final PreferredSizeWidget Function(BuildContext context) overlayBuilder;
   final Widget Function(BuildContext context, CustomOverlayCallback callback)
@@ -20,16 +32,18 @@ class CustomOverlayAnimated extends StatelessWidget {
     this.targetAnchor = Alignment.topLeft,
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
+    this.exitAnim = CustomOverlayAnim.fade,
     this.useBarrier = true,
+    this.openFrom = 1,
     this.barrierColor,
+    this.duration = const Duration(milliseconds: 150),
+    this.curve = Curves.easeOutCubic,
     required this.overlayBuilder,
     required this.builder,
   });
 
   @override
   Widget build(BuildContext context) {
-    const duration = Duration(milliseconds: 150);
-    const curve = Curves.easeOutCubic;
     return CustomOverlay(
       closeDelay: duration,
       targetAnchor: targetAnchor,
@@ -45,12 +59,12 @@ class CustomOverlayAnimated extends StatelessWidget {
           child: AnimatedOpacity(
             duration: duration,
             curve: curve,
-            opacity: isOpened ? 1 : 0,
+            opacity: isOpened || exitAnim == CustomOverlayAnim.slide ? 1 : 0,
             child: SlideAnimWrapper(
-              from: 0.6,
+              from: !isOpened ? 1 : openFrom,
               duration: duration,
               curve: curve,
-              opened: true,
+              opened: exitAnim != CustomOverlayAnim.slide ? true : isOpened,
               child: widget,
             ),
           ),

@@ -46,58 +46,71 @@ class _OsScreenState extends State<OsScreen> {
     return Material(
       child: Stack(
         children: [
-          if (wallpaperWrapper.wallpaperPath != null)
-            Positioned.fill(
-              child: Image.asset(
-                wallpaperWrapper.wallpaperPath!,
-                fit: BoxFit.cover,
-              ),
-            ),
-
-          /// desktop area
           Positioned.fill(
-            child: MouseRegion(
-              cursor: context.watch<CursorController>().cursor,
-              onEnter: (event) {
-                context.read<CursorController>().setCursor(MouseCursor.defer);
-              },
-              onExit: (event) {},
-              child: const WindowArea(),
+            child: Overlay(
+              initialEntries: [
+                OverlayEntry(
+                  builder: (context) {
+                    return Stack(
+                      children: [
+                        if (wallpaperWrapper.wallpaperPath != null)
+                          Positioned.fill(
+                            child: Image.asset(
+                              wallpaperWrapper.wallpaperPath!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+
+                        /// desktop area
+                        Positioned.fill(
+                          child: MouseRegion(
+                            cursor: context.watch<CursorController>().cursor,
+                            onEnter: (event) {
+                              context.read<CursorController>().setCursor(MouseCursor.defer);
+                            },
+                            onExit: (event) {},
+                            child: const WindowArea(),
+                          ),
+                        ),
+
+                        /// start menu
+                        if (!widget.startMenuOverTaskbar)
+                          Positioned.fill(
+                              top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
+                              bottom: tbAlign == TaskbarAlignment.bottom
+                                  ? taskbarHeight - 1
+                                  : 0,
+                              left: tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
+                              right:
+                                  tbAlign == TaskbarAlignment.right ? taskbarWidth - 1 : 0,
+                              child: Stack(
+                                children: [
+                                  widget.startMenuBuilder(context, rap.isStartMenuOpened),
+                                ],
+                              )),
+
+                        /// taskbar
+                        Align(
+                          alignment: tbAlign.alignment,
+                          child: SizedBox(
+                              height: widget.taskBar.preferredSize.height,
+                              width: widget.taskBar.preferredSize.width,
+                              child: widget.taskBar),
+                        ),
+                        if (widget.startMenuOverTaskbar)
+                          Positioned.fill(
+                              child: Stack(
+                            children: [
+                              widget.startMenuBuilder(context, rap.isStartMenuOpened),
+                            ],
+                          )),
+                      ],
+                    );
+                  }
+                ),
+              ],
             ),
           ),
-
-          /// start menu
-          if (!widget.startMenuOverTaskbar)
-            Positioned.fill(
-                top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
-                bottom: tbAlign == TaskbarAlignment.bottom
-                    ? taskbarHeight - 1
-                    : 0,
-                left: tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
-                right:
-                    tbAlign == TaskbarAlignment.right ? taskbarWidth - 1 : 0,
-                child: Stack(
-                  children: [
-                    widget.startMenuBuilder(context, rap.isStartMenuOpened),
-                  ],
-                )),
-
-          /// taskbar
-          Align(
-            alignment: tbAlign.alignment,
-            child: SizedBox(
-                height: widget.taskBar.preferredSize.height,
-                width: widget.taskBar.preferredSize.width,
-                child: widget.taskBar),
-          ),
-          if (widget.startMenuOverTaskbar)
-            Positioned.fill(
-                child: Stack(
-              children: [
-                widget.startMenuBuilder(context, rap.isStartMenuOpened),
-              ],
-            )),
-
           Positioned.fill(
             child: IgnorePointer(
               ignoring: themeController.appStarted,

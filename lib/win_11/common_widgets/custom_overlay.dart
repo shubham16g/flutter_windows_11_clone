@@ -124,8 +124,8 @@ class _CustomOverlayState extends State<CustomOverlay> {
               Positioned.fill(
                 child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: widget.barrierDismissible
-                        ? () async {
+                    onTapDown: widget.barrierDismissible
+                        ? (_) async {
                             if (mounted) {
                               overlayCallback.hideOverlay();
                             }
@@ -150,17 +150,17 @@ class _CustomOverlayState extends State<CustomOverlay> {
       });
 
   Offset repositionInsideScreen(
-      Size screenSize, Size widgetSize, Offset topLeft, {double margin = 0}) {
+      Size screenSize, Size widgetSize, Offset topLeft, {EdgeInsets margin = const EdgeInsets.all(16)}) {
     final top = topLeft.dy;
     final left = topLeft.dx;
     final bottom = top + widgetSize.height;
     final right = left + widgetSize.width;
 
-    final topOffset = top < 0 ? -top : 0;
-    final leftOffset = left < 0 ? -left : 0;
+    final topOffset = top < margin.top ? -top + margin.top : 0;
+    final leftOffset = left < margin.left ? -left + margin.left : 0;
     final bottomOffset =
-        bottom > screenSize.height ? screenSize.height - bottom : 0;
-    final rightOffset = right > screenSize.width ? screenSize.width - right : 0;
+        bottom > screenSize.height - margin.bottom ? screenSize.height - bottom - margin.bottom : 0;
+    final rightOffset = right > screenSize.width - margin.right ? screenSize.width - right - margin.right : 0;
 
     return Offset(
         left + leftOffset + rightOffset, top + topOffset + bottomOffset);
