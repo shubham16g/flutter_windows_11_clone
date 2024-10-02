@@ -108,12 +108,23 @@ class _CustomOverlayState extends State<CustomOverlay> {
 
   Rect getRect(PreferredSizeWidget overlay) {
     final rect = _key.globalPaintBounds ?? Rect.zero;
-    final newOffset =
-        Offset(rect.left + widget.offset.dx, rect.top + widget.offset.dy);
+    final targetAnchor = widget.targetAnchor;
+    final followerAnchor = widget.followerAnchor;
+    final w = rect.width / 2;
+    final h = rect.height / 2;
+    final pw = overlay.preferredSize.width / 2;
+    final ph = overlay.preferredSize.height / 2;
+    final targetPointX =
+        rect.left + w + w * targetAnchor.x - pw - pw * followerAnchor.x;
+    final targetPointY =
+        rect.top + h + h * targetAnchor.y - ph - ph * followerAnchor.y;
+    final newOffset = Offset(targetPointX, targetPointY);
+
     final offset = repositionInsideScreen(
         context.screenSize,
         overlay.preferredSize,
-        Offset(newOffset.dx, newOffset.dy - overlay.preferredSize.height));
+        Offset(
+            newOffset.dx + widget.offset.dx, newOffset.dy + widget.offset.dy));
     return Rect.fromLTWH(offset.dx, offset.dy, overlay.preferredSize.width,
         overlay.preferredSize.height);
   }
@@ -146,7 +157,7 @@ class _CustomOverlayState extends State<CustomOverlay> {
                   child: Listener(
                       behavior: HitTestBehavior.translucent,
                       onPointerDown: (details) {
-                          overlayCallback.hideOverlay();
+                        overlayCallback.hideOverlay();
                       })),
             Positioned(
               top: offset.dy,

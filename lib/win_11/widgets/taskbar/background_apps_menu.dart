@@ -44,6 +44,8 @@ class BackgroundAppsMenuButton extends StatelessWidget {
     return CustomOverlayAnimated(
         useBarrier: false,
         offset: const Offset(0, -4),
+        targetAnchor: Alignment.topCenter,
+        followerAnchor: Alignment.bottomCenter,
         exitAnim: CustomOverlayAnim.slide,
         barrierColor: Colors.transparent,
         overlayBuilder: (context) => BackgroundAppsMenu(items: ['', '', '', '', '', ''],),
