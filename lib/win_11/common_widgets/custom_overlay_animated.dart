@@ -33,7 +33,7 @@ class CustomOverlayAnimated extends StatelessWidget {
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
     this.exitAnim = CustomOverlayAnim.fade,
-    this.useBarrier = true,
+    this.useBarrier = false,
     this.openFrom = 1,
     this.barrierColor,
     this.duration = const Duration(milliseconds: 150),

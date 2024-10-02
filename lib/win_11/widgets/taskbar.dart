@@ -68,14 +68,14 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
                 max: 1),
           ),
         ),
-        Positioned(
-          right: runningAppsProvider.temp * 200,
+        Align(
+          alignment: Alignment.centerRight,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomOverlayAnimated(
-                  useBarrier: true,
-                  exitAnim: CustomOverlayAnim.slide,
+                  useBarrier: false,
+                  offset: Offset(0, -8),    exitAnim: CustomOverlayAnim.slide,
                   barrierColor: Colors.transparent,
                   overlayBuilder: (context) {
                     return  PreferredSize(
@@ -84,7 +84,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
                         padding: EdgeInsets.only(bottom: 16),
                         child: GlassBlurBg(
                           child: CustomOverlayAnimated(
-                              useBarrier: true,
+                              useBarrier: false,
                               exitAnim: CustomOverlayAnim.slide,
                               barrierColor: Colors.transparent,
                               overlayBuilder: (context) {
@@ -228,7 +228,7 @@ class _TaskbarButtonState extends State<TaskbarButton> {
                     decoration: BoxDecoration(
                       color: widget.isFocused
                           ? Colors.blue
-                          : Colors.white.withOpacity(0.5),
+                          : context.osColor.textSecondary,
                       borderRadius: BorderRadius.circular(5),
                     ))
               ],

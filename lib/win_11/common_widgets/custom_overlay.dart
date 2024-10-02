@@ -6,7 +6,6 @@ class CustomOverlayCallback {
   final OverlayState overlayState;
   final Duration? closeDelay;
   bool opened = false;
-  Key? _openKey;
 
   CustomOverlayCallback({
     required this.overlayEntry,
@@ -18,19 +17,18 @@ class CustomOverlayCallback {
 
   void showOverlay() {
     opened = true;
-    _openKey = UniqueKey();
     overlayState.insert(overlayEntry);
   }
 
   Future<void> hideOverlay() async {
     opened = false;
     overlayEntry.markNeedsBuild();
-    final closeKey = _openKey;
+    final overlayEn = overlayEntry;
     if (closeDelay != null) {
       await Future.delayed(closeDelay!);
     }
-    if (mounted && closeKey == _openKey) {
-      overlayEntry.remove();
+    if (overlayEn.mounted) {
+      overlayEn.remove();
     }
   }
 
@@ -64,7 +62,7 @@ class CustomOverlay extends StatefulWidget {
     this.targetAnchor = Alignment.topLeft,
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
-    this.useBarrier = true,
+    this.useBarrier = false,
     this.closeDelay,
     this.barrierColor,
     required this.overlayBuilder,
@@ -87,7 +85,6 @@ class _CustomOverlayState extends State<CustomOverlay> {
         closeDelay: widget.closeDelay,
         overlayEntry: buildOverlay(),
         overlayState: Overlay.of(context));
-
   }
 
   @override
@@ -109,15 +106,22 @@ class _CustomOverlayState extends State<CustomOverlay> {
     );
   }
 
+  Rect getRect(PreferredSizeWidget overlay) {
+    final rect = _key.globalPaintBounds ?? Rect.zero;
+    final newOffset =
+        Offset(rect.left + widget.offset.dx, rect.top + widget.offset.dy);
+    final offset = repositionInsideScreen(
+        context.screenSize,
+        overlay.preferredSize,
+        Offset(newOffset.dx, newOffset.dy - overlay.preferredSize.height));
+    return Rect.fromLTWH(offset.dx, offset.dy, overlay.preferredSize.width,
+        overlay.preferredSize.height);
+  }
+
   OverlayEntry buildOverlay() => OverlayEntry(builder: (_) {
         final overlay = widget.overlayBuilder(context, overlayCallback.opened);
-        final rect = _key.globalPaintBounds ?? Rect.zero;
-        final newOffset = rect.topLeft + widget.offset;
-        final offset = repositionInsideScreen(
-            context.screenSize,
-            overlay.preferredSize,
-            Offset(newOffset.dx, newOffset.dy - overlay.preferredSize.height));
-
+        final rect = getRect(overlay);
+        final offset = rect.topLeft;
         return Stack(
           children: [
             if (widget.useBarrier)
@@ -125,7 +129,7 @@ class _CustomOverlayState extends State<CustomOverlay> {
                 child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTapDown: widget.barrierDismissible
-                        ? (_) async {
+                        ? (_) {
                             if (mounted) {
                               overlayCallback.hideOverlay();
                             }
@@ -136,7 +140,14 @@ class _CustomOverlayState extends State<CustomOverlay> {
                           color: widget.barrierColor ??
                               Colors.black.withOpacity(0.4)),
                     )), // Transparent background to detect taps
-              ),
+              )
+            else
+              Positioned.fill(
+                  child: Listener(
+                      behavior: HitTestBehavior.translucent,
+                      onPointerDown: (details) {
+                          overlayCallback.hideOverlay();
+                      })),
             Positioned(
               top: offset.dy,
               left: offset.dx,
@@ -150,7 +161,8 @@ class _CustomOverlayState extends State<CustomOverlay> {
       });
 
   Offset repositionInsideScreen(
-      Size screenSize, Size widgetSize, Offset topLeft, {EdgeInsets margin = const EdgeInsets.all(16)}) {
+      Size screenSize, Size widgetSize, Offset topLeft,
+      {EdgeInsets margin = const EdgeInsets.all(16)}) {
     final top = topLeft.dy;
     final left = topLeft.dx;
     final bottom = top + widgetSize.height;
@@ -158,9 +170,12 @@ class _CustomOverlayState extends State<CustomOverlay> {
 
     final topOffset = top < margin.top ? -top + margin.top : 0;
     final leftOffset = left < margin.left ? -left + margin.left : 0;
-    final bottomOffset =
-        bottom > screenSize.height - margin.bottom ? screenSize.height - bottom - margin.bottom : 0;
-    final rightOffset = right > screenSize.width - margin.right ? screenSize.width - right - margin.right : 0;
+    final bottomOffset = bottom > screenSize.height - margin.bottom
+        ? screenSize.height - bottom - margin.bottom
+        : 0;
+    final rightOffset = right > screenSize.width - margin.right
+        ? screenSize.width - right - margin.right
+        : 0;
 
     return Offset(
         left + leftOffset + rightOffset, top + topOffset + bottomOffset);
