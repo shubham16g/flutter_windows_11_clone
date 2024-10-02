@@ -73,7 +73,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
               useBarrier: false,
                 overlayBuilder: (context) {
                   return const PreferredSize(
-                    preferredSize: Size(350, 220),
+                    preferredSize: Size(100, 220),
                     child: GlassBlurBg(),
                   );
                 },
