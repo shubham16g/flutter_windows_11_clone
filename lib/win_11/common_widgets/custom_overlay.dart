@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 
 class CustomOverlayCallback {
   final OverlayEntry overlayEntry;
@@ -45,6 +46,7 @@ class CustomOverlay extends StatefulWidget {
   final Alignment followerAnchor;
   final Offset offset;
   final bool barrierDismissible;
+  final bool useBarrier;
   final Color? barrierColor;
   final Duration? closeDelay;
   final PreferredSizeWidget Function(BuildContext context, bool opened)
@@ -58,6 +60,7 @@ class CustomOverlay extends StatefulWidget {
     this.targetAnchor = Alignment.topLeft,
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
+    this.useBarrier = true,
     this.closeDelay,
     this.barrierColor,
     required this.overlayBuilder,
@@ -71,6 +74,7 @@ class CustomOverlay extends StatefulWidget {
 class _CustomOverlayState extends State<CustomOverlay> {
   late final CustomOverlayCallback overlayCallback;
   final layerLink = LayerLink();
+  final GlobalKey _key = GlobalKey();
 
   @override
   void initState() {
@@ -92,14 +96,17 @@ class _CustomOverlayState extends State<CustomOverlay> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: layerLink,
-      child: widget.builder(context, overlayCallback),
+      child: SizedBox(
+          key: _key,
+          child: widget.builder(context, overlayCallback)),
     );
   }
 
-  buildOverlay() => OverlayEntry(builder: (_) {
+  OverlayEntry buildOverlay() => OverlayEntry(builder: (_) {
         final overlay = widget.overlayBuilder(context, overlayCallback.opened);
         return Stack(
           children: [
+            if (widget.useBarrier)
             Positioned.fill(
               child: GestureDetector(
                   behavior: HitTestBehavior.opaque,

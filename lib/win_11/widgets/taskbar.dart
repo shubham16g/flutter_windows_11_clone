@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
@@ -50,6 +52,39 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
                     App.tryOpen(context, e.app);
                   },
                   icon: e.app.icon))
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: SizedBox(
+            width: 300,
+            child: Slider(value: runningAppsProvider.temp, onChanged: (value) {
+              runningAppsProvider.onChangedTemp(value);
+            }, min: 0, max: 1),
+          ),
+        ),
+        Positioned(
+          right: runningAppsProvider.temp * 200,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomOverlayAnimated(
+              useBarrier: false,
+                overlayBuilder: (context) {
+                  return const PreferredSize(
+                    preferredSize: Size(350, 220),
+                    child: GlassBlurBg(),
+                  );
+                },
+                builder: (context, callback) {
+                  return GlassButton(
+                    onPressed: () {callback.showOverlay();},
+                    isFocused: false,
+                    child: const Text('19:32'),
+                  );
+                }
+              ),
             ],
           ),
         )

@@ -8,6 +8,7 @@ class CustomOverlayAnimated extends StatelessWidget {
   final Alignment followerAnchor;
   final Offset offset;
   final bool barrierDismissible;
+  final bool useBarrier;
   final Color? barrierColor;
   final PreferredSizeWidget Function(BuildContext context) overlayBuilder;
   final Widget Function(BuildContext context, CustomOverlayCallback callback)
@@ -19,6 +20,7 @@ class CustomOverlayAnimated extends StatelessWidget {
     this.targetAnchor = Alignment.topLeft,
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
+    this.useBarrier = true,
     this.barrierColor,
     required this.overlayBuilder,
     required this.builder,
@@ -32,6 +34,7 @@ class CustomOverlayAnimated extends StatelessWidget {
       closeDelay: duration,
       targetAnchor: targetAnchor,
       followerAnchor: followerAnchor,
+      useBarrier: useBarrier,
       offset: offset,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
