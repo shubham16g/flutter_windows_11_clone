@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
@@ -7,6 +7,8 @@ import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import '../common_widgets/glass_blur_bg.dart';
+import 'taskbar/background_apps_menu.dart';
+import 'taskbar/control_menu.dart';
 
 class Taskbar extends StatelessWidget implements PreferredSizeWidget {
   const Taskbar({super.key});
@@ -56,69 +58,55 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Align(
-          alignment: Alignment.centerLeft,
-          child: SizedBox(
-            width: 300,
-            child: Slider(
-                value: runningAppsProvider.temp,
-                onChanged: (value) {
-                  runningAppsProvider.onChangedTemp(value);
-                },
-                min: 0,
-                max: 1),
-          ),
-        ),
-        Align(
           alignment: Alignment.centerRight,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const BackgroundAppsMenuButton(),
+              const SizedBox(width: 1),
+              const ControlMenuButton(),
+              const SizedBox(width: 1),
               CustomOverlayAnimated(
                   useBarrier: false,
-                  offset: Offset(0, -8),    exitAnim: CustomOverlayAnim.slide,
+                  offset: const Offset(0, -4),
+                  exitAnim: CustomOverlayAnim.slide,
                   barrierColor: Colors.transparent,
                   overlayBuilder: (context) {
-                    return  PreferredSize(
+                    return const PreferredSize(
                       preferredSize: Size(100, 220),
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 16),
-                        child: GlassBlurBg(
-                          child: CustomOverlayAnimated(
-                              useBarrier: false,
-                              exitAnim: CustomOverlayAnim.slide,
-                              barrierColor: Colors.transparent,
-                              overlayBuilder: (context) {
-                                return const PreferredSize(
-                                  preferredSize: Size(100, 220),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(bottom: 16),
-                                    child: GlassBlurBg(
-                                    ),
-                                  ),
-                                );
-                              },
-                              builder: (context, callback) {
-                                return GlassButton(
-                                  onPressed: () {
-                                    callback.showOverlay();
-                                  },
-                                  isFocused: false,
-                                  child: const Text('19:32'),
-                                );
-                              }),
-                        ),
+                        child: GlassBlurBg(),
                       ),
                     );
                   },
                   builder: (context, callback) {
                     return GlassButton(
+                      height: 40,
+                      padding: const EdgeInsets.only(left: 8, right: 8),
                       onPressed: () {
                         callback.showOverlay();
                       },
                       isFocused: false,
-                      child: const Text('19:32'),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('19:32',
+                                  style: context.theme.typography.caption),
+                              Text('02-10-2024',
+                                  style: context.theme.typography.caption),
+                            ],
+                          ),
+                          const SizedBox(width: 7),
+                          const Icon(FluentIcons.ringer, size: 15),
+                        ],
+                      ),
                     );
                   }),
+              const SizedBox(width: 12),
             ],
           ),
         )

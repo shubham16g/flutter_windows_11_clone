@@ -36,13 +36,6 @@ class RunningAppsController extends ChangeNotifier {
     // TaskbarAppState(app: SettingsApp(), fixed: true),
   ];
 
-  double temp = 0;
-
-  void onChangedTemp(double value) {
-    temp = value;
-    notifyListeners();
-  }
-
   bool isStartMenuOpened = true;
 
   List<AppController> get runningAppsControllers => _runningAppsControllers;

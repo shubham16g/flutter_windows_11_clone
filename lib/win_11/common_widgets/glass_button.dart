@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/apps/apps.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 
+// todo zoom out hover exit effect
 class GlassButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget Function(BuildContext context, bool isTapDown)? builder;
@@ -53,61 +54,58 @@ class _GlassButtonState extends State<GlassButton> {
     final tapDownColor = Colors.white.withOpacity(context.isDark ? 0.06 : 0.4);
     final hoverOutlineColor = Colors.white.withOpacity(0.15);
     final tapDownOutlineColor = Colors.white.withOpacity(0.3);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: MouseRegion(
-        onEnter: (_) {
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHovered = false;
+        });
+      },
+      child: GestureDetector(
+        onTapDown: (_) {
           setState(() {
-            isHovered = true;
+            isTapDown = true;
           });
         },
-        onExit: (_) {
+        onTapUp: (_) {
           setState(() {
-            isHovered = false;
+            isTapDown = false;
           });
         },
-        child: GestureDetector(
-          onTapDown: (_) {
-            setState(() {
-              isTapDown = true;
-            });
-          },
-          onTapUp: (_) {
-            setState(() {
-              isTapDown = false;
-            });
-          },
-          onTapCancel: () {
-            setState(() {
-              isTapDown = false;
-            });
-          },
-          onTap: widget.onPressed,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOutCubic,
-            width: widget.width,
-            padding: widget.padding,
-            height: widget.height,
-            decoration: BoxDecoration(
-              color: isTapDown
-                  ? tapDownColor
-                  : isHovered
-                      ? hoverColor
-                      : Colors.white.withOpacity(0),
-              borderRadius: BorderRadius.circular(4),
-              border: widget.showOutline
-                  ? Border.all(
-                      color: isHovered
-                          ? hoverOutlineColor
-                          : isTapDown
-                              ? tapDownOutlineColor
-                              : Colors.white.withOpacity(0),
-                      width: 0.5)
-                  : null,
-            ),
-            child: widget.child ?? widget.builder?.call(context, isTapDown),
+        onTapCancel: () {
+          setState(() {
+            isTapDown = false;
+          });
+        },
+        onTap: widget.onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+          width: widget.width,
+          padding: widget.padding,
+          height: widget.height,
+          decoration: BoxDecoration(
+            color: isTapDown
+                ? tapDownColor
+                : isHovered
+                    ? hoverColor
+                    : Colors.white.withOpacity(0),
+            borderRadius: BorderRadius.circular(4),
+            border: widget.showOutline
+                ? Border.all(
+                    color: isHovered
+                        ? hoverOutlineColor
+                        : isTapDown
+                            ? tapDownOutlineColor
+                            : Colors.white.withOpacity(0),
+                    width: 0.5)
+                : null,
           ),
+          child: widget.child ?? widget.builder?.call(context, isTapDown),
         ),
       ),
     );
