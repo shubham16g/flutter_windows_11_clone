@@ -1,5 +1,7 @@
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_windows_11_clone/apps/apps.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 
 class GlassButton extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -47,8 +49,8 @@ class _GlassButtonState extends State<GlassButton> {
 
   @override
   Widget build(BuildContext context) {
-    final hoverColor = Colors.white.withOpacity(0.6);
-    final tapDownColor = Colors.white.withOpacity(0.4);
+    final hoverColor = Colors.white.withOpacity(context.isDark ? 0.1 : 0.6);
+    final tapDownColor = Colors.white.withOpacity(context.isDark ? 0.06 : 0.4);
     final hoverOutlineColor = Colors.white.withOpacity(0.15);
     final tapDownOutlineColor = Colors.white.withOpacity(0.3);
     return Padding(

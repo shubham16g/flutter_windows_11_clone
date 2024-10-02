@@ -1,9 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_blur_bg.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
 
 import '../../common_widgets/custom_overlay.dart';
+import '../../common_widgets/custom_overlay_animated.dart';
 
 class StartMenuFooter extends StatelessWidget {
   const StartMenuFooter({super.key});
@@ -13,13 +15,39 @@ class StartMenuFooter extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomOverlay(
+        CustomOverlayAnimated(
           barrierColor: Colors.transparent,
           offset: const Offset(-30, -3),
           builder: (context, callback) {
             return GlassButton(
               showOutline: false,
-              child: const Text('Account'),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+              child: Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: context.osColor.appBackground,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: context.osColor.taskbarBorder.withOpacity(0.03),
+                        width: 1,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(FluentIcons.contact,
+                        color: context.osColor.textTertiary),
+                  ),
+                  const SizedBox(width: 12),
+                  Text('Account',
+                      style: context.theme.typography.caption?.copyWith(
+                          color: context.osColor.textPrimary,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12)),
+                ],
+              ),
               onPressed: () {
                 callback.showOverlay();
               },

@@ -8,6 +8,7 @@ class CustomOverlayCallback {
       {required this.overlayEntry, required this.overlayState});
 
   bool get mounted => overlayEntry.mounted;
+
   void showOverlay() {
     overlayState.insert(overlayEntry);
   }
@@ -23,6 +24,7 @@ class CustomOverlay extends StatefulWidget {
   final Offset offset;
   final bool barrierDismissible;
   final Color? barrierColor;
+  final Duration? closeDelay;
   final PreferredSizeWidget Function(BuildContext context) overlayBuilder;
   final Widget Function(BuildContext context, CustomOverlayCallback callback)
       builder;
@@ -33,6 +35,7 @@ class CustomOverlay extends StatefulWidget {
     this.targetAnchor = Alignment.topLeft,
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
+    this.closeDelay,
     this.barrierColor,
     required this.overlayBuilder,
     required this.builder,
@@ -76,8 +79,13 @@ class _CustomOverlayState extends State<CustomOverlay> {
               child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: widget.barrierDismissible
-                      ? () {
-                          overlayCallback.hideOverlay();
+                      ? () async {
+                          if (widget.closeDelay != null) {
+                            await Future.delayed(widget.closeDelay!);
+                          }
+                          if (mounted && overlayCallback.mounted) {
+                            overlayCallback.hideOverlay();
+                          }
                         }
                       : null,
                   child: IgnorePointer(
