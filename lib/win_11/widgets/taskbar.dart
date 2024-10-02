@@ -1,8 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_windows_11_clone/apps/apps.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
@@ -69,14 +73,18 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
               CustomOverlayAnimated(
                   useBarrier: false,
                   offset: const Offset(0, -4),
+                  screenSideMargin: const EdgeInsets.all(1),
                   exitAnim: CustomOverlayAnim.slide,
+                  slideAnimDirection: SlideAnimDirection.right,
                   barrierColor: Colors.transparent,
                   overlayBuilder: (context) {
-                    return const PreferredSize(
-                      preferredSize: Size(100, 220),
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 16),
-                        child: GlassBlurBg(),
+                    return PreferredSize(
+                      preferredSize:
+                          Size(340, context.screenSize.height - 48 - 16),
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 16, right: 16),
+                        child:
+                            AppBackground(glassBlur: true, child: SizedBox()),
                       ),
                     );
                   },

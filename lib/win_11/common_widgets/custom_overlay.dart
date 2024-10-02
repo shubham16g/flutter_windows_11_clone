@@ -1,48 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 
-class CustomOverlayCallback {
-  final OverlayEntry overlayEntry;
-  final OverlayState overlayState;
-  final Duration? closeDelay;
-  bool opened = false;
-
-  CustomOverlayCallback({
-    required this.overlayEntry,
-    required this.overlayState,
-    this.closeDelay,
-  });
-
-  bool get mounted => overlayEntry.mounted;
-
-  void showOverlay() {
-    opened = true;
-    overlayState.insert(overlayEntry);
-  }
-
-  Future<void> hideOverlay() async {
-    opened = false;
-    overlayEntry.markNeedsBuild();
-    final overlayEn = overlayEntry;
-    if (closeDelay != null) {
-      await Future.delayed(closeDelay!);
-    }
-    if (overlayEn.mounted) {
-      overlayEn.remove();
-    }
-  }
-
-  void notify() {
-    overlayEntry.markNeedsBuild();
-  }
-
-  void removeOverlay() {
-    if (mounted) {
-      overlayEntry.remove();
-    }
-  }
-}
-
 class CustomOverlay extends StatefulWidget {
   final Alignment targetAnchor;
   final Alignment followerAnchor;
@@ -50,6 +8,7 @@ class CustomOverlay extends StatefulWidget {
   final bool barrierDismissible;
   final bool useBarrier;
   final Color? barrierColor;
+  final EdgeInsets screenSideMargin;
   final Duration? closeDelay;
   final PreferredSizeWidget Function(BuildContext context, bool opened)
       overlayBuilder;
@@ -64,6 +23,7 @@ class CustomOverlay extends StatefulWidget {
     this.barrierDismissible = true,
     this.useBarrier = false,
     this.closeDelay,
+    this.screenSideMargin = const EdgeInsets.all(16),
     this.barrierColor,
     required this.overlayBuilder,
     required this.builder,
@@ -124,7 +84,8 @@ class _CustomOverlayState extends State<CustomOverlay> {
         context.screenSize,
         overlay.preferredSize,
         Offset(
-            newOffset.dx + widget.offset.dx, newOffset.dy + widget.offset.dy));
+            newOffset.dx + widget.offset.dx, newOffset.dy + widget.offset.dy),
+        margin: widget.screenSideMargin);
     return Rect.fromLTWH(offset.dx, offset.dy, overlay.preferredSize.width,
         overlay.preferredSize.height);
   }
@@ -166,7 +127,6 @@ class _CustomOverlayState extends State<CustomOverlay> {
               height: overlay.preferredSize.height,
               child: overlay,
             ),
-            Text('Screen: ${context.screenSize}')
           ],
         );
       });
@@ -190,5 +150,47 @@ class _CustomOverlayState extends State<CustomOverlay> {
 
     return Offset(
         left + leftOffset + rightOffset, top + topOffset + bottomOffset);
+  }
+}
+
+class CustomOverlayCallback {
+  final OverlayEntry overlayEntry;
+  final OverlayState overlayState;
+  final Duration? closeDelay;
+  bool opened = false;
+
+  CustomOverlayCallback({
+    required this.overlayEntry,
+    required this.overlayState,
+    this.closeDelay,
+  });
+
+  bool get mounted => overlayEntry.mounted;
+
+  void showOverlay() {
+    opened = true;
+    overlayState.insert(overlayEntry);
+  }
+
+  Future<void> hideOverlay() async {
+    opened = false;
+    overlayEntry.markNeedsBuild();
+    final overlayEn = overlayEntry;
+    if (closeDelay != null) {
+      await Future.delayed(closeDelay!);
+    }
+    if (overlayEn.mounted) {
+      overlayEn.remove();
+    }
+  }
+
+  void notify() {
+    overlayEntry.markNeedsBuild();
+  }
+
+  void removeOverlay() {
+    if (mounted) {
+      overlayEntry.remove();
+    }
   }
 }

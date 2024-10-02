@@ -19,6 +19,8 @@ class CustomOverlayAnimated extends StatelessWidget {
   final bool useBarrier;
   final double openFrom;
   final CustomOverlayAnim exitAnim;
+  final SlideAnimDirection slideAnimDirection;
+  final EdgeInsets screenSideMargin;
   final Duration duration;
   final Curve curve;
   final Color? barrierColor;
@@ -33,6 +35,8 @@ class CustomOverlayAnimated extends StatelessWidget {
     this.followerAnchor = Alignment.bottomLeft,
     this.barrierDismissible = true,
     this.exitAnim = CustomOverlayAnim.fade,
+    this.slideAnimDirection = SlideAnimDirection.bottom,
+    this.screenSideMargin = const EdgeInsets.all(16),
     this.useBarrier = false,
     this.openFrom = 1,
     this.barrierColor,
@@ -50,6 +54,7 @@ class CustomOverlayAnimated extends StatelessWidget {
       followerAnchor: followerAnchor,
       useBarrier: useBarrier,
       offset: offset,
+      screenSideMargin: screenSideMargin,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       overlayBuilder: (context, isOpened) {
@@ -63,6 +68,7 @@ class CustomOverlayAnimated extends StatelessWidget {
             child: SlideAnimWrapper(
               from: !isOpened ? 1 : openFrom,
               duration: duration,
+              direction: slideAnimDirection,
               curve: curve,
               opened: exitAnim != CustomOverlayAnim.slide ? true : isOpened,
               child: widget,

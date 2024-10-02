@@ -64,7 +64,8 @@ class AppBackground extends StatelessWidget {
             if (glassBlur)
               const GlassBlurBg()
             else if (wallpaperBlur)
-              WallpaperBlurBg(rect: rect!, isFocused: isFocused),
+              WallpaperBlurBg(rect: rect ?? Rect.zero, isFocused: isFocused),
+
             child,
           ],
         ),
