@@ -41,6 +41,8 @@ dependencies:
   os_core:
     path: ./os_core
   fluent_ui: ^4.9.1
+  fluentui_system_icons: ^1.1.259
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

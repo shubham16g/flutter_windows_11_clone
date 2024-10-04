@@ -1,12 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_windows_11_clone/apps/apps.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/taskbar/taskbar_clock_notification.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
@@ -68,52 +68,9 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               const BackgroundAppsMenuButton(),
               const SizedBox(width: 1),
-              const ControlMenuButton(),
+              const TaskbarControlMenuButton(),
               const SizedBox(width: 1),
-              CustomOverlayAnimated(
-                  useBarrier: false,
-                  offset: const Offset(0, -4),
-                  screenSideMargin: const EdgeInsets.all(1),
-                  exitAnim: CustomOverlayAnim.slide,
-                  slideAnimDirection: SlideAnimDirection.right,
-                  barrierColor: Colors.transparent,
-                  overlayBuilder: (context) {
-                    return PreferredSize(
-                      preferredSize:
-                          Size(340, context.screenSize.height - 48 - 16),
-                      child: const Padding(
-                        padding: EdgeInsets.only(bottom: 16, right: 16),
-                        child:
-                            AppBackground(glassBlur: true, child: SizedBox()),
-                      ),
-                    );
-                  },
-                  builder: (context, callback) {
-                    return GlassButton(
-                      height: 40,
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      onPressed: () {
-                        callback.showOverlay();
-                      },
-                      isFocused: false,
-                      child: Row(
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text('19:32',
-                                  style: context.theme.typography.caption),
-                              Text('02-10-2024',
-                                  style: context.theme.typography.caption),
-                            ],
-                          ),
-                          const SizedBox(width: 7),
-                          const Icon(FluentIcons.ringer, size: 15),
-                        ],
-                      ),
-                    );
-                  }),
+              const TaskbarClockNotification(),
               const SizedBox(width: 12),
             ],
           ),
