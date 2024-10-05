@@ -19,7 +19,7 @@ class WallpaperController extends ChangeNotifier {
   }
 
   void _listenTheme() {
-    if (themeController.isDark) {
+    if (themeController.isDarkMode) {
       loadWallpaperFromAsset('assets/images/wall_dark.jpg');
     } else {
       loadWallpaperFromAsset('assets/images/wall_light.jpg');

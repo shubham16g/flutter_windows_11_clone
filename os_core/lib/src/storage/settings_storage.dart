@@ -15,6 +15,7 @@ class SettingsStorage {
   static const String _keyWifi = 'wifi';
   static const String _keyBluetooth = 'bluetooth';
   static const String _keyBatterySaver = 'battery_saver';
+  static const String _keyNightLight = 'night_light';
 
   ThemeMode getTheme() {
     final theme = _box.get(_keyTheme, defaultValue: ThemeMode.light.name);
@@ -47,6 +48,14 @@ class SettingsStorage {
 
   void setBatterySaver(bool isOn) {
     _box.put(_keyBatterySaver, isOn.toString());
+  }
+
+  bool isNightLightOn() {
+    return _box.get(_keyNightLight, defaultValue: 'true') == 'true';
+  }
+
+  void setNightLight(bool isOn) {
+    _box.put(_keyNightLight, isOn.toString());
   }
 
 }

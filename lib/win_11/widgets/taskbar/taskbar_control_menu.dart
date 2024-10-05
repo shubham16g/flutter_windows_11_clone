@@ -40,47 +40,57 @@ class TaskbarControlMenu extends StatelessWidget
                             mainAxisExtent: 96,
                             crossAxisCount: 3),
                     children: [
-                      Builder(
-                        builder: (context) {
-                          final wifiController = OsWifiController.watch(context);
-                          return item(context,
-                              child: const Icon(FluentIcons.wifi_1_24_regular),
-                              isActive: wifiController.isWifiOn,
-                              onTap: wifiController.toggleWifi,
-                              title: 'Wi-Fi');
-                        }
-                      ),
-                      Builder(
-                          builder: (context) {
-                            final btController = OsBluetoothController.watch(context);
-                            return item(context,
-                                child: const Icon(FluentIcons.bluetooth_24_regular),
-                                isActive: btController.isBluetoothOn,
-                                onTap: btController.toggleWifi,
-                                title: 'Bluetooth');
-                          }
-                      ),
-
-                      Builder(
-                        builder: (context) {
-                          final batteryController = OsBatteryController.watch(context);
-                          return item(context,
-                              child: const Icon(FluentIcons.battery_saver_24_regular),
-                              isActive: batteryController.isBatterySaverOn,
-                              onTap: batteryController.toggleBatterySaver,
-                              title: 'Battery saver');
-                        }
-                      ),
+                      Builder(builder: (context) {
+                        final wifiController = OsWifiController.watch(context);
+                        return item(context,
+                            child: const Icon(FluentIcons.wifi_1_24_regular),
+                            isActive: wifiController.isWifiOn,
+                            onTap: wifiController.toggleWifi,
+                            title: 'Wi-Fi');
+                      }),
+                      Builder(builder: (context) {
+                        final btController =
+                            OsBluetoothController.watch(context);
+                        return item(context,
+                            child: const Icon(FluentIcons.bluetooth_24_regular),
+                            isActive: btController.isBluetoothOn,
+                            onTap: btController.toggleWifi,
+                            title: 'Bluetooth');
+                      }),
+                      Builder(builder: (context) {
+                        final themeController =
+                            OsThemeController.watch(context);
+                        return item(context,
+                            child: const Icon(
+                                FluentIcons.dark_theme_24_regular),
+                            isActive: themeController.isDarkMode,
+                            onTap: themeController.toggleTheme,
+                            title: 'Dark Theme');
+                      }),
+                      Builder(builder: (context) {
+                        final batteryController =
+                            OsBatteryController.watch(context);
+                        return item(context,
+                            child: const Icon(
+                                FluentIcons.battery_saver_24_regular),
+                            isActive: batteryController.isBatterySaverOn,
+                            onTap: batteryController.toggleBatterySaver,
+                            title: 'Battery saver');
+                      }),
+                      Builder(builder: (context) {
+                        final themeController =
+                            OsThemeController.watch(context);
+                        return item(context,
+                            child: const Icon(
+                                FluentIcons.brightness_low_24_regular),
+                            isActive: themeController.isNightLight,
+                            onTap: themeController.toggleNightLight,
+                            title: 'Night light');
+                      }),
                       item(context,
                           child: Icon(FluentIcons.settings_24_regular),
                           title: 'Settings',
                           onTap: () {}),
-                      item(context,
-                          child: Icon(FluentIcons.notebook_24_regular),
-                          title: 'Notepad'),
-                      item(context,
-                          child: Icon(FluentIcons.calendar_ltr_24_regular),
-                          title: 'Calendar'),
                     ],
                   )
                 ],
@@ -99,7 +109,7 @@ class TaskbarControlMenu extends StatelessWidget
   Widget item(BuildContext context,
       {required Widget child,
       required String title,
-        bool isActive = false,
+      bool isActive = false,
       void Function()? onTap,
       bool useGlassButton = true}) {
     return Column(
