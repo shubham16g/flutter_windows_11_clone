@@ -28,9 +28,7 @@ class SettingsPage extends StatelessWidget {
             child: ToggleSwitch(
                 checked: themeController.isDarkMode,
                 onChanged: (value) {
-                  value
-                      ? themeController.setDark()
-                      : themeController.setLight();
+                  themeController.toggleTheme();
                 }),
           ))
         ],

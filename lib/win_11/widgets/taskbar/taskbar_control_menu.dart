@@ -59,13 +59,13 @@ class TaskbarControlMenu extends StatelessWidget
                       }),
                       Builder(builder: (context) {
                         final themeController =
-                            OsThemeController.watch(context);
+                        OsNightLightController.watch(context);
                         return item(context,
                             child: const Icon(
-                                FluentIcons.dark_theme_24_regular),
-                            isActive: themeController.isDarkMode,
-                            onTap: themeController.toggleTheme,
-                            title: 'Dark Theme');
+                                FluentIcons.brightness_low_24_regular),
+                            isActive: themeController.isNightLightOn,
+                            onTap: themeController.toggleNightLight,
+                            title: 'Night light');
                       }),
                       Builder(builder: (context) {
                         final batteryController =
@@ -79,13 +79,13 @@ class TaskbarControlMenu extends StatelessWidget
                       }),
                       Builder(builder: (context) {
                         final themeController =
-                            OsThemeController.watch(context);
+                        OsThemeController.watch(context);
                         return item(context,
                             child: const Icon(
-                                FluentIcons.brightness_low_24_regular),
-                            isActive: themeController.isNightLight,
-                            onTap: themeController.toggleNightLight,
-                            title: 'Night light');
+                                FluentIcons.dark_theme_24_regular),
+                            isActive: themeController.isDarkMode,
+                            onTap: themeController.toggleTheme,
+                            title: 'Dark Theme');
                       }),
                       item(context,
                           child: Icon(FluentIcons.settings_24_regular),

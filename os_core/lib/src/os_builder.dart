@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:os_core/src/controllers/settings/os_brightness_controller.dart';
+import 'package:os_core/src/controllers/settings/os_night_light_controller.dart';
+import 'package:os_core/src/controllers/settings/os_volume_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
@@ -21,6 +24,9 @@ class OsBuilder extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => OsStartupController()),
       ChangeNotifierProvider(create: (context) => OsWifiController()),
       ChangeNotifierProvider(create: (context) => OsBluetoothController()),
+      ChangeNotifierProvider(create: (context) => OsNightLightController()),
+      ChangeNotifierProvider(create: (context) => OsBrightnessController()),
+      ChangeNotifierProvider(create: (context) => OsVolumeController()),
       ChangeNotifierProvider(create: (context) => OsBatteryController()),
       ChangeNotifierProvider(create: (context) => OsThemeController()),
       ChangeNotifierProvider(create: (context) => CursorController()),

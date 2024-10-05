@@ -1,10 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
-import '../common_widgets/app_background.dart';
 import 'start_menu/start_menu.dart';
 import 'taskbar/taskbar.dart';
 
@@ -82,40 +79,40 @@ class DesktopOverlay extends StatelessWidget {
           final tbAlign = overlayController.taskbarAlignment;
           final taskbarHeight = taskBar.preferredSize.height;
           final taskbarWidth = taskBar.preferredSize.width;
-          return Listener(
-            behavior: HitTestBehavior.translucent,
-            onPointerDown: overlayController.isStartMenuOpened ? (details) {
-              context.read<DesktopOverlayController>().closeStartMenu();
-            } : null,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                    top:
-                        tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
-                    bottom: tbAlign == TaskbarAlignment.bottom
-                        ? taskbarHeight - 1
-                        : 0,
-                    left:
-                        tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
-                    right: tbAlign == TaskbarAlignment.right
-                        ? taskbarWidth - 1
-                        : 0,
-                    child: const Stack(
-                      children: [
-                        StartMenu(),
-                      ],
-                    )),
+          return Stack(
+            children: [
+              Positioned.fill(
+                  child: Listener(
+                behavior: HitTestBehavior.translucent,
+                onPointerDown: (details) {
+                  context.read<DesktopOverlayController>().closeStartMenu();
+                },
+              )),
+              Positioned.fill(
+                  top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
+                  bottom: tbAlign == TaskbarAlignment.bottom
+                      ? taskbarHeight - 1
+                      : 0,
+                  left: tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
+                  right:
+                      tbAlign == TaskbarAlignment.right ? taskbarWidth - 1 : 0,
+                  child: Stack(
+                    children: [
+                      StartMenu(
+                          isStartMenuOpened:
+                              overlayController.isStartMenuOpened),
+                    ],
+                  )),
 
-                /// taskbar
-                Align(
-                  alignment: tbAlign.alignment,
-                  child: SizedBox(
-                      height: taskBar.preferredSize.height,
-                      width: taskBar.preferredSize.width,
-                      child: taskBar),
-                ),
-              ],
-            ),
+              /// taskbar
+              Align(
+                alignment: tbAlign.alignment,
+                child: SizedBox(
+                    height: taskBar.preferredSize.height,
+                    width: taskBar.preferredSize.width,
+                    child: taskBar),
+              ),
+            ],
           );
         });
   }

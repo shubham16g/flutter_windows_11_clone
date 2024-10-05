@@ -11,7 +11,7 @@ import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_widgets/glass_blur_bg.dart';
-import '../start_menu_wrapper.dart';
+import '../desktop_overlay.dart';
 import 'taskbar_background_apps_menu.dart';
 import 'taskbar_control_menu.dart';
 

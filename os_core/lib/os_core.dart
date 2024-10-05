@@ -16,3 +16,6 @@ export './src/controllers/settings/os_theme_controller.dart';
 export './src/controllers/settings/os_wifi_controller.dart';
 export './src/controllers/settings/os_bluetooth_controller.dart';
 export './src/controllers/settings/os_battery_controller.dart';
+export './src/controllers/settings/os_night_light_controller.dart';
+export './src/controllers/settings/os_brightness_controller.dart';
+export './src/controllers/settings/os_volume_controller.dart';
