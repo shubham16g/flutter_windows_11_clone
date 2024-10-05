@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+
+import '../../storage/settings_storage.dart';
 
 class OsThemeController extends ChangeNotifier {
 
@@ -13,14 +14,11 @@ class OsThemeController extends ChangeNotifier {
   }
 
   ThemeMode themeMode = ThemeMode.light;
-  final _box = Hive.box<String>('os');
+  final _settingsStorage = SettingsStorage.instance;
   bool appStarted = false;
 
   OsThemeController() {
-    themeMode = _box.get('theme', defaultValue: ThemeMode.light.name) == ThemeMode.light.name
-        ? ThemeMode.light
-        : ThemeMode.dark;
-    print('ThemeController: $themeMode, ${_box.get('theme', defaultValue: ThemeMode.light.name)}');
+    themeMode = _settingsStorage.getTheme();
     notifyListeners();
   }
   Future<void> startApp() async {
@@ -31,19 +29,19 @@ class OsThemeController extends ChangeNotifier {
 
   void toggleTheme() {
     themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    _box.put('theme', themeMode.name);
+    _settingsStorage.setTheme(themeMode);
     notifyListeners();
   }
 
   void setDark() {
     themeMode = ThemeMode.dark;
-    _box.put('theme', themeMode.name);
+    _settingsStorage.setTheme(themeMode);
     notifyListeners();
   }
 
   void setLight() {
     themeMode = ThemeMode.light;
-    _box.put('theme', themeMode.name);
+    _settingsStorage.setTheme(themeMode);
     notifyListeners();
   }
 

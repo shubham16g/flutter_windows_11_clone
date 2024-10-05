@@ -1,4 +1,3 @@
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/apps/apps.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
@@ -10,6 +9,7 @@ class GlassButton extends StatefulWidget {
   final Widget? child;
   final double pressedScale;
   final bool isFocused;
+  final bool isActive;
   final double? width;
   final double? height;
   final EdgeInsets? padding;
@@ -21,6 +21,7 @@ class GlassButton extends StatefulWidget {
       required Widget Function(BuildContext context, bool isTapDown)
           this.builder,
       this.isFocused = false,
+      this.isActive = false,
       this.pressedScale = 0.7,
       this.showOutline = true,
       this.width,
@@ -33,6 +34,7 @@ class GlassButton extends StatefulWidget {
       this.onPressed,
       required Widget this.child,
       this.isFocused = false,
+      this.isActive = false,
       this.pressedScale = 0.7,
       this.showOutline = true,
       this.width,
@@ -50,10 +52,21 @@ class _GlassButtonState extends State<GlassButton> {
 
   @override
   Widget build(BuildContext context) {
-    final hoverColor = Colors.white.withOpacity(context.isDark ? 0.1 : 0.6);
-    final tapDownColor = Colors.white.withOpacity(context.isDark ? 0.06 : 0.4);
-    final hoverOutlineColor = Colors.white.withOpacity(0.15);
-    final tapDownOutlineColor = Colors.white.withOpacity(0.3);
+    final Color hoverColor;
+    final Color tapDownColor;
+    final Color hoverOutlineColor;
+    final Color tapDownOutlineColor;
+    if (widget.isActive) {
+      hoverColor = Colors.blue.withOpacity(context.isDark ? 0.1 : 0.6);
+      tapDownColor = Colors.blue.withOpacity(context.isDark ? 0.06 : 0.4);
+      hoverOutlineColor = Colors.blue.withOpacity(0.15);
+      tapDownOutlineColor = Colors.blue.withOpacity(0.3);
+    } else {
+      hoverColor = Colors.white.withOpacity(context.isDark ? 0.1 : 0.6);
+      tapDownColor = Colors.white.withOpacity(context.isDark ? 0.06 : 0.4);
+      hoverOutlineColor = Colors.white.withOpacity(0.15);
+      tapDownOutlineColor = Colors.white.withOpacity(0.3);
+    }
     return MouseRegion(
       onEnter: (_) {
         setState(() {
@@ -93,7 +106,9 @@ class _GlassButtonState extends State<GlassButton> {
                 ? tapDownColor
                 : isHovered
                     ? hoverColor
-                    : widget.isFocused ? tapDownColor : Colors.white.withOpacity(0),
+                    : widget.isFocused
+                        ? tapDownColor
+                        : Colors.white.withOpacity(0),
             borderRadius: BorderRadius.circular(4),
             border: widget.showOutline
                 ? Border.all(
@@ -101,7 +116,9 @@ class _GlassButtonState extends State<GlassButton> {
                         ? tapDownOutlineColor
                         : isHovered
                             ? hoverOutlineColor
-                            : widget.isFocused ? tapDownColor : Colors.white.withOpacity(0),
+                            : widget.isFocused
+                                ? tapDownColor
+                                : Colors.white.withOpacity(0),
                     width: 0.5)
                 : null,
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/apps/apps.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:os_core/os_core.dart';
 
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/custom_overlay_animated.dart';
@@ -39,9 +40,26 @@ class TaskbarControlMenu extends StatelessWidget
                             mainAxisExtent: 96,
                             crossAxisCount: 3),
                     children: [
-                      item(context,
-                          child: Icon(FluentIcons.wifi_1_24_regular),
-                          title: 'Wi-Fi'),
+                      Builder(
+                        builder: (context) {
+                          final wifiController = OsWifiController.watch(context);
+                          return item(context,
+                              child: const Icon(FluentIcons.wifi_1_24_regular),
+                              isActive: wifiController.isWifiOn,
+                              onTap: wifiController.toggleWifi,
+                              title: 'Wi-Fi');
+                        }
+                      ),
+                      Builder(
+                          builder: (context) {
+                            final btController = OsBluetoothController.watch(context);
+                            return item(context,
+                                child: const Icon(FluentIcons.bluetooth_24_regular),
+                                isActive: btController.isBluetoothOn,
+                                onTap: btController.toggleWifi,
+                                title: 'Bluetooth');
+                          }
+                      ),
                       item(context,
                           child: Icon(FluentIcons.speaker_2_24_regular),
                           title: 'Sound'),
@@ -76,6 +94,7 @@ class TaskbarControlMenu extends StatelessWidget
   Widget item(BuildContext context,
       {required Widget child,
       required String title,
+        bool isActive = false,
       void Function()? onTap,
       bool useGlassButton = true}) {
     return Column(
@@ -83,6 +102,7 @@ class TaskbarControlMenu extends StatelessWidget
         useGlassButton
             ? GlassButton(
                 isFocused: true,
+                isActive: isActive,
                 onPressed: onTap,
                 width: double.infinity,
                 height: 48,

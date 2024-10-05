@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:os_core/src/controllers/settings/os_bluetooth_controller.dart';
+import 'package:os_core/src/controllers/settings/os_wifi_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../os_core.dart';
@@ -12,6 +14,8 @@ class OsBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => OsWifiController()),
+      ChangeNotifierProvider(create: (context) => OsBluetoothController()),
       ChangeNotifierProvider(create: (context) => OsThemeController()),
       ChangeNotifierProvider(create: (context) => CursorController()),
       ChangeNotifierProvider(create: (context) => RunningAppsController()),
