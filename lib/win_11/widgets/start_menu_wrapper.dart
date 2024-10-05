@@ -43,7 +43,10 @@ class DesktopOverlayController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _startMenuAnim = false;
+
   void toggleStartMenu() {
+    if (_startMenuAnim) return;
     isStartMenuOpened = !isStartMenuOpened;
     if (isStartMenuOpened) {
       runningAppsController.clearAppFocus();
@@ -56,8 +59,13 @@ class DesktopOverlayController extends ChangeNotifier {
   void closeStartMenu() {
     if (!isStartMenuOpened) return;
     isStartMenuOpened = false;
+    if (_startMenuAnim) return;
+    _startMenuAnim = true;
     runningAppsController.resetAppFocus();
     notifyListeners();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _startMenuAnim = false;
+    });
   }
 }
 
@@ -66,18 +74,19 @@ class DesktopOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const taskBar = Taskbar();
-    final tbAlign = context.watch<DesktopOverlayController>().taskbarAlignment;
-    final taskbarHeight = taskBar.preferredSize.height;
-    final taskbarWidth = taskBar.preferredSize.width;
     return ChangeNotifierProvider(
         create: (context) => DesktopOverlayController(context.read()),
         builder: (context, _) {
+          final overlayController = context.watch<DesktopOverlayController>();
+          const taskBar = Taskbar();
+          final tbAlign = overlayController.taskbarAlignment;
+          final taskbarHeight = taskBar.preferredSize.height;
+          final taskbarWidth = taskBar.preferredSize.width;
           return Listener(
             behavior: HitTestBehavior.translucent,
-            onPointerDown: (details) {
+            onPointerDown: overlayController.isStartMenuOpened ? (details) {
               context.read<DesktopOverlayController>().closeStartMenu();
-            },
+            } : null,
             child: Stack(
               children: [
                 Positioned.fill(
