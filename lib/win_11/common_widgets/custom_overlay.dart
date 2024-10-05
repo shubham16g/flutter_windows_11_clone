@@ -66,8 +66,7 @@ class _CustomOverlayState extends State<CustomOverlay> {
     );
   }
 
-  Rect getRect(PreferredSizeWidget overlay) {
-    final rect = _key.globalPaintBounds ?? Rect.zero;
+  Rect getRect(PreferredSizeWidget overlay, Rect rect) {
     final targetAnchor = widget.targetAnchor;
     final followerAnchor = widget.followerAnchor;
     final w = rect.width / 2;
@@ -92,7 +91,8 @@ class _CustomOverlayState extends State<CustomOverlay> {
 
   OverlayEntry buildOverlay() => OverlayEntry(builder: (_) {
         final overlay = widget.overlayBuilder(context, overlayCallback.opened);
-        final rect = getRect(overlay);
+        final buttonRect = _key.globalPaintBounds ?? Rect.zero;
+        final rect = getRect(overlay, buttonRect);
         final offset = rect.topLeft;
         return Stack(
           children: [
@@ -158,6 +158,7 @@ class CustomOverlayCallback {
   final OverlayState overlayState;
   final Duration? closeDelay;
   bool opened = false;
+  bool fullVisible = false;
 
   CustomOverlayCallback({
     required this.overlayEntry,
@@ -168,7 +169,11 @@ class CustomOverlayCallback {
   bool get mounted => overlayEntry.mounted;
 
   void showOverlay() {
+    if (fullVisible) {
+      return;
+    }
     opened = true;
+    fullVisible = true;
     overlayState.insert(overlayEntry);
   }
 
@@ -181,7 +186,9 @@ class CustomOverlayCallback {
     }
     if (overlayEn.mounted) {
       overlayEn.remove();
+      await Future.delayed(const Duration(milliseconds: 100));
     }
+    fullVisible = false;
   }
 
   void notify() {
@@ -192,5 +199,7 @@ class CustomOverlayCallback {
     if (mounted) {
       overlayEntry.remove();
     }
+    opened = false;
+    fullVisible = false;
   }
 }
