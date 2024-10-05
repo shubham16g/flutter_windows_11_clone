@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           ],
           desktop: const SizedBox(),
           desktopOverlay:
-              StartMenuWrapper(isStartMenuOpened: context.watch<RunningAppsController>().isStartMenuOpened),
+              DesktopOverlay(),
         ),
       ),
     );

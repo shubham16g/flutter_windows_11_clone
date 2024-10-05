@@ -11,6 +11,7 @@ import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_widgets/glass_blur_bg.dart';
+import '../start_menu_wrapper.dart';
 import 'taskbar_background_apps_menu.dart';
 import 'taskbar_control_menu.dart';
 
@@ -22,6 +23,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final desktopOverlayController = context.watch<DesktopOverlayController>();
     final runningAppsProvider = context.watch<RunningAppsController>();
     final taskbarApps = runningAppsProvider.taskbarApps;
     final focusedApp = runningAppsProvider.focusedApp;
@@ -46,10 +48,10 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
                   width: 24,
                 ),
                 onPressed: () {
-                  runningAppsProvider.toggleStartMenu();
+                  desktopOverlayController.toggleStartMenu();
                 },
                 openCount: 0,
-                isFocused: runningAppsProvider.isStartMenuOpened,
+                isFocused: desktopOverlayController.isStartMenuOpened,
               ),
               ...taskbarApps.map((e) => TaskbarButton(
                   isFocused: focusedApp == e.app,

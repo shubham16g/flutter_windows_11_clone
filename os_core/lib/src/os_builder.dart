@@ -8,7 +8,6 @@ import 'controllers/settings/os_bluetooth_controller.dart';
 import 'controllers/settings/os_startup_controller.dart';
 import 'controllers/settings/os_theme_controller.dart';
 import 'controllers/settings/os_wifi_controller.dart';
-import 'controllers/taskbar_controller.dart';
 import 'controllers/wallpaper_controller.dart';
 
 class OsBuilder extends StatelessWidget {
@@ -26,7 +25,6 @@ class OsBuilder extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => OsThemeController()),
       ChangeNotifierProvider(create: (context) => CursorController()),
       ChangeNotifierProvider(create: (context) => RunningAppsController()),
-      ChangeNotifierProvider(create: (context) => TaskbarController()),
       ChangeNotifierProvider(
           create: (context) => WallpaperController(context.read())),
     ], builder: (context, _) => builder(context));
