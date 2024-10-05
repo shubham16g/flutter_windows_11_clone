@@ -16,7 +16,6 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -40,9 +39,9 @@ class MyApp extends StatelessWidget {
             FileExplorerApp(),
             SettingsApp(),
           ],
-          startMenuBuilder: (context, isStartMenuOpened) =>
-              StartMenuWrapper(isStartMenuOpened: isStartMenuOpened),
-          taskBar: const Taskbar(),
+          desktop: const SizedBox(),
+          desktopOverlay:
+              StartMenuWrapper(isStartMenuOpened: context.watch<RunningAppsController>().isStartMenuOpened),
         ),
       ),
     );

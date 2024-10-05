@@ -7,10 +7,13 @@ import 'package:flutter_windows_11_clone/win_11/common_widgets/mini_button.dart'
 import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
 import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu_pinned_section.dart';
 import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu_recommended_section.dart';
+import 'package:os_core/os_core.dart';
+import 'package:provider/provider.dart';
 
 import '../common_widgets/app_background.dart';
 import '../common_widgets/glass_blur_bg.dart';
 import 'start_menu/start_menu.dart';
+import 'taskbar/taskbar.dart';
 
 class StartMenuWrapper extends StatelessWidget {
   final bool isStartMenuOpened;
@@ -19,24 +22,49 @@ class StartMenuWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const taskBar = Taskbar();
+    final tbAlign = context.watch<TaskbarController>().alignment;
+    final taskbarHeight = taskBar.preferredSize.height;
+    final taskbarWidth = taskBar.preferredSize.width;
     final screenHeight = context.screenSize.height - 48;
     final double height = screenHeight > 726 ? 726 : screenHeight;
-    return Align(
-      alignment: Alignment.bottomCenter ,
-      child: SizedBox(
-        width: 642,
-        height: height,
-        child: SlideAnimWrapper(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutCubic,
-            opened: isStartMenuOpened,
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 13),
-              child: const AppBackground(
-                  glassBlur: true,
-                  child: StartMenu()),
+    return Stack(
+      children: [
+        Positioned.fill(
+            top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
+            bottom: tbAlign == TaskbarAlignment.bottom ? taskbarHeight - 1 : 0,
+            left: tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
+            right: tbAlign == TaskbarAlignment.right ? taskbarWidth - 1 : 0,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: 642,
+                    height: height,
+                    child: SlideAnimWrapper(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOutCubic,
+                        opened: isStartMenuOpened,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 13),
+                          child: const AppBackground(
+                              glassBlur: true, child: StartMenu()),
+                        )),
+                  ),
+                ),
+              ],
             )),
-      ),
+
+        /// taskbar
+        Align(
+          alignment: tbAlign.alignment,
+          child: SizedBox(
+              height: taskBar.preferredSize.height,
+              width: taskBar.preferredSize.width,
+              child: taskBar),
+        ),
+      ],
     );
   }
 }

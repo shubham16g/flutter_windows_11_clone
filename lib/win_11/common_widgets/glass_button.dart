@@ -93,15 +93,15 @@ class _GlassButtonState extends State<GlassButton> {
                 ? tapDownColor
                 : isHovered
                     ? hoverColor
-                    : Colors.white.withOpacity(0),
+                    : widget.isFocused ? tapDownColor : Colors.white.withOpacity(0),
             borderRadius: BorderRadius.circular(4),
             border: widget.showOutline
                 ? Border.all(
-                    color: isHovered
-                        ? hoverOutlineColor
-                        : isTapDown
-                            ? tapDownOutlineColor
-                            : Colors.white.withOpacity(0),
+                    color: isTapDown
+                        ? tapDownOutlineColor
+                        : isHovered
+                            ? hoverOutlineColor
+                            : widget.isFocused ? tapDownColor : Colors.white.withOpacity(0),
                     width: 0.5)
                 : null,
           ),
