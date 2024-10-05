@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'apps/apps.dart';
 import 'apps/settings/settings_app.dart';
-import 'win_11/widgets/taskbar.dart';
+import 'win_11/widgets/taskbar/taskbar.dart';
 
 Future<void> main() async {
   // ensure

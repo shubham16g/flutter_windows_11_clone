@@ -10,9 +10,9 @@ import 'package:flutter_windows_11_clone/win_11/widgets/taskbar/taskbar_clock_no
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
-import '../common_widgets/glass_blur_bg.dart';
-import 'taskbar/background_apps_menu.dart';
-import 'taskbar/control_menu.dart';
+import '../../common_widgets/glass_blur_bg.dart';
+import 'taskbar_background_apps_menu.dart';
+import 'taskbar_control_menu.dart';
 
 class Taskbar extends StatelessWidget implements PreferredSizeWidget {
   const Taskbar({super.key});
@@ -66,7 +66,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const BackgroundAppsMenuButton(),
+              const TaskbarBackgroundAppsMenuButton(),
               const SizedBox(width: 1),
               const TaskbarControlMenuButton(),
               const SizedBox(width: 1),

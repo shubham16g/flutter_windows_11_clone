@@ -19,9 +19,21 @@ class TaskbarControlMenu extends StatelessWidget implements PreferredSizeWidget 
 
   @override
   Widget build(BuildContext context) {
-    return const AppBackground(
+    return  AppBackground(
       glassBlur: true,
-      child: SizedBox(),
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              color: context.osColor.glassOverlay1,
+            ),
+          ),
+          Container(
+            color: context.osColor.glassOverlay2,
+            height: 48,
+          ),
+        ],
+      ),
     ).pad(bottom: bottomMargin);
   }
 }

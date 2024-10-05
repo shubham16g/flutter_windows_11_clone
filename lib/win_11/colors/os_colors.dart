@@ -9,4 +9,7 @@ mixin OsColor {
   Color get textPrimary;
   Color get textSecondary;
   Color get textTertiary;
+  Color get glassOverlay1;
+  Color get glassOverlay2;
+  Color get glassDivider;
 }

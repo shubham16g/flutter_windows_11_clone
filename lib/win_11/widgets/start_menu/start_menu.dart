@@ -15,34 +15,27 @@ class StartMenu extends StatelessWidget {
       children: [
         Expanded(
             child: Container(
-              color: context.isDark
-                  ? Colors.transparent
-                  : Colors.white.withOpacity(0.3),
-              child: Column(
-                children: [
-                  TextFormBox(
-                    placeholder: 'Search for apps, settings, and documents',
-                  ).pad(all: 33),
-                  const StartMenuPinnedSection(),
-                  const StartMenuRecommendedSection(),
-                ],
-              ),
-            )),
+          color: context.osColor.glassOverlay1,
+          child: Column(
+            children: [
+              TextFormBox(
+                placeholder: 'Search for apps, settings, and documents',
+              ).pad(all: 33),
+              const StartMenuPinnedSection(),
+              const StartMenuRecommendedSection(),
+            ],
+          ),
+        )),
         Container(
           decoration: BoxDecoration(
-            color: context.isDark
-                ? Colors.black.withOpacity(0.2)
-                : Colors.transparent,
+            color: context.osColor.glassOverlay2,
             border: Border(
-                top: BorderSide(
-                    color: context.osColor.taskbarBorder.withOpacity(0.1), width: 1)),
+                top: BorderSide(color: context.osColor.glassDivider, width: 1)),
           ),
           height: 64,
-          child: StartMenuFooter(),
+          child: const StartMenuFooter(),
         )
       ],
     );
   }
-
-
 }

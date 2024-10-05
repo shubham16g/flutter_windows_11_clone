@@ -6,11 +6,11 @@ import '../../common_widgets/app_background.dart';
 import '../../common_widgets/custom_overlay_animated.dart';
 import '../../common_widgets/glass_button.dart';
 
-class BackgroundAppsMenu extends StatelessWidget
+class TaskbarBackgroundAppsMenu extends StatelessWidget
     implements PreferredSizeWidget {
   final List<String> items;
 
-  const BackgroundAppsMenu({super.key, required this.items});
+  const TaskbarBackgroundAppsMenu({super.key, required this.items});
 
   final bottomMargin = 16.0;
   final itemSize = 40;
@@ -36,8 +36,8 @@ class BackgroundAppsMenu extends StatelessWidget
   }
 }
 
-class BackgroundAppsMenuButton extends StatelessWidget {
-  const BackgroundAppsMenuButton({super.key});
+class TaskbarBackgroundAppsMenuButton extends StatelessWidget {
+  const TaskbarBackgroundAppsMenuButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class BackgroundAppsMenuButton extends StatelessWidget {
         followerAnchor: Alignment.bottomCenter,
         exitAnim: CustomOverlayAnim.slide,
         barrierColor: Colors.transparent,
-        overlayBuilder: (context) => BackgroundAppsMenu(items: ['', '', '', '', '', ''],),
+        overlayBuilder: (context) => TaskbarBackgroundAppsMenu(items: ['', '', '', '', '', ''],),
         builder: (context, callback) {
           return GlassButton(
             height: 40,
