@@ -60,12 +60,17 @@ class TaskbarControlMenu extends StatelessWidget
                                 title: 'Bluetooth');
                           }
                       ),
-                      item(context,
-                          child: Icon(FluentIcons.speaker_2_24_regular),
-                          title: 'Sound'),
-                      item(context,
-                          child: Icon(FluentIcons.battery_5_24_regular),
-                          title: 'Battery'),
+
+                      Builder(
+                        builder: (context) {
+                          final batteryController = OsBatteryController.watch(context);
+                          return item(context,
+                              child: const Icon(FluentIcons.battery_saver_24_regular),
+                              isActive: batteryController.isBatterySaverOn,
+                              onTap: batteryController.toggleBatterySaver,
+                              title: 'Battery saver');
+                        }
+                      ),
                       item(context,
                           child: Icon(FluentIcons.settings_24_regular),
                           title: 'Settings',

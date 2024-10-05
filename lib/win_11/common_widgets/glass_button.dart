@@ -1,6 +1,6 @@
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_windows_11_clone/apps/apps.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 
 // todo zoom out hover exit effect
 class GlassButton extends StatefulWidget {
@@ -57,10 +57,10 @@ class _GlassButtonState extends State<GlassButton> {
     final Color hoverOutlineColor;
     final Color tapDownOutlineColor;
     if (widget.isActive) {
-      hoverColor = Colors.blue.withOpacity(context.isDark ? 0.1 : 0.6);
-      tapDownColor = Colors.blue.withOpacity(context.isDark ? 0.06 : 0.4);
-      hoverOutlineColor = Colors.blue.withOpacity(0.15);
-      tapDownOutlineColor = Colors.blue.withOpacity(0.3);
+      hoverColor = Colors.blue[200]!;
+      tapDownColor = Colors.blue[600]!;
+      hoverOutlineColor = Colors.blue.withOpacity(0);
+      tapDownOutlineColor = Colors.blue.withOpacity(0);
     } else {
       hoverColor = Colors.white.withOpacity(context.isDark ? 0.1 : 0.6);
       tapDownColor = Colors.white.withOpacity(context.isDark ? 0.06 : 0.4);
@@ -122,7 +122,26 @@ class _GlassButtonState extends State<GlassButton> {
                     width: 0.5)
                 : null,
           ),
-          child: widget.child ?? widget.builder?.call(context, isTapDown),
+          child: IconTheme(
+            data: context.theme.iconTheme.copyWith(
+              color: widget.isActive
+                  ? (context.isDark
+                      ? context.osColorLight.textPrimary
+                      : context.osColorDark.textPrimary)
+                  : context.osColor.textPrimary,
+            ),
+            child: DefaultTextStyle(
+                style: context.theme.typography.caption!.copyWith(
+                  color: widget.isActive
+                      ? (context.isDark
+                          ? context.osColorLight.textPrimary
+                          : context.osColorDark.textPrimary)
+                      : context.osColor.textPrimary,
+                ),
+                child: widget.child ??
+                    widget.builder?.call(context, isTapDown) ??
+                    const SizedBox()),
+          ),
         ),
       ),
     );

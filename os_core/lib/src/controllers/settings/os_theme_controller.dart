@@ -14,18 +14,14 @@ class OsThemeController extends ChangeNotifier {
   }
 
   ThemeMode themeMode = ThemeMode.light;
+
   final _settingsStorage = SettingsStorage.instance;
-  bool appStarted = false;
 
   OsThemeController() {
     themeMode = _settingsStorage.getTheme();
     notifyListeners();
   }
-  Future<void> startApp() async {
-    await Future.delayed(const Duration(milliseconds: 1500));
-    appStarted = true;
-    notifyListeners();
-  }
+
 
   void toggleTheme() {
     themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;

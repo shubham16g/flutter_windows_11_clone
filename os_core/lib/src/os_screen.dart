@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:os_core/os_core.dart';
+import 'package:os_core/src/controllers/settings/os_startup_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
@@ -27,7 +28,7 @@ class _OsScreenState extends State<OsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //   App.tryOpen(context, SettingsApp());
       context.read<RunningAppsController>().setFixedApps(widget.fixedTaskbarApps);
-      context.read<OsThemeController>().startApp();
+      OsStartupController.read(context).startOs();
     });
     super.initState();
   }
@@ -83,19 +84,30 @@ class _OsScreenState extends State<OsScreen> {
               ],
             ),
           ),
-          Positioned.fill(
-            child: IgnorePointer(
-              ignoring: themeController.appStarted,
-              child: AnimatedOpacity(
-                opacity: themeController.appStarted ? 0 : 1,
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeOutCubic,
-                child: Container(color: Colors.black),
-              ),
-            ),
+          const Positioned.fill(
+            child: OsStartupOverlay(),
           )
         ],
       ),
     );
   }
 }
+
+class OsStartupOverlay extends StatelessWidget {
+  const OsStartupOverlay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final osStartupController = OsStartupController.watch(context);
+    return IgnorePointer(
+      ignoring: osStartupController.isOsStarted,
+      child: AnimatedOpacity(
+        opacity: osStartupController.isOsStarted ? 0 : 1,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutCubic,
+        child: Container(color: Colors.black),
+      ),
+    );
+  }
+}
+
