@@ -8,6 +8,7 @@ import 'package:os_core/os_core.dart';
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/custom_overlay_animated.dart';
 import '../../common_widgets/glass_button.dart';
+import '../../common_widgets/required_fluent_ui_components.dart';
 
 class TaskbarControlMenu extends StatelessWidget
     implements PreferredSizeWidget {
@@ -27,12 +28,12 @@ class TaskbarControlMenu extends StatelessWidget
           Expanded(
             child: Container(
               color: context.osColor.glassOverlay1,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
                 children: [
                   GridView(
                     shrinkWrap: true,
-                    padding: EdgeInsets.zero,
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -59,7 +60,7 @@ class TaskbarControlMenu extends StatelessWidget
                       }),
                       Builder(builder: (context) {
                         final themeController =
-                        OsNightLightController.watch(context);
+                            OsNightLightController.watch(context);
                         return item(context,
                             child: const Icon(
                                 FluentIcons.brightness_low_24_regular),
@@ -79,10 +80,10 @@ class TaskbarControlMenu extends StatelessWidget
                       }),
                       Builder(builder: (context) {
                         final themeController =
-                        OsThemeController.watch(context);
+                            OsThemeController.watch(context);
                         return item(context,
-                            child: const Icon(
-                                FluentIcons.dark_theme_24_regular),
+                            child:
+                                const Icon(FluentIcons.dark_theme_24_regular),
                             isActive: themeController.isDarkMode,
                             onTap: themeController.toggleTheme,
                             title: 'Dark Theme');
@@ -92,7 +93,11 @@ class TaskbarControlMenu extends StatelessWidget
                           title: 'Settings',
                           onTap: () {}),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 10),
+                  const _BrightnessControl(),
+                  const SizedBox(height: 14),
+                  const _VolumeControl(),
                 ],
               ),
             ),
@@ -131,6 +136,66 @@ class TaskbarControlMenu extends StatelessWidget
           style: context.theme.typography.caption,
           maxLines: 2,
         )),
+      ],
+    );
+  }
+}
+
+class _BrightnessControl extends StatelessWidget {
+  const _BrightnessControl({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final brightnessController = OsBrightnessController.watch(context);
+    return Row(
+      children: [
+        Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            child: const Icon(FluentIcons.brightness_high_20_regular)),
+        const SizedBox(width: 2),
+        Expanded(
+          child: FluentSlider(
+              value: brightnessController.brightness.toDouble(),
+              onChanged: (value) {
+                brightnessController.setBrightness(value.toInt());
+              }),
+        ),
+        const SizedBox(width: 2),
+        const SizedBox(width: 40, height: 40),
+      ],
+    );
+  }
+}
+
+class _VolumeControl extends StatelessWidget {
+  const _VolumeControl({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final volumeController = OsVolumeController.watch(context);
+    return Row(
+      children: [
+        const GlassButton(
+            width: 40,
+            height: 40,
+            showOutline: false,
+            child: Icon(FluentIcons.speaker_2_20_regular)),
+        const SizedBox(width: 2),
+        Expanded(
+          child: FluentSlider(
+              value: volumeController.volume.toDouble(),
+              onChanged: (value) {
+                volumeController.setVolume(value.toInt());
+              }),
+        ),
+        const SizedBox(width: 2),
+        const GlassButton(
+            width: 40,
+            height: 40,
+            showOutline: false,
+            child: Icon(FluentIcons.arrow_right_20_filled)),
       ],
     );
   }

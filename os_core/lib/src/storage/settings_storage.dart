@@ -47,7 +47,7 @@ class SettingsStorage {
   }
 
   bool isBatterySaverOn() {
-    return _box.get(_keyBatterySaver, defaultValue: 'true') == 'true';
+    return _box.get(_keyBatterySaver, defaultValue: 'false') == 'true';
   }
 
   void setBatterySaver(bool isOn) {
@@ -55,7 +55,7 @@ class SettingsStorage {
   }
 
   bool isNightLightOn() {
-    return _box.get(_keyNightLight, defaultValue: 'true') == 'true';
+    return _box.get(_keyNightLight, defaultValue: 'false') == 'true';
   }
 
   void setNightLight(bool isOn) {
