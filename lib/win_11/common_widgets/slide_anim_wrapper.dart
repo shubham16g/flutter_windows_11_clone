@@ -1,15 +1,42 @@
 import 'package:flutter/material.dart';
 
-enum SlideAnimDirection { top, left, right, bottom }
+enum SlideAnimDirection {
+  top,
+  left,
+  right,
+  bottom;
+
+  Alignment get alignment {
+    switch (this) {
+      case SlideAnimDirection.top:
+        return Alignment.topCenter;
+      case SlideAnimDirection.left:
+        return Alignment.centerLeft;
+      case SlideAnimDirection.right:
+        return Alignment.centerRight;
+      case SlideAnimDirection.bottom:
+        return Alignment.bottomCenter;
+    }
+  }
+
+  double? _sideValue(SlideAnimDirection dir) {
+    return this == dir ? null : 0;
+  }
+
+  bool get isHorizontal =>
+      this == SlideAnimDirection.left || this == SlideAnimDirection.right;
+}
 
 class SlideAnimWrapper extends StatefulWidget {
   final Widget child;
   final Duration duration;
   final Curve curve;
+  final Clip clipBehavior;
 
   // top, left, right, bottom alignment only:
   final SlideAnimDirection direction;
   final bool opened;
+  final Decoration? decoration;
   final double from;
 
   const SlideAnimWrapper({
@@ -18,8 +45,10 @@ class SlideAnimWrapper extends StatefulWidget {
     required this.duration,
     this.curve = Curves.easeInOut,
     this.direction = SlideAnimDirection.bottom,
+    this.clipBehavior = Clip.none,
     this.from = 1,
     required this.opened,
+    this.decoration,
   });
 
   @override
@@ -54,6 +83,39 @@ class _SlideAnimWrapperState extends State<SlideAnimWrapper> {
     return LayoutBuilder(builder: (context, constraints) {
       final height = constraints.maxHeight * widget.from;
       final width = constraints.maxWidth * widget.from;
+      return Align(
+        alignment: widget.direction.alignment,
+        child: AnimatedContainer(
+          duration: widget.duration,
+          curve: widget.curve,
+          clipBehavior: widget.clipBehavior,
+          decoration: widget.decoration,
+          height: widget.direction.isHorizontal
+              ? null
+              : opened
+                  ? constraints.maxHeight
+                  : 0,
+          width: widget.direction.isHorizontal
+              ? opened
+                  ? constraints.maxWidth
+                  : 0
+              : null,
+          child: Stack(
+            children: [
+              Positioned(
+                  top: widget.direction._sideValue(SlideAnimDirection.top),
+                  left: widget.direction._sideValue(SlideAnimDirection.left),
+                  right: widget.direction._sideValue(SlideAnimDirection.right),
+                  bottom:
+                      widget.direction._sideValue(SlideAnimDirection.bottom),
+                  child: SizedBox(
+                      width: constraints.maxWidth + 1,
+                      height: constraints.maxHeight + 1,
+                      child: widget.child)),
+            ],
+          ),
+        ),
+      );
       return ClipRRect(
         clipBehavior: Clip.antiAlias,
         clipper: MyCustomClipper(),
@@ -90,7 +152,7 @@ class _SlideAnimWrapperState extends State<SlideAnimWrapper> {
 class MyCustomClipper extends CustomClipper<RRect> {
   @override
   RRect getClip(Size size) {
-  //   clip only bottom
+    //   clip only bottom
     return RRect.fromRectAndCorners(
       Rect.fromLTWH(-50, -50, size.width + 100, size.height + 50),
       bottomLeft: const Radius.circular(20),

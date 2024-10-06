@@ -24,6 +24,8 @@ class CustomOverlayAnimated extends StatelessWidget {
   final Duration duration;
   final Curve curve;
   final Color? barrierColor;
+  final Decoration? decoration;
+  final Clip clipBehavior;
   final PreferredSizeWidget Function(BuildContext context) overlayBuilder;
   final Widget Function(BuildContext context, CustomOverlayCallback callback)
       builder;
@@ -40,6 +42,8 @@ class CustomOverlayAnimated extends StatelessWidget {
     this.useBarrier = false,
     this.openFrom = 1,
     this.barrierColor,
+    this.decoration,
+    this.clipBehavior = Clip.none,
     this.duration = const Duration(milliseconds: 150),
     this.curve = Curves.easeOutCubic,
     required this.overlayBuilder,
@@ -68,6 +72,8 @@ class CustomOverlayAnimated extends StatelessWidget {
             child: SlideAnimWrapper(
               from: !isOpened ? 1 : openFrom,
               duration: duration,
+              decoration: decoration,
+              clipBehavior: clipBehavior,
               direction: slideAnimDirection,
               curve: curve,
               opened: exitAnim != CustomOverlayAnim.slide ? true : isOpened,

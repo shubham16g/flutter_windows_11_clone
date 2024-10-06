@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/apps/apps.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 
 import 'glass_blur_bg.dart';
@@ -30,6 +32,13 @@ class AppBackground extends StatelessWidget {
     this.borderColor,
   }) : assert(!wallpaperBlur || rect != null);
 
+  static List<BoxShadow> defaultBoxShadow(BuildContext context) => [
+    BoxShadow(
+        color: Colors.black.withOpacity(context.isDark ? 0.4 : 0.2),
+        blurRadius: 16,
+        offset: const Offset(0, 5))
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,15 +56,7 @@ class AppBackground extends StatelessWidget {
                         : context.osColor.appBorder),
                 width: 1),
         borderRadius: BorderRadius.circular(isFullScreen ? 0 : borderRadius),
-        boxShadow: isFocused
-            ? boxShadow ??
-                [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.4),
-                      blurRadius: 16,
-                      offset: const Offset(0, 5))
-                ]
-            : null,
+        boxShadow: isFocused ? boxShadow ?? defaultBoxShadow(context) : null,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(isFullScreen ? 0 : borderRadius),
@@ -65,7 +66,6 @@ class AppBackground extends StatelessWidget {
               const GlassBlurBg()
             else if (wallpaperBlur)
               WallpaperBlurBg(rect: rect ?? Rect.zero, isFocused: isFocused),
-
             child,
           ],
         ),

@@ -28,10 +28,14 @@ class StartMenu extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOutCubic,
             opened: isStartMenuOpened,
+            decoration: BoxDecoration(
+              boxShadow: AppBackground.defaultBoxShadow(context),
+            ),
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 13),
               child: AppBackground(
                   glassBlur: true,
+                  boxShadow: const [],
                   child: Column(
                     children: [
                       Expanded(

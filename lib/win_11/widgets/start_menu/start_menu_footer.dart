@@ -18,7 +18,12 @@ class StartMenuFooter extends StatelessWidget {
       children: [
         CustomOverlayAnimated(
           barrierColor: Colors.transparent,
-          offset: const Offset(-30, -3),
+          offset: const Offset(-30, -4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: AppBackground.defaultBoxShadow(context),
+          ),
+          clipBehavior: Clip.antiAlias,
           builder: (context, callback) {
             return GlassButton(
               showOutline: false,
@@ -57,7 +62,11 @@ class StartMenuFooter extends StatelessWidget {
           overlayBuilder: (context) {
             return const PreferredSize(
               preferredSize: Size(350, 220),
-              child: AppBackground(glassBlur: true, borderColor: Colors.transparent, child: SizedBox()),
+              child: AppBackground(
+                  glassBlur: true,
+                  boxShadow: [],
+                  borderColor: Colors.transparent,
+                  child: SizedBox()),
             );
           },
         ),
@@ -65,6 +74,12 @@ class StartMenuFooter extends StatelessWidget {
           barrierColor: Colors.transparent,
           targetAnchor: Alignment.topCenter,
           followerAnchor: Alignment.bottomCenter,
+          offset: const Offset(0, -4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: AppBackground.defaultBoxShadow(context),
+          ),
+          clipBehavior: Clip.antiAlias,
           builder: (context, callback) {
             return GlassButton(
               showOutline: false,
@@ -80,7 +95,11 @@ class StartMenuFooter extends StatelessWidget {
           overlayBuilder: (context) {
             return const PreferredSize(
               preferredSize: Size(130, 160),
-              child: AppBackground(glassBlur: true, borderColor: Colors.transparent, child: SizedBox()),
+              child: AppBackground(
+                  glassBlur: true,
+                  boxShadow: [],
+                  borderColor: Colors.transparent,
+                  child: SizedBox()),
             );
           },
         ),
