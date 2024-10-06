@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:os_core/os_core.dart';
 import 'package:os_core/src/controllers/settings/os_startup_controller.dart';
+import 'package:os_core/src/widget/brightness_overlay.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
@@ -86,7 +87,10 @@ class _OsScreenState extends State<OsScreen> {
           ),
           const Positioned.fill(
             child: OsStartupOverlay(),
-          )
+          ),
+          const Positioned.fill(
+            child: BrightnessOverlay(),
+          ),
         ],
       ),
     );
