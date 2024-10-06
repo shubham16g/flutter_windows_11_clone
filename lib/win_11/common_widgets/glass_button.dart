@@ -1,17 +1,46 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 
+// todo zoom out hover exit effect
 class GlassButton extends StatefulWidget {
   final VoidCallback? onPressed;
-  final Widget Function(BuildContext context, bool isTapDown) builder;
+  final Widget Function(BuildContext context, bool isTapDown)? builder;
+  final Widget? child;
   final double pressedScale;
   final bool isFocused;
+  final bool isActive;
+  final double? width;
+  final double? height;
+  final EdgeInsets? padding;
+  final bool showOutline;
+
+  const GlassButton.builder(
+      {super.key,
+      this.onPressed,
+      required Widget Function(BuildContext context, bool isTapDown)
+          this.builder,
+      this.isFocused = false,
+      this.isActive = false,
+      this.pressedScale = 0.7,
+      this.showOutline = true,
+      this.width,
+      this.height,
+      this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 6)})
+      : child = null;
 
   const GlassButton(
       {super.key,
       this.onPressed,
-      required this.builder,
+      required Widget this.child,
       this.isFocused = false,
-      this.pressedScale = 0.7});
+      this.isActive = false,
+      this.pressedScale = 0.7,
+      this.showOutline = true,
+      this.width,
+      this.height,
+      this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 6)})
+      : builder = null;
 
   @override
   State<GlassButton> createState() => _GlassButtonState();
@@ -23,63 +52,95 @@ class _GlassButtonState extends State<GlassButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: MouseRegion(
-        onEnter: (_) {
+    final Color hoverColor;
+    final Color tapDownColor;
+    final Color hoverOutlineColor;
+    final Color tapDownOutlineColor;
+    if (widget.isActive) {
+      hoverColor = Colors.blue[200]!;
+      tapDownColor = Colors.blue[600]!;
+      hoverOutlineColor = Colors.blue.withOpacity(0);
+      tapDownOutlineColor = Colors.blue.withOpacity(0);
+    } else {
+      hoverColor = Colors.white.withOpacity(context.isDark ? 0.1 : 0.6);
+      tapDownColor = Colors.white.withOpacity(context.isDark ? 0.06 : 0.4);
+      hoverOutlineColor = Colors.white.withOpacity(0.15);
+      tapDownOutlineColor = Colors.white.withOpacity(0.3);
+    }
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHovered = false;
+        });
+      },
+      child: GestureDetector(
+        onTapDown: (_) {
           setState(() {
-            isHovered = true;
+            isTapDown = true;
           });
         },
-        onExit: (_) {
+        onTapUp: (_) {
           setState(() {
-            isHovered = false;
+            isTapDown = false;
           });
         },
-        child: GestureDetector(
-          onTapDown: (_) {
-            setState(() {
-              isTapDown = true;
-            });
-          },
-          onTapUp: (_) {
-            setState(() {
-              isTapDown = false;
-            });
-          },
-          onTapCancel: () {
-            setState(() {
-              isTapDown = false;
-            });
-          },
-          onTap: widget.onPressed,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOutCubic,
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(isHovered && widget.isFocused
-                  ? 0.08
-                  : widget.isFocused
-                      ? 0.06
-                      : isHovered
-                          ? 0.05
-                          : 0),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                  color: const Color(0xFFFFFFFF)
-                      .withOpacity(isHovered && widget.isFocused
-                          ? 0.15
-                          : widget.isFocused
-                              ? 0.1
-                              : isHovered
-                                  ? 0.08
-                                  : 0),
-                  width: 0.5),
+        onTapCancel: () {
+          setState(() {
+            isTapDown = false;
+          });
+        },
+        onTap: widget.onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+          width: widget.width,
+          padding: widget.padding,
+          height: widget.height,
+          decoration: BoxDecoration(
+            color: isTapDown
+                ? tapDownColor
+                : isHovered
+                    ? hoverColor
+                    : widget.isFocused
+                        ? tapDownColor
+                        : Colors.white.withOpacity(0),
+            borderRadius: BorderRadius.circular(4),
+            border: widget.showOutline
+                ? Border.all(
+                    color: isTapDown
+                        ? tapDownOutlineColor
+                        : isHovered
+                            ? hoverOutlineColor
+                            : widget.isFocused
+                                ? tapDownColor
+                                : Colors.white.withOpacity(0),
+                    width: 0.5)
+                : null,
+          ),
+          child: IconTheme(
+            data: context.theme.iconTheme.copyWith(
+              color: widget.isActive
+                  ? (context.isDark
+                      ? context.osColorLight.textPrimary
+                      : context.osColorDark.textPrimary)
+                  : context.osColor.textPrimary,
             ),
-            alignment: Alignment.center,
-            child: widget.builder(context, isTapDown),
+            child: DefaultTextStyle(
+                style: context.theme.typography.caption!.copyWith(
+                  color: widget.isActive
+                      ? (context.isDark
+                          ? context.osColorLight.textPrimary
+                          : context.osColorDark.textPrimary)
+                      : context.osColor.textPrimary,
+                ),
+                child: widget.child ??
+                    widget.builder?.call(context, isTapDown) ??
+                    const SizedBox()),
           ),
         ),
       ),

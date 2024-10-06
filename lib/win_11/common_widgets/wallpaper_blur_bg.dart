@@ -37,7 +37,7 @@ class WallpaperBlurBg extends StatelessWidget {
               child: Container(
                   color: isDark
                       ? Color.lerp(const Color(0xFF202020),
-                      context.watch<WallpaperController>().dominantColor, 0.06)?.withOpacity(.65)
+                      wallpaperController.dominantColor, 0.06)?.withOpacity(.65)
                       : const Color(0xFFFFFFFF).withOpacity(.8))),
           // Positioned.fill(
           //   child: BlendMask(

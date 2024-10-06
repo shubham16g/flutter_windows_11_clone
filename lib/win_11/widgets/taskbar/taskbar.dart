@@ -1,10 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/taskbar/taskbar_clock_notification.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
-import '../common_widgets/glass_blur_bg.dart';
+import '../../common_widgets/glass_blur_bg.dart';
+import '../desktop_overlay.dart';
+import 'taskbar_background_apps_menu.dart';
+import 'taskbar_control_menu.dart';
 
 class Taskbar extends StatelessWidget implements PreferredSizeWidget {
   const Taskbar({super.key});
@@ -14,6 +24,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final desktopOverlayController = context.watch<DesktopOverlayController>();
     final runningAppsProvider = context.watch<RunningAppsController>();
     final taskbarApps = runningAppsProvider.taskbarApps;
     final focusedApp = runningAppsProvider.focusedApp;
@@ -32,16 +43,17 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Expanded(child: StartMenuCloser()),
               TaskbarButton(
                 icon: SvgPicture.asset(
                   'assets/icons/windows_light.svg',
                   width: 24,
                 ),
                 onPressed: () {
-                  runningAppsProvider.toggleStartMenu();
+                  desktopOverlayController.toggleStartMenu();
                 },
                 openCount: 0,
-                isFocused: runningAppsProvider.isStartMenuOpened,
+                isFocused: desktopOverlayController.isStartMenuOpened,
               ),
               ...taskbarApps.map((e) => TaskbarButton(
                   isFocused: focusedApp == e.app,
@@ -49,7 +61,22 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     App.tryOpen(context, e.app);
                   },
-                  icon: e.app.icon))
+                  icon: e.app.icon)),
+              const Expanded(child: StartMenuCloser()),
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const TaskbarBackgroundAppsMenuButton(),
+              const SizedBox(width: 1),
+              const TaskbarControlMenuButton(),
+              const SizedBox(width: 1),
+              const TaskbarClockNotification(),
+              const SizedBox(width: 12),
             ],
           ),
         )
@@ -159,7 +186,7 @@ class _TaskbarButtonState extends State<TaskbarButton> {
                     decoration: BoxDecoration(
                       color: widget.isFocused
                           ? Colors.blue
-                          : Colors.white.withOpacity(0.5),
+                          : context.osColor.textSecondary,
                       borderRadius: BorderRadius.circular(5),
                     ))
               ],

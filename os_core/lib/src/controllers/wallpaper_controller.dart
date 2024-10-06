@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'os_theme_controller.dart';
+import 'settings/os_theme_controller.dart';
 
 class WallpaperController extends ChangeNotifier {
 
@@ -19,7 +19,7 @@ class WallpaperController extends ChangeNotifier {
   }
 
   void _listenTheme() {
-    if (themeController.isDark) {
+    if (themeController.isDarkMode) {
       loadWallpaperFromAsset('assets/images/wall_dark.jpg');
     } else {
       loadWallpaperFromAsset('assets/images/wall_light.jpg');

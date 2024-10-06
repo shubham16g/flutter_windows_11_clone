@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-
 import 'app_controller.dart';
 import '../app.dart';
 
@@ -31,19 +30,10 @@ class TaskbarAppState {
 class RunningAppsController extends ChangeNotifier {
   final List<AppController> _runningAppsControllers = [];
 
-  final List<TaskbarAppState> taskbarApps = [
-    // TaskbarAppState(app: FileExplorerApp(), fixed: true),
-    // TaskbarAppState(app: SettingsApp(), fixed: true),
-  ];
+  final List<TaskbarAppState> taskbarApps = [];
 
-  bool isStartMenuOpened = true;
 
   List<AppController> get runningAppsControllers => _runningAppsControllers;
-
-  void toggleStartMenu() {
-    isStartMenuOpened = !isStartMenuOpened;
-    notifyListeners();
-  }
 
   void setFixedApps(List<App> fixedTaskbarApps) {
     taskbarApps.clear();
@@ -59,7 +49,6 @@ class RunningAppsController extends ChangeNotifier {
       /// not found in taskbar, open new app
       _runningAppsControllers.add(appController);
       taskbarApps.add(TaskbarAppState(app: appController.app, openCount: 1));
-      isStartMenuOpened = false;
       isDesktopFocused = false;
     } else if (taskbarApps[index].openCount == 0) {
       /// found in taskbar, open new instance (isMultiInstance = true)
@@ -67,14 +56,12 @@ class RunningAppsController extends ChangeNotifier {
       _runningAppsControllers.add(appController);
       taskbarApps[index] = taskbarApps[index]
           .copyWith(openCount: taskbarApps[index].openCount + 1);
-      isStartMenuOpened = false;
       isDesktopFocused = false;
     }
     notifyListeners();
   }
 
   AppController? get focusedController {
-    if (isStartMenuOpened) return null;
     if (isDesktopFocused) return null;
     if (_runningAppsControllers.isEmpty) return null;
     final index = _runningAppsControllers
@@ -109,9 +96,13 @@ class RunningAppsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void focusDesktop() {
+  void clearAppFocus() {
     isDesktopFocused = true;
-    isStartMenuOpened = false;
+    notifyListeners();
+  }
+
+  void resetAppFocus() {
+    isDesktopFocused = false;
     notifyListeners();
   }
 
@@ -120,7 +111,6 @@ class RunningAppsController extends ChangeNotifier {
     final controller = _runningAppsControllers.removeAt(index);
     _runningAppsControllers.add(controller);
     controller.internalMaximize();
-    isStartMenuOpened = false;
     isDesktopFocused = false;
     notifyListeners();
   }

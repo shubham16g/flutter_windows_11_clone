@@ -1,11 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_windows_11_clone/win_11/widgets/start_menu.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/desktop_overlay.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import 'apps/apps.dart';
 import 'apps/settings/settings_app.dart';
-import 'win_11/widgets/taskbar.dart';
+import 'win_11/widgets/taskbar/taskbar.dart';
 
 Future<void> main() async {
   // ensure
@@ -16,7 +16,6 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -40,9 +39,9 @@ class MyApp extends StatelessWidget {
             FileExplorerApp(),
             SettingsApp(),
           ],
-          startMenuBuilder: (context, isStartMenuOpened) =>
-              StartMenuWrapper(isStartMenuOpened: isStartMenuOpened),
-          taskBar: const Taskbar(),
+          desktop: const SizedBox(),
+          desktopOverlay:
+              DesktopOverlay(),
         ),
       ),
     );

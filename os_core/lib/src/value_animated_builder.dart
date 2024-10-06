@@ -60,3 +60,42 @@ class _ValueAnimatedBuilderState
     );
   }
 }
+
+class SingleValueAnimatedBuilder extends ImplicitlyAnimatedWidget {
+  /// Creates a container that animates its parameters implicitly.
+  const SingleValueAnimatedBuilder({
+    super.key,
+    required this.value,
+    required this.builder,
+    super.curve,
+    required super.duration,
+    super.onEnd,
+  });
+
+  final double value;
+  final Widget Function(BuildContext context, double value) builder;
+
+  @override
+  AnimatedWidgetBaseState<SingleValueAnimatedBuilder> createState() =>
+      _SingleValueAnimatedBuilderState();
+}
+
+class _SingleValueAnimatedBuilderState
+    extends AnimatedWidgetBaseState<SingleValueAnimatedBuilder> {
+  Tween<double>? _value;
+
+  @override
+  void forEachTween(TweenVisitor<dynamic> visitor) {
+    _value = visitor(_value, widget.value,
+        (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>?;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Animation<double> animation = this.animation;
+    return widget.builder(
+      context,
+      _value!.evaluate(animation),
+    );
+  }
+}

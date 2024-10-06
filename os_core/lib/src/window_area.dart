@@ -11,7 +11,7 @@ class WindowArea extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap:() {
-        runningAppsProvider.focusDesktop();
+        runningAppsProvider.clearAppFocus();
       },
       child: Stack(
         children: runningAppsProvider.runningAppsControllers
