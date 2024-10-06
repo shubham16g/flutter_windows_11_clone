@@ -30,6 +30,7 @@ class TaskbarBackgroundAppsMenu extends StatelessWidget
   Widget build(BuildContext context) {
     return const AppBackground(
       borderColor: Colors.transparent,
+      boxShadow: [],
       glassBlur: true,
       child: SizedBox(),
     ).pad(bottom: bottomMargin);
@@ -48,6 +49,9 @@ class TaskbarBackgroundAppsMenuButton extends StatelessWidget {
         followerAnchor: Alignment.bottomCenter,
         exitAnim: CustomOverlayAnim.slide,
         barrierColor: Colors.transparent,
+        decoration: BoxDecoration(
+          boxShadow: AppBackground.defaultBoxShadow(context),
+        ),
         overlayBuilder: (context) => TaskbarBackgroundAppsMenu(items: ['', '', '', '', '', ''],),
         builder: (context, callback) {
           return GlassButton(

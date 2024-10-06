@@ -23,6 +23,7 @@ class TaskbarControlMenu extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBackground(
       glassBlur: true,
+      boxShadow: const [],
       child: Column(
         children: [
           Expanded(
@@ -213,6 +214,9 @@ class TaskbarControlMenuButton extends StatelessWidget {
         offset: const Offset(0, -4),
         exitAnim: CustomOverlayAnim.slide,
         barrierColor: Colors.transparent,
+        decoration: BoxDecoration(
+          boxShadow: AppBackground.defaultBoxShadow(context),
+        ),
         overlayBuilder: (context) => const TaskbarControlMenu(),
         builder: (context, callback) {
           return GlassButton(

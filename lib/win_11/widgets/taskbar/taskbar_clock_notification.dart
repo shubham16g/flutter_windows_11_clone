@@ -23,6 +23,9 @@ class TaskbarClockNotification extends StatelessWidget {
         exitAnim: CustomOverlayAnim.slide,
         slideAnimDirection: SlideAnimDirection.right,
         barrierColor: Colors.transparent,
+        decoration: BoxDecoration(
+          boxShadow: AppBackground.defaultBoxShadow(context),
+        ),
         overlayBuilder: (context) {
           return PreferredSize(
             preferredSize:
@@ -30,7 +33,7 @@ class TaskbarClockNotification extends StatelessWidget {
             child: const Padding(
               padding: EdgeInsets.only(bottom: 16, right: 16),
               child:
-              AppBackground(glassBlur: true, child: SizedBox()),
+              AppBackground(glassBlur: true, boxShadow: [], child: SizedBox()),
             ),
           );
         },
