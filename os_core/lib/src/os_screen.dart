@@ -5,6 +5,7 @@ import 'package:os_core/src/widget/brightness_overlay.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
+import 'widget/night_light_overlay.dart';
 import 'window_area.dart';
 
 class OsScreen extends StatefulWidget {
@@ -40,58 +41,63 @@ class _OsScreenState extends State<OsScreen> {
     final themeController = context.watch<OsThemeController>();
     final rap = context.watch<RunningAppsController>();
     return Material(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Overlay(
-              initialEntries: [
-                OverlayEntry(
-                  builder: (context) {
-                    return Stack(
-                      children: [
-                        if (wallpaperWrapper.wallpaperPath != null)
+      child: NightLightOverlay(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Overlay(
+                initialEntries: [
+                  OverlayEntry(
+                    builder: (context) {
+                      return Stack(
+                        children: [
+                          if (wallpaperWrapper.wallpaperPath != null)
+                            Positioned.fill(
+                              child: Image.asset(
+                                wallpaperWrapper.wallpaperPath!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                          /// desktop
                           Positioned.fill(
-                            child: Image.asset(
-                              wallpaperWrapper.wallpaperPath!,
-                              fit: BoxFit.cover,
+                            child: widget.desktop,
+                          ),
+
+                          /// desktop area
+                          Positioned.fill(
+                            child: MouseRegion(
+                              cursor: context.watch<CursorController>().cursor,
+                              onEnter: (event) {
+                                context.read<CursorController>().setCursor(MouseCursor.defer);
+                              },
+                              onExit: (event) {},
+                              child: const WindowArea(),
                             ),
                           ),
 
-                        /// desktop
-                        Positioned.fill(
-                          child: widget.desktop,
-                        ),
-
-                        /// desktop area
-                        Positioned.fill(
-                          child: MouseRegion(
-                            cursor: context.watch<CursorController>().cursor,
-                            onEnter: (event) {
-                              context.read<CursorController>().setCursor(MouseCursor.defer);
-                            },
-                            onExit: (event) {},
-                            child: const WindowArea(),
+                          /// desktop overlay
+                          Positioned.fill(
+                            child: widget.desktopOverlay,
                           ),
-                        ),
-
-                        /// desktop overlay
-                        Positioned.fill(
-                          child: widget.desktopOverlay,
-                        ),
-                      ],
-                    );
-                  }
-                ),
-              ],
+                        ],
+                      );
+                    }
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Positioned.fill(
-            child: OsStartupOverlay(),
-          ),
-          const Positioned.fill(
-            child: BrightnessOverlay(),
-          ),
-        ],
+            const Positioned.fill(
+              child: OsStartupOverlay(),
+            ),
+            const Positioned.fill(
+              child: BrightnessOverlay(),
+            ),
+            // const Positioned.fill(
+            //   child: NightLightOverlay(),
+            // ),
+          ],
+        ),
       ),
     );
   }
