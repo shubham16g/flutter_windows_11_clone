@@ -2,9 +2,11 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu_footer.dart';
+import 'package:provider/provider.dart';
 
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/slide_anim_wrapper.dart';
+import '../desktop_overlay.dart';
 import 'start_menu_pinned_section.dart';
 import 'start_menu_recommended_section.dart';
 
@@ -64,3 +66,20 @@ class StartMenu extends StatelessWidget {
     );
   }
 }
+
+class StartMenuCloser extends StatelessWidget {
+  final Widget? child;
+  const StartMenuCloser({super.key, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (details) {
+        context.read<DesktopOverlayController>().closeStartMenu();
+      },
+      child: child,
+    );
+  }
+}
+

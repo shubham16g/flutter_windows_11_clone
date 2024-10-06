@@ -6,6 +6,7 @@ import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.da
 import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu.dart';
 import 'package:flutter_windows_11_clone/win_11/widgets/taskbar/taskbar_clock_notification.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Expanded(child: StartMenuCloser()),
               TaskbarButton(
                 icon: SvgPicture.asset(
                   'assets/icons/windows_light.svg',
@@ -59,7 +61,8 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     App.tryOpen(context, e.app);
                   },
-                  icon: e.app.icon))
+                  icon: e.app.icon)),
+              const Expanded(child: StartMenuCloser()),
             ],
           ),
         ),

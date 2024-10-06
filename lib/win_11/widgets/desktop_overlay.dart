@@ -28,7 +28,18 @@ enum TaskbarAlignment {
 class DesktopOverlayController extends ChangeNotifier {
   final RunningAppsController runningAppsController;
 
-  DesktopOverlayController(this.runningAppsController);
+  bool lastIsDesktopFocused = false;
+
+  DesktopOverlayController(this.runningAppsController) {
+    runningAppsController.addListener(() {
+      if (lastIsDesktopFocused != runningAppsController.isDesktopFocused &&
+          !runningAppsController.isDesktopFocused) {
+        isStartMenuOpened = false;
+        notifyListeners();
+      }
+      lastIsDesktopFocused = runningAppsController.isDesktopFocused;
+    });
+  }
 
   bool isStartMenuOpened = false;
 
@@ -81,13 +92,7 @@ class DesktopOverlay extends StatelessWidget {
           final taskbarWidth = taskBar.preferredSize.width;
           return Stack(
             children: [
-              Positioned.fill(
-                  child: Listener(
-                behavior: HitTestBehavior.translucent,
-                onPointerDown: (details) {
-                  context.read<DesktopOverlayController>().closeStartMenu();
-                },
-              )),
+              const Positioned.fill(child: StartMenuCloser()),
               Positioned.fill(
                   top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
                   bottom: tbAlign == TaskbarAlignment.bottom

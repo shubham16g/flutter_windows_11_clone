@@ -157,6 +157,7 @@ class _BrightnessControl extends StatelessWidget {
         const SizedBox(width: 2),
         Expanded(
           child: FluentSlider(
+              label: brightnessController.brightness.toString(),
               value: brightnessController.brightness.toDouble(),
               onChanged: (value) {
                 brightnessController.setBrightness(value.toInt());
@@ -185,6 +186,7 @@ class _VolumeControl extends StatelessWidget {
         const SizedBox(width: 2),
         Expanded(
           child: FluentSlider(
+              label: volumeController.volume.toString(),
               value: volumeController.volume.toDouble(),
               onChanged: (value) {
                 volumeController.setVolume(value.toInt());
