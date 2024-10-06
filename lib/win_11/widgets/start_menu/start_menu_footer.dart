@@ -1,4 +1,6 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.dart';
@@ -43,7 +45,7 @@ class StartMenuFooter extends StatelessWidget {
                       ),
                     ),
                     alignment: Alignment.center,
-                    child: Icon(FluentIcons.contact,
+                    child: Icon(FluentIcons.person_6_20_filled,
                         color: context.osColor.textTertiary),
                   ),
                   const SizedBox(width: 12),
@@ -86,24 +88,50 @@ class StartMenuFooter extends StatelessWidget {
               padding: EdgeInsets.zero,
               width: 40,
               height: 40,
-              child: const Icon(FluentIcons.power_button),
+              child: const Icon(FluentIcons.power_24_regular),
               onPressed: () {
                 callback.showOverlay();
               },
             );
           },
           overlayBuilder: (context) {
-            return const PreferredSize(
-              preferredSize: Size(130, 160),
+            return PreferredSize(
+              preferredSize: const Size(120, 128),
               child: AppBackground(
                   glassBlur: true,
-                  boxShadow: [],
+                  boxShadow: const [],
                   borderColor: Colors.transparent,
-                  child: SizedBox()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Column(
+                      children: [
+                        _powerItem(context, FluentIcons.lock_closed_28_regular, 'Lock', () {}),
+                        _powerItem(context, FluentIcons.sleep_20_regular, 'Sleep', () {}),
+                        _powerItem(context, FluentIcons.power_20_regular, 'Shut down', () {}),
+                        _powerItem(context, FluentIcons.history_20_regular, 'Restart', () {}),
+                      ],
+                    ),
+                  )),
             );
           },
         ),
       ],
     ).pad(horizontal: 48, bottom: 10);
+  }
+
+  Widget _powerItem(BuildContext context, IconData iconData, String title,
+      VoidCallback onTap) {
+    return GlassButton(
+        onPressed: onTap,
+        showOutline: false,
+        child: Row(
+          children: [
+            Icon(iconData),
+            const SizedBox(width: 8),
+            Text(title,
+                style: TextStyle(
+                    color: context.osColor.textPrimary, fontSize: 14)),
+          ],
+        ));
   }
 }
