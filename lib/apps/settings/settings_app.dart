@@ -9,7 +9,7 @@ class SettingsApp extends App {
 
   @override
   Widget get icon => SvgPicture.asset(
-    'assets/icons/youtube_app.svg',
+    'assets/icons/settings_app.svg',
     width: 30,
   );
 

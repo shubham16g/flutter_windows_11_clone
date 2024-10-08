@@ -31,14 +31,22 @@ class DesktopOverlayController extends ChangeNotifier {
   bool lastIsDesktopFocused = false;
 
   DesktopOverlayController(this.runningAppsController) {
-    runningAppsController.addListener(() {
-      if (lastIsDesktopFocused != runningAppsController.isDesktopFocused &&
-          !runningAppsController.isDesktopFocused) {
-        isStartMenuOpened = false;
-        notifyListeners();
-      }
-      lastIsDesktopFocused = runningAppsController.isDesktopFocused;
-    });
+    runningAppsController.addListener(_listen);
+  }
+
+  void _listen() {
+    if (lastIsDesktopFocused != runningAppsController.isDesktopFocused &&
+        !runningAppsController.isDesktopFocused) {
+      isStartMenuOpened = false;
+      notifyListeners();
+    }
+    lastIsDesktopFocused = runningAppsController.isDesktopFocused;
+  }
+
+  @override
+  void dispose() {
+    runningAppsController.removeListener(_listen);
+    super.dispose();
   }
 
   bool isStartMenuOpened = false;

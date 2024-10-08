@@ -15,7 +15,6 @@ class YoutubePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appController = context.watch<AppController>();
-    final themeController = context.watch<OsThemeController>();
     return AppBackground(
       isFocused: appController.isFocused,
       isFullScreen: appController.isFullScreen,
@@ -24,23 +23,22 @@ class YoutubePage extends StatelessWidget {
         children: [
           AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
           Expanded(
-              child:
-                  /*WebV()*/ InAppWebView(
-            initialUrlRequest: URLRequest(
-              url: WebUri('https://shubho-youtube-mern.netlify.app/', forceToStringRawValue: true),
-              allowsExpensiveNetworkAccess: true,
-              allowsConstrainedNetworkAccess: true,
+              child: /*WebV()*/ ClipRRect(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: WebUri('https://shubho-youtube-mern.netlify.app/'),
+              ),
+              initialSettings: InAppWebViewSettings(
+                javaScriptEnabled: true,
+                useOnLoadResource: true,
+                cacheEnabled: true,
+              ),
+              onWebViewCreated: (controller) {
+                // _webViewController = controller;
+              },
             ),
-            initialSettings: InAppWebViewSettings(
-              javaScriptEnabled: true,
-              useOnLoadResource: true,
-              cacheEnabled: true,
-            ),
-            onWebViewCreated: (controller) {
-              // _webViewController = controller;
-            },
-          )
-              )
+          ))
         ],
       ),
     );

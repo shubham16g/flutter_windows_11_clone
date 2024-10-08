@@ -9,7 +9,7 @@ class YoutubeApp extends App {
 
   @override
   Widget get icon => SvgPicture.asset(
-    'assets/icons/settings_app.svg',
+    'assets/icons/youtube_app.svg',
     width: 30,
   );
 
