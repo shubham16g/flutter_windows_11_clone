@@ -41,6 +41,8 @@ dependencies:
   os_core:
     path: ./os_core
   fluent_ui: ^4.9.1
+  flutter_inappwebview: ^6.1.4
+  webviewx: ^0.1.0
   fluentui_system_icons: ^1.1.259
   intl: ^0.19.0
   flutter_animate: ^4.5.0
