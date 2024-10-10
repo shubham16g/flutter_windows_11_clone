@@ -113,6 +113,7 @@ class _Calender extends StatefulWidget {
 }
 
 class _CalenderState extends State<_Calender> {
+  // todo state not preserved when closed and opened again
   bool _isExpanded = true;
   bool _iconState = true;
 
@@ -143,6 +144,7 @@ class _CalenderState extends State<_Calender> {
             child: Row(
               children: [
                 const SizedBox(width: 8),
+                // todo: date is not synced with realtime changes
                 Text(_dateFormat.format(DateTime.now()), style: context.theme.typography.caption?.copyWith(fontSize: 14)),
                 const Spacer(),
                 GlassButton(
@@ -168,6 +170,7 @@ class _CalenderState extends State<_Calender> {
                 ? Container(
                     height: 322,
                     color: context.osColor.glassOverlay1,
+                    // todo: calender ui is not completely matching with the windows 11 calender
                     child: CalendarDatePicker(
                       initialDate: DateTime.now(),
                       currentDate: DateTime.now(),
