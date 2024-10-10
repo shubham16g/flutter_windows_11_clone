@@ -114,12 +114,21 @@ class _Calender extends StatefulWidget {
 
 class _CalenderState extends State<_Calender> {
   bool _isExpanded = true;
+  bool _iconState = true;
 
   set isExpanded(bool value) {
     setState(() {
       _isExpanded = value;
     });
+    Future.delayed(const Duration(milliseconds: 320), () {
+      if (!mounted) return;
+      setState(() {
+        _iconState = _isExpanded;
+      });
+    });
   }
+
+  final _dateFormat = DateFormat('EEEE, d MMMM');
 
   @override
   Widget build(BuildContext context) {
@@ -134,14 +143,18 @@ class _CalenderState extends State<_Calender> {
             child: Row(
               children: [
                 const SizedBox(width: 8),
-                Text('Calendar', style: context.theme.typography.caption),
+                Text(_dateFormat.format(DateTime.now()), style: context.theme.typography.caption?.copyWith(fontSize: 14)),
                 const Spacer(),
-                IconButton(
-                  icon: Icon(_isExpanded
-                      ? FluentIcons.chevron_up_20_regular
-                      : FluentIcons.chevron_down_20_regular),
+                GlassButton(
+                  isFocused: true,
+                  padding: EdgeInsets.all(4),
+                  child: AnimatedRotation(
+                      duration: const Duration(milliseconds: 280),
+                      curve: Curves.easeOutCubic,
+                      turns: _iconState ? 0.5 : 0,
+                      child: Icon(FluentIcons.chevron_down_20_regular, size: 16)),
                   onPressed: () {
-                      isExpanded = !_isExpanded;
+                    isExpanded = !_isExpanded;
                   },
                 ),
                 const SizedBox(width: 8),
@@ -151,19 +164,23 @@ class _CalenderState extends State<_Calender> {
           AnimatedSize(
             duration: const Duration(milliseconds: 280),
             curve: Curves.easeOutCubic,
-            child: _isExpanded ? Container(
-              height: 322,
-              color: context.osColor.glassOverlay1,
-              child: CalendarDatePicker(
-                initialDate: DateTime.now(),
-                currentDate: DateTime.now(),
-                firstDate: DateTime.now().copyWith(year: 2021),
-                lastDate: DateTime.now().copyWith(year: 2222),
-                onDateChanged: (date) {
-                  print(date);
-                },
-              ),
-            ) : const SizedBox(width: double.infinity,),
+            child: _isExpanded
+                ? Container(
+                    height: 322,
+                    color: context.osColor.glassOverlay1,
+                    child: CalendarDatePicker(
+                      initialDate: DateTime.now(),
+                      currentDate: DateTime.now(),
+                      firstDate: DateTime.now().copyWith(year: 2021),
+                      lastDate: DateTime.now().copyWith(year: 2222),
+                      onDateChanged: (date) {
+                        print(date);
+                      },
+                    ),
+                  )
+                : const SizedBox(
+                    width: double.infinity,
+                  ),
           ).glassBlurBg(),
         ],
       ),
