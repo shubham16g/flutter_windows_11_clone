@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
@@ -16,31 +17,32 @@ class YoutubePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appController = context.watch<AppController>();
     return AppBackground(
-      isFocused: appController.isFocused,
-      isFullScreen: appController.isFullScreen,
-      rect: rect,
-      child: Column(
-        children: [
-          AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
-          Expanded(
-              child: /*WebV()*/ ClipRRect(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri('https://shubho-youtube-mern.netlify.app/'),
+        isFocused: appController.isFocused,
+        isFullScreen: appController.isFullScreen,
+        rect: rect,
+        child: Column(
+          children: [
+            AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
+            Expanded(
+                child: ClipRRect(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: InAppWebView(
+                preventGestureDelay: true,
+                initialUrlRequest: URLRequest(
+                  url: WebUri('https://shubho-youtube-mern.netlify.app/'),
+                ),
+                initialSettings: InAppWebViewSettings(
+                  javaScriptEnabled: true,
+                  useOnLoadResource: true,
+                  cacheEnabled: true,
+                ),
+                onWebViewCreated: (controller) {
+                  // _webViewController = controller;
+                },
               ),
-              initialSettings: InAppWebViewSettings(
-                javaScriptEnabled: true,
-                useOnLoadResource: true,
-                cacheEnabled: true,
-              ),
-              onWebViewCreated: (controller) {
-                // _webViewController = controller;
-              },
-            ),
-          ))
-        ],
-      ),
+            ))
+          ],
+        ),
     );
   }
 }
