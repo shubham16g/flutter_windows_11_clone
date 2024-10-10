@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:fluent_ui/fluent_ui.dart' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:os_core/os_core.dart';
 
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/custom_overlay_animated.dart';
@@ -23,17 +25,18 @@ class TaskbarClockNotification extends StatelessWidget {
         exitAnim: CustomOverlayAnim.slide,
         slideAnimDirection: SlideAnimDirection.right,
         barrierColor: Colors.transparent,
-        decoration: BoxDecoration(
-          boxShadow: AppBackground.defaultBoxShadow(context),
-        ),
         overlayBuilder: (context) {
           return PreferredSize(
-            preferredSize:
-            Size(340, context.screenSize.height - 48 - 16),
+            preferredSize: Size(340, context.screenSize.height - 48 - 16),
             child: const Padding(
               padding: EdgeInsets.only(bottom: 16, right: 16),
-              child:
-              AppBackground(glassBlur: true, boxShadow: [], child: SizedBox()),
+              child: Column(
+                children: [
+                  Expanded(child: SizedBox()),
+                  const SizedBox(height: 16),
+                  _Calender()
+                ],
+              ),
             ),
           );
         },
@@ -65,7 +68,6 @@ class _Clock extends StatefulWidget {
 }
 
 class _ClockState extends State<_Clock> {
-
   String timeString = ''; // hh:mm
   String dateString = ''; // dd-mm-yyyy
 
@@ -73,6 +75,7 @@ class _ClockState extends State<_Clock> {
   final _dateFormat = DateFormat('dd-MM-yyyy');
 
   late Timer timer;
+
   @override
   void initState() {
     super.initState();
@@ -90,21 +93,38 @@ class _ClockState extends State<_Clock> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(timeString,
-            style: context.theme.typography.caption),
-        Text(dateString,
-            style: context.theme.typography.caption),
+        Text(timeString, style: context.theme.typography.caption),
+        Text(dateString, style: context.theme.typography.caption),
       ],
     );
   }
 }
 
+class _Calender extends StatelessWidget {
+  const _Calender({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ui.SizedBox(
+      height: 302,
+      child: AppBackground(
+        glassBlur: true,
+          child: CalendarDatePicker(
+            initialDate: DateTime.now(),
+            currentDate: DateTime.now(),
+            firstDate: DateTime.now().copyWith(year: 2021),
+            lastDate: DateTime.now().copyWith(year: 2222),
+            onDateChanged: (date) {
+              print(date);
+            },
+          )),
+    );
+    // return GridView(gridDelegate: gridDelegate);
+  }
+}
