@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:fluent_ui/fluent_ui.dart' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_blur_bg.dart';
 import 'package:intl/intl.dart';
-import 'package:os_core/os_core.dart';
 
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/custom_overlay_animated.dart';
@@ -106,24 +105,68 @@ class _ClockState extends State<_Clock> {
   }
 }
 
-class _Calender extends StatelessWidget {
+class _Calender extends StatefulWidget {
   const _Calender({super.key});
 
   @override
+  State<_Calender> createState() => _CalenderState();
+}
+
+class _CalenderState extends State<_Calender> {
+  bool _isExpanded = true;
+
+  set isExpanded(bool value) {
+    setState(() {
+      _isExpanded = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ui.SizedBox(
-      height: 302,
-      child: AppBackground(
-        glassBlur: true,
-          child: CalendarDatePicker(
-            initialDate: DateTime.now(),
-            currentDate: DateTime.now(),
-            firstDate: DateTime.now().copyWith(year: 2021),
-            lastDate: DateTime.now().copyWith(year: 2222),
-            onDateChanged: (date) {
-              print(date);
-            },
-          )),
+    return AppBackground(
+      backgroundColor: Colors.transparent,
+      borderColor: context.osColor.taskbarBorder,
+      child: Column(
+        children: [
+          Container(
+            height: 48,
+            color: context.osColor.glassOverlay2,
+            child: Row(
+              children: [
+                const SizedBox(width: 8),
+                Text('Calendar', style: context.theme.typography.caption),
+                const Spacer(),
+                IconButton(
+                  icon: Icon(_isExpanded
+                      ? FluentIcons.chevron_up_20_regular
+                      : FluentIcons.chevron_down_20_regular),
+                  onPressed: () {
+                      isExpanded = !_isExpanded;
+                  },
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ).glassBlurBg(),
+          AnimatedSize(
+            duration: const Duration(milliseconds: 280),
+            curve: Curves.easeOutCubic,
+            child: _isExpanded ? Container(
+              height: 322,
+              color: context.osColor.glassOverlay1,
+              child: CalendarDatePicker(
+                initialDate: DateTime.now(),
+                currentDate: DateTime.now(),
+                firstDate: DateTime.now().copyWith(year: 2021),
+                lastDate: DateTime.now().copyWith(year: 2222),
+                onDateChanged: (date) {
+                  print(date);
+                },
+              ),
+            ) : const SizedBox(width: double.infinity,),
+          ).glassBlurBg(),
+        ],
+      ),
     );
     // return GridView(gridDelegate: gridDelegate);
   }
