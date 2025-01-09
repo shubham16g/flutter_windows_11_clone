@@ -7,8 +7,6 @@ import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
-import 'blend_mask.dart';
-
 class GlassBlurBg extends StatelessWidget {
   const GlassBlurBg({super.key, this.child});
 
@@ -17,15 +15,6 @@ class GlassBlurBg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDark;
-    return (child ?? const SizedBox.expand()).frosted(
-      blur: 50,
-      frostColor: isDark
-          ? Color.lerp(const Color(0xFF202020),
-          context.watch<WallpaperController>().dominantColor, 0.03)
-          !.withOpacity(.6)
-          : const Color(0xFFFFFFFF).withOpacity(.86)
-
-    );
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(

@@ -1,3 +1,4 @@
+import 'package:ecom/main.dart' as ecom;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
@@ -10,15 +11,15 @@ import '../win_11/common_widgets/custom_overlay_animated.dart';
 import '../win_11/common_widgets/glass_blur_bg.dart';
 import '../win_11/common_widgets/glass_button.dart';
 
+const mApp = ecom.MyApp();
+
 class FileExplorerApp extends App {
   @override
   String get title => 'File Explorer';
 
   @override
-  Widget get icon => SvgPicture.asset(
-        'assets/icons/file_explorer_app.svg',
-        width: 24,
-      );
+  Widget get icon =>
+      SvgPicture.asset('assets/icons/file_explorer_app.svg', width: 24);
 
   @override
   bool get isMultiInstance => true;
@@ -32,23 +33,25 @@ class FileExplorerApp extends App {
       child: Column(
         children: [
           AppTitleBar(
-            leading: CustomOverlayAnimated(
-              barrierColor: Colors.transparent,
-          overlayBuilder: (context) {
-            return const PreferredSize(
-              preferredSize: Size(100, 220),
-              child: GlassBlurBg(),
-            );
-          },
-          builder: (context, callback) {
-            return GlassButton(
-              onPressed: () {callback.showOverlay();},
-              isFocused: false,
-              child: const Text('19:32'),
-            );
-          }
-      ),
+              leading: CustomOverlayAnimated(
+                  barrierColor: Colors.transparent,
+                  overlayBuilder: (context) {
+                    return const PreferredSize(
+                      preferredSize: Size(100, 220),
+                      child: GlassBlurBg(),
+                    );
+                  },
+                  builder: (context, callback) {
+                    return GlassButton(
+                      onPressed: () {
+                        callback.showOverlay();
+                      },
+                      isFocused: false,
+                      child: const Text('19:32'),
+                    );
+                  }),
               trailing: AppbarCornerButtons(isDark: context.isDark)),
+          const Expanded(child: mApp)
         ],
       ),
     );
@@ -60,10 +63,7 @@ class EdgeApp extends App {
   String get title => 'Edge';
 
   @override
-  Widget get icon => SvgPicture.asset(
-        'assets/icons/edge_app.svg',
-        width: 30,
-      );
+  Widget get icon => SvgPicture.asset('assets/icons/edge_app.svg', width: 30);
 
   @override
   Widget builder(BuildContext context, Rect rect) {
