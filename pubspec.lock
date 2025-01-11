@@ -124,9 +124,11 @@ packages:
   ecom:
     dependency: "direct main"
     description:
-      path: "../flutter_ecommerce_demo"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: c65fc0678587c1eb3321c002fe50456da27b7df0
+      url: "https://github.com/shubham16g/flutter_ecommerce_demo.git"
+    source: git
     version: "1.0.0+1"
   fake_async:
     dependency: transitive
@@ -744,15 +746,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.0"
-  youtube_clone_ui:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "0c3c2220aaffa253b6a8762b57bbd8b0f3f16eaa"
-      url: "https://github.com/Abinash022/Flutter-Youtube-UI-Clone.git"
-    source: git
-    version: "1.0.0+1"
 sdks:
   dart: ">=3.5.1 <4.0.0"
   flutter: ">=3.24.0"

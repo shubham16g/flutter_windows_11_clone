@@ -1,9 +1,7 @@
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:os_core/os_core.dart';
-import 'package:provider/provider.dart';
 
-import 'start_menu/start_menu.dart';
-import 'taskbar/taskbar.dart';
+import 'package:flutter/material.dart';
+
+import '../../os_core.dart';
 
 enum TaskbarAlignment {
   bottom,
@@ -82,51 +80,5 @@ class DesktopOverlayController extends ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 500), () {
       _startMenuAnim = false;
     });
-  }
-}
-
-class DesktopOverlay extends StatelessWidget {
-  const DesktopOverlay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => DesktopOverlayController(context.read()),
-        builder: (context, _) {
-          final overlayController = context.watch<DesktopOverlayController>();
-          const taskBar = Taskbar();
-          final tbAlign = overlayController.taskbarAlignment;
-          final taskbarHeight = taskBar.preferredSize.height;
-          final taskbarWidth = taskBar.preferredSize.width;
-          return Stack(
-            children: [
-              const Positioned.fill(child: StartMenuCloser()),
-              Positioned.fill(
-                  top: tbAlign == TaskbarAlignment.top ? taskbarHeight - 1 : 0,
-                  bottom: tbAlign == TaskbarAlignment.bottom
-                      ? taskbarHeight - 1
-                      : 0,
-                  left: tbAlign == TaskbarAlignment.left ? taskbarWidth - 1 : 0,
-                  right:
-                      tbAlign == TaskbarAlignment.right ? taskbarWidth - 1 : 0,
-                  child: Stack(
-                    children: [
-                      StartMenu(
-                          isStartMenuOpened:
-                              overlayController.isStartMenuOpened),
-                    ],
-                  )),
-
-              /// taskbar
-              Align(
-                alignment: tbAlign.alignment,
-                child: SizedBox(
-                    height: taskBar.preferredSize.height,
-                    width: taskBar.preferredSize.width,
-                    child: taskBar),
-              ),
-            ],
-          );
-        });
   }
 }

@@ -1,18 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
-import 'package:flutter_windows_11_clone/win_11/common_widgets/app_background.dart';
-import 'package:flutter_windows_11_clone/win_11/common_widgets/custom_overlay_animated.dart';
-import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_button.dart';
-import 'package:flutter_windows_11_clone/win_11/common_widgets/slide_anim_wrapper.dart';
-import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu.dart';
 import 'package:flutter_windows_11_clone/win_11/widgets/taskbar/taskbar_clock_notification.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_widgets/glass_blur_bg.dart';
-import '../desktop_overlay.dart';
 import 'taskbar_background_apps_menu.dart';
 import 'taskbar_control_menu.dart';
 

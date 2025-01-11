@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_windows_11_clone/win_11/widgets/desktop_overlay.dart';
 import 'package:flutter_windows_11_clone/apps/youtube/youtube_app.dart';
+import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +17,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -30,10 +31,9 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.blue,
           visualDensity: VisualDensity.standard,
         ),
-        theme:  FluentThemeData(
+        theme: FluentThemeData(
           accentColor: Colors.blue,
           visualDensity: VisualDensity.standard,
-
         ),
         home: OsScreen(
           fixedTaskbarApps: [
@@ -42,8 +42,9 @@ class MyApp extends StatelessWidget {
             YoutubeApp(),
           ],
           desktop: const SizedBox(),
-          desktopOverlay:
-              DesktopOverlay(),
+          taskbarBuilder: (context, alignment) => const Taskbar(),
+          startMenuBuilder: (context, isOpened) =>
+              StartMenu(isStartMenuOpened: isOpened),
         ),
       ),
     );

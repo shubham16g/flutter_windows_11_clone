@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:os_core/src/storage/os_core_storage.dart';
 
-SettingsStorage? _settingsStorage;
-
 class SettingsStorage {
   final _box = osBox;
 
+  SettingsStorage._();
+
+  static SettingsStorage? _settingsStorage;
+
   static SettingsStorage get instance {
-    _settingsStorage ??= SettingsStorage();
+    _settingsStorage ??= SettingsStorage._();
     return _settingsStorage!;
   }
 
@@ -93,5 +95,4 @@ class SettingsStorage {
   void setBrightness(int brightness) {
     _box.put(_keyBrightness, brightness.toString());
   }
-
 }

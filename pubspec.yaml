@@ -48,9 +48,7 @@ dependencies:
   flutter_animate: ^4.5.0
   blur: ^4.0.0
   ecom:
-    path: ../flutter_ecommerce_demo
-  youtube_clone_ui:
-    git: https://github.com/Abinash022/Flutter-Youtube-UI-Clone.git
+    git: https://github.com/shubham16g/flutter_ecommerce_demo.git
 
 dev_dependencies:
   flutter_test:

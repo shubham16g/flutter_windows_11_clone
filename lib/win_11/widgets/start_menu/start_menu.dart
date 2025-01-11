@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/slide_anim_wrapper.dart';
-import '../desktop_overlay.dart';
 import 'start_menu_pinned_section.dart';
 import 'start_menu_recommended_section.dart';
 
@@ -70,20 +69,3 @@ class StartMenu extends StatelessWidget {
     );
   }
 }
-
-class StartMenuCloser extends StatelessWidget {
-  final Widget? child;
-  const StartMenuCloser({super.key, this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Listener(
-      behavior: HitTestBehavior.translucent,
-      onPointerDown: (details) {
-        context.read<DesktopOverlayController>().closeStartMenu();
-      },
-      child: child,
-    );
-  }
-}
-

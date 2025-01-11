@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:os_core/os_core.dart';
 import 'package:os_core/src/controllers/settings/os_startup_controller.dart';
+import 'package:os_core/src/desktop_overlay.dart';
 import 'package:os_core/src/widget/brightness_overlay.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
+import 'controllers/desktop_overlay_controller.dart';
 import 'widget/night_light_overlay.dart';
 import 'window_area.dart';
 
 class OsScreen extends StatefulWidget {
   final Widget desktop;
-  final Widget desktopOverlay;
   final List<App> fixedTaskbarApps;
+  final Widget Function(BuildContext context, bool isOpened) startMenuBuilder;
+  final PreferredSizeWidget Function(
+      BuildContext context, TaskbarAlignment alignment) taskbarBuilder;
 
   const OsScreen({
     super.key,
     required this.desktop,
-    required this.desktopOverlay,
     this.fixedTaskbarApps = const [],
+    required this.startMenuBuilder,
+    required this.taskbarBuilder,
   });
 
   @override
@@ -29,7 +34,9 @@ class _OsScreenState extends State<OsScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //   App.tryOpen(context, SettingsApp());
-      context.read<RunningAppsController>().setFixedApps(widget.fixedTaskbarApps);
+      context
+          .read<RunningAppsController>()
+          .setFixedApps(widget.fixedTaskbarApps);
       OsStartupController.read(context).startOs();
     });
     super.initState();
@@ -47,43 +54,45 @@ class _OsScreenState extends State<OsScreen> {
             Positioned.fill(
               child: Overlay(
                 initialEntries: [
-                  OverlayEntry(
-                    builder: (context) {
-                      return Stack(
-                        children: [
-                          if (wallpaperWrapper.wallpaperPath != null)
-                            Positioned.fill(
-                              child: Image.asset(
-                                wallpaperWrapper.wallpaperPath!,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-
-                          /// desktop
+                  OverlayEntry(builder: (context) {
+                    return Stack(
+                      children: [
+                        if (wallpaperWrapper.wallpaperPath != null)
                           Positioned.fill(
-                            child: widget.desktop,
-                          ),
-
-                          /// desktop area
-                          Positioned.fill(
-                            child: MouseRegion(
-                              cursor: context.watch<CursorController>().cursor,
-                              onEnter: (event) {
-                                context.read<CursorController>().setCursor(MouseCursor.defer);
-                              },
-                              onExit: (event) {},
-                              child: const WindowArea(),
+                            child: Image.asset(
+                              wallpaperWrapper.wallpaperPath!,
+                              fit: BoxFit.cover,
                             ),
                           ),
 
-                          /// desktop overlay
-                          Positioned.fill(
-                            child: widget.desktopOverlay,
+                        /// desktop
+                        Positioned.fill(
+                          child: widget.desktop,
+                        ),
+
+                        /// desktop area
+                        Positioned.fill(
+                          child: MouseRegion(
+                            cursor: context.watch<CursorController>().cursor,
+                            onEnter: (event) {
+                              context
+                                  .read<CursorController>()
+                                  .setCursor(MouseCursor.defer);
+                            },
+                            onExit: (event) {},
+                            child: const WindowArea(),
                           ),
-                        ],
-                      );
-                    }
-                  ),
+                        ),
+
+                        /// desktop overlay
+                        Positioned.fill(
+                          child: DesktopOverlay(
+                              startMenuBuilder: widget.startMenuBuilder,
+                              taskbarBuilder: widget.taskbarBuilder),
+                        ),
+                      ],
+                    );
+                  }),
                 ],
               ),
             ),
@@ -120,4 +129,3 @@ class OsStartupOverlay extends StatelessWidget {
     );
   }
 }
-
