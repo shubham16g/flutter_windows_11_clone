@@ -4,6 +4,7 @@ import 'package:os_core/src/controllers/settings/os_night_light_controller.dart'
 import 'package:os_core/src/controllers/settings/os_volume_controller.dart';
 import 'package:provider/provider.dart';
 
+import 'app.dart';
 import 'controllers/cursor_controller.dart';
 import 'controllers/running_apps_controller.dart';
 import 'controllers/settings/os_battery_controller.dart';
@@ -15,8 +16,14 @@ import 'controllers/wallpaper_controller.dart';
 
 class OsBuilder extends StatelessWidget {
   final WidgetBuilder builder;
+  final Map<String, App> apps;
+  final List<String> fixedTaskbarApps;
 
-  const OsBuilder({super.key, required this.builder});
+  const OsBuilder(
+      {super.key,
+      required this.builder,
+      required this.apps,
+      required this.fixedTaskbarApps});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,8 @@ class OsBuilder extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => OsBatteryController()),
       ChangeNotifierProvider(create: (context) => OsThemeController()),
       ChangeNotifierProvider(create: (context) => CursorController()),
-      ChangeNotifierProvider(create: (context) => RunningAppsController()),
+      ChangeNotifierProvider(
+          create: (context) => OsAppsController(apps, fixedTaskbarApps)),
       ChangeNotifierProvider(
           create: (context) => WallpaperController(context.read())),
     ], builder: (context, _) => builder(context));

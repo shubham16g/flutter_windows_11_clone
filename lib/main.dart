@@ -22,6 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OsBuilder(
+      apps: {
+        'files': FileExplorerApp(),
+        'settings': SettingsApp(),
+        'youtube': YoutubeApp(),
+        'ecommerce': FileExplorerApp(),
+      },
+      fixedTaskbarApps: const ['files', 'settings', 'youtube'],
+
       builder: (context) => FluentApp(
         debugShowCheckedModeBanner: false,
         title: 'Windows 11 Clone',
@@ -36,11 +44,6 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.standard,
         ),
         home: OsScreen(
-          fixedTaskbarApps: [
-            FileExplorerApp(),
-            SettingsApp(),
-            YoutubeApp(),
-          ],
           desktop: const SizedBox(),
           taskbarBuilder: (context, alignment) => const Taskbar(),
           startMenuBuilder: (context, isOpened) =>

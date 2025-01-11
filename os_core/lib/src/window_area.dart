@@ -7,7 +7,7 @@ class WindowArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final runningAppsProvider = context.watch<RunningAppsController>();
+    final runningAppsProvider = context.watch<OsAppsController>();
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap:() {

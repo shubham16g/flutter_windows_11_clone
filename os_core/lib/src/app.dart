@@ -25,7 +25,7 @@ abstract class App {
   Widget builder(BuildContext context, Rect rect);
 
   static void tryOpen(BuildContext context, App app) {
-    final rap = context.read<RunningAppsController>();
+    final rap = context.read<OsAppsController>();
     final windowAreaSize =
     Size(context.screenSize.width, context.screenSize.height - 48);
     final windowPaddedWidth = windowAreaSize.width - 20;

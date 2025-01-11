@@ -28,7 +28,7 @@ class AppController extends ChangeNotifier {
   /// border padding for resizing
   final double resizeBorderWidth = kIsWeb ? 8 : 15;
   final CursorController cursorController;
-  final RunningAppsController runningAppsController;
+  final OsAppsController runningAppsController;
 
   AppController({
     required this.app,

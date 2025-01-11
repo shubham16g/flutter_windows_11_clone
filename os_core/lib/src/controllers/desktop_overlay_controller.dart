@@ -24,7 +24,7 @@ enum TaskbarAlignment {
 }
 
 class DesktopOverlayController extends ChangeNotifier {
-  final RunningAppsController runningAppsController;
+  final OsAppsController runningAppsController;
 
   bool lastIsDesktopFocused = false;
 

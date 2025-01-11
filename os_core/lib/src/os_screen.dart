@@ -6,13 +6,11 @@ import 'package:os_core/src/widget/brightness_overlay.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cursor_controller.dart';
-import 'controllers/desktop_overlay_controller.dart';
 import 'widget/night_light_overlay.dart';
 import 'window_area.dart';
 
 class OsScreen extends StatefulWidget {
   final Widget desktop;
-  final List<App> fixedTaskbarApps;
   final Widget Function(BuildContext context, bool isOpened) startMenuBuilder;
   final PreferredSizeWidget Function(
       BuildContext context, TaskbarAlignment alignment) taskbarBuilder;
@@ -20,7 +18,6 @@ class OsScreen extends StatefulWidget {
   const OsScreen({
     super.key,
     required this.desktop,
-    this.fixedTaskbarApps = const [],
     required this.startMenuBuilder,
     required this.taskbarBuilder,
   });
@@ -34,9 +31,6 @@ class _OsScreenState extends State<OsScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //   App.tryOpen(context, SettingsApp());
-      context
-          .read<RunningAppsController>()
-          .setFixedApps(widget.fixedTaskbarApps);
       OsStartupController.read(context).startOs();
     });
     super.initState();
@@ -46,7 +40,7 @@ class _OsScreenState extends State<OsScreen> {
   Widget build(BuildContext context) {
     final wallpaperWrapper = context.watch<WallpaperController>();
     final themeController = context.watch<OsThemeController>();
-    final rap = context.watch<RunningAppsController>();
+    final rap = context.watch<OsAppsController>();
     return Material(
       child: NightLightOverlay(
         child: Stack(

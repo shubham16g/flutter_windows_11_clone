@@ -17,7 +17,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final runningAppsProvider = context.watch<RunningAppsController>();
+    final runningAppsProvider = context.watch<OsAppsController>();
     final taskbarApps = runningAppsProvider.taskbarApps;
     final focusedApp = runningAppsProvider.focusedApp;
     return Container(

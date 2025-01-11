@@ -27,20 +27,20 @@ class TaskbarAppState {
   }
 }
 
-class RunningAppsController extends ChangeNotifier {
+class OsAppsController extends ChangeNotifier {
+  final Map<String, App> apps;
+
+  OsAppsController(this.apps, List<String> fixedTaskbarApps) {
+    taskbarApps.clear();
+    taskbarApps.addAll(fixedTaskbarApps
+        .map((e) => TaskbarAppState(app: apps[e]!, openCount: 0, fixed: true)));
+  }
+
   final List<AppController> _runningAppsControllers = [];
 
   final List<TaskbarAppState> taskbarApps = [];
 
-
   List<AppController> get runningAppsControllers => _runningAppsControllers;
-
-  void setFixedApps(List<App> fixedTaskbarApps) {
-    taskbarApps.clear();
-    taskbarApps.addAll(fixedTaskbarApps
-        .map((e) => TaskbarAppState(app: e, openCount: 0, fixed: true)));
-    notifyListeners();
-  }
 
   void openApp(AppController appController) {
     final index = taskbarApps.indexWhere(
