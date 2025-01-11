@@ -12,9 +12,8 @@ dependencies:
     sdk: flutter
 
   provider: ^6.1.2
-  os_core:
-    path: ../os_core
-  go_router: ^14.6.3
+  os_win_11:
+    path: ../os_win_11
 
 dev_dependencies:
   flutter_test:

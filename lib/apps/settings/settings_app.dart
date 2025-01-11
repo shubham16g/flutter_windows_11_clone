@@ -39,14 +39,17 @@ class SettingsPage extends StatelessWidget {
       isFocused: appController.isFocused,
       isFullScreen: appController.isFullScreen,
       rect: rect,
-      child: Column(
+      child: Stack(
         children: [
-          AppTitleBar(trailing: AppbarCornerButtons(isDark: context.isDark)),
-          const Expanded(
+          const Positioned.fill(
             child: ClipRect(
               child: settings.SettingsApp(),
             ),
-          )
+          ),
+          Positioned(
+            top: 0,
+              right: 0,
+              child: AppbarCornerButtons(isDark: context.isDark)),
         ],
       ),
     );

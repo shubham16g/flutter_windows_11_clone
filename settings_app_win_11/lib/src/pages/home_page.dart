@@ -1,40 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:settings_app_win_11/src/widgets/side_bar.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-  int count = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      backgroundColor: Colors.transparent,
+      body: Row(
         children: [
-          Positioned.fill(
+          const SideBar(),
+          Expanded(child: SingleChildScrollView(
+            padding: const EdgeInsets.only(left: 14, right: 20),
             child: Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    context.pushNamed('theme');
-                  },
-                  child: Text('HomePage: $count')),
-            ),
-          ),
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 998,
+                ),
+                height: 1000,
+                color: Colors.blue.withOpacity(0.2),
 
+              ),
+            ),
+          ))
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        setState(() {
-          count++;
-        });
-      },
-      child: Icon(Icons.add),),
     );
   }
 }
