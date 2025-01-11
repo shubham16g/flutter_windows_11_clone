@@ -1,7 +1,6 @@
 import 'package:ecom/main.dart' as ecom;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
 import 'package:os_win_11/os_win_11.dart';
 import 'package:provider/provider.dart';

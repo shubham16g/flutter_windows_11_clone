@@ -58,6 +58,14 @@ class SideBar extends StatelessWidget {
               },
             ),
           ),
+          TextFormBox(
+            placeholder:
+            'Find a setting',
+          ).pad(left: 20, right: 6, top: 20, bottom: 20),
+          Expanded(child: SingleChildScrollView(
+            padding: EdgeInsets.only(left: 20, right: 6),
+            child: SizedBox(),
+          ))
 
         ],
       ),
