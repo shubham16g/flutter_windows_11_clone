@@ -51,7 +51,7 @@ class FileExplorerApp extends App {
                     );
                   }),
               trailing: AppbarCornerButtons(isDark: context.isDark)),
-          const Expanded(child: mApp)
+          const Expanded(child: ClipRect(child: mApp))
         ],
       ),
     );
