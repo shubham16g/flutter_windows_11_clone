@@ -21,3 +21,6 @@ export './src/controllers/settings/os_battery_controller.dart';
 export './src/controllers/settings/os_night_light_controller.dart';
 export './src/controllers/settings/os_brightness_controller.dart';
 export './src/controllers/settings/os_volume_controller.dart';
+
+/// widgets
+export './src/widget/start_menu_button_builder.dart';

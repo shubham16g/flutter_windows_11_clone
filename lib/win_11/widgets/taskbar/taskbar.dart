@@ -17,7 +17,6 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final desktopOverlayController = context.watch<DesktopOverlayController>();
     final runningAppsProvider = context.watch<RunningAppsController>();
     final taskbarApps = runningAppsProvider.taskbarApps;
     final focusedApp = runningAppsProvider.focusedApp;
@@ -37,17 +36,17 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Expanded(child: StartMenuCloser()),
-              TaskbarButton(
-                icon: SvgPicture.asset(
-                  'assets/icons/windows_light.svg',
-                  width: 24,
-                ),
-                onPressed: () {
-                  desktopOverlayController.toggleStartMenu();
-                },
-                openCount: 0,
-                isFocused: desktopOverlayController.isStartMenuOpened,
-              ),
+              StartMenuButtonBuilder(builder: (context, callback, isOpened) {
+                return TaskbarButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/windows_light.svg',
+                    width: 24,
+                  ),
+                  onPressed: callback,
+                  openCount: 0,
+                  isFocused: isOpened,
+                );
+              }),
               ...taskbarApps.map((e) => TaskbarButton(
                   isFocused: focusedApp == e.app,
                   openCount: e.openCount,
