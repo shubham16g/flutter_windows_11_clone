@@ -1,17 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_windows_11_clone/apps/youtube/youtube_app.dart';
-import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu.dart';
-import 'package:os_core/os_core.dart';
-import 'package:provider/provider.dart';
+import 'package:os_win_11/os_win_11.dart';
 
 import 'apps/apps.dart';
 import 'apps/settings/settings_app.dart';
-import 'win_11/widgets/taskbar/taskbar.dart';
 
 Future<void> main() async {
   // ensure
   WidgetsFlutterBinding.ensureInitialized();
-  await OsCore.init();
+  await OsWin11.init();
   runApp(const MyApp());
 }
 
@@ -21,7 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return OsBuilder(
+    return Win11Builder(
       apps: {
         'files': FileExplorerApp(),
         'settings': SettingsApp(),
@@ -29,27 +26,6 @@ class MyApp extends StatelessWidget {
         'ecommerce': FileExplorerApp(),
       },
       fixedTaskbarApps: const ['files', 'settings', 'youtube'],
-
-      builder: (context) => FluentApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Windows 11 Clone',
-        themeMode: context.watch<OsThemeController>().themeMode,
-        darkTheme: FluentThemeData(
-          brightness: Brightness.dark,
-          accentColor: Colors.blue,
-          visualDensity: VisualDensity.standard,
-        ),
-        theme: FluentThemeData(
-          accentColor: Colors.blue,
-          visualDensity: VisualDensity.standard,
-        ),
-        home: OsScreen(
-          desktop: const SizedBox(),
-          taskbarBuilder: (context, alignment) => const Taskbar(),
-          startMenuBuilder: (context, isOpened) =>
-              StartMenu(isStartMenuOpened: isOpened),
-        ),
-      ),
     );
   }
 }

@@ -431,9 +431,16 @@ packages:
     source: hosted
     version: "1.0.0"
   os_core:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: os_core
+      relative: true
+    source: path
+    version: "0.0.1"
+  os_win_11:
+    dependency: "direct main"
+    description:
+      path: os_win_11
       relative: true
     source: path
     version: "0.0.1"

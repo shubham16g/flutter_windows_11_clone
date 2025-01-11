@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,8 +15,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('HomePage: $count'),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    context.pushNamed('theme');
+                  },
+                  child: Text('HomePage: $count')),
+            ),
+          ),
+
+        ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
         setState(() {

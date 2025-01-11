@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu_section_header.dart';
+import 'package:os_win_11/src/utils/ui_utils.dart';
+import 'package:os_win_11/src/widgets/start_menu/start_menu_section_header.dart';
 
 import '../../common_widgets/glass_button.dart';
 

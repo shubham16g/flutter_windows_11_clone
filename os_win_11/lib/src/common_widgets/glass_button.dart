@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
+import 'package:os_win_11/src/utils/ui_utils.dart';
+import 'package:os_win_11/src/colors/os_extension_on_colors.dart';
 
 // todo zoom out hover exit effect
 class GlassButton extends StatefulWidget {

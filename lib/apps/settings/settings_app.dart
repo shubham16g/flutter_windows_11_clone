@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_windows_11_clone/apps/settings/settings_page.dart';
 import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:os_core/os_core.dart';
+import 'package:os_win_11/os_win_11.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_app_win_11/settings_app.dart' as settings;
 
-import '../../win_11/common_widgets/app_background.dart';
-import '../../win_11/common_widgets/appbar_corner_buttons.dart';
 
 class SettingsApp extends App {
   @override
@@ -37,7 +34,6 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appController = context.watch<AppController>();
-    final themeController = context.watch<OsThemeController>();
     return AppBackground(
       wallpaperBlur: true,
       isFocused: appController.isFocused,

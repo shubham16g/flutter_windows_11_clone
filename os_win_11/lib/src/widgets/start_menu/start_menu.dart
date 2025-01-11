@@ -1,8 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
-import 'package:flutter_windows_11_clone/win_11/widgets/start_menu/start_menu_footer.dart';
-import 'package:provider/provider.dart';
+import 'package:os_win_11/src/utils/ui_utils.dart';
+import 'package:os_win_11/src/colors/os_extension_on_colors.dart';
+import 'package:os_win_11/src/widgets/start_menu/start_menu_footer.dart';
 
 import '../../common_widgets/app_background.dart';
 import '../../common_widgets/slide_anim_wrapper.dart';

@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:os_win_11/src/utils/ui_utils.dart';
 
 import '../../common_widgets/mini_button.dart';
 

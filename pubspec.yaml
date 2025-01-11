@@ -38,8 +38,8 @@ dependencies:
   provider: ^6.1.2
   hive_flutter: ^1.1.0
   flutter_svg: ^2.0.10+1
-  os_core:
-    path: ./os_core
+  os_win_11:
+    path: ./os_win_11
   fluent_ui: ^4.9.1
   flutter_inappwebview: ^6.1.4
   webviewx: ^0.1.0

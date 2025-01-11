@@ -1,8 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/apps/settings/settings_page.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
+import 'package:os_win_11/src/utils/ui_utils.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
 

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_windows_11_clone/utils/ui_utils.dart';
-import 'package:flutter_windows_11_clone/win_11/colors/os_extension_on_colors.dart';
-import 'package:flutter_windows_11_clone/win_11/common_widgets/glass_blur_bg.dart';
+import 'package:os_win_11/src/utils/ui_utils.dart';
+import 'package:os_win_11/src/colors/os_extension_on_colors.dart';
+import 'package:os_win_11/src/common_widgets/glass_blur_bg.dart';
 import 'package:intl/intl.dart';
 
 import '../../common_widgets/app_background.dart';
