@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:os_win_11/os_win_11.dart';
 import 'package:provider/provider.dart';
+import 'package:webviewx_plus/webviewx_plus.dart';
 
 
 class YoutubePage extends StatelessWidget {
@@ -23,19 +23,13 @@ class YoutubePage extends StatelessWidget {
             Expanded(
                 child: ClipRRect(
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: InAppWebView(
-                preventGestureDelay: true,
-                initialUrlRequest: URLRequest(
-                  url: WebUri('https://shubho-youtube-mern.netlify.app/'),
-                ),
-                initialSettings: InAppWebViewSettings(
-                  javaScriptEnabled: true,
-                  useOnLoadResource: true,
-                  cacheEnabled: true,
-                ),
+              child: WebViewX(
+                initialSourceType: SourceType.html,
                 onWebViewCreated: (controller) {
-                  // _webViewController = controller;
+                  controller.loadContent('https://flutter.dev');
                 },
+                initialContent: '<div style="background: red;"><h2> Hello, world! </h2>', width: rect.width,
+                height: rect.height - 40,
               ),
             ))
           ],

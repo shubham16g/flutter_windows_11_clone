@@ -32,7 +32,7 @@ class StartMenu extends StatelessWidget {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 13),
               child: AppBackground(
-                  glassBlur: true,
+                  wallpaperBlur: true,
                   boxShadow: const [],
                   child: Column(
                     children: [

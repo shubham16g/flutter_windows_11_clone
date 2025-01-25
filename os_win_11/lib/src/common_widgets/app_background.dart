@@ -29,7 +29,7 @@ class AppBackground extends StatelessWidget {
     this.isFullScreen = false,
     this.isFocused = true,
     this.borderColor,
-  }) : assert(!wallpaperBlur || rect != null);
+  });
 
   static List<BoxShadow> defaultBoxShadow(BuildContext context) => [
     BoxShadow(
@@ -64,7 +64,7 @@ class AppBackground extends StatelessWidget {
             if (glassBlur)
               const GlassBlurBg()
             else if (wallpaperBlur)
-              WallpaperBlurBg(rect: rect ?? Rect.zero, isFocused: isFocused),
+              WallpaperBlurBg(rect: rect, isFocused: isFocused),
             child,
           ],
         ),

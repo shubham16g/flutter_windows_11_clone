@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:os_win_11/src/colors/os_extension_on_colors.dart';
+import 'package:os_win_11/src/common_widgets/wallpaper_blur_bg.dart';
 import 'package:os_win_11/src/widgets/taskbar/taskbar_clock_notification.dart';
 import 'package:os_core/os_core.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,7 @@ class Taskbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       )),
       child: Stack(children: [
-        const GlassBlurBg(),
+        const WallpaperBlurBg(),
         Align(
           alignment: Alignment.center,
           child: Row(
