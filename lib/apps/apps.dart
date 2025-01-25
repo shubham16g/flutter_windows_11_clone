@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:os_core/os_core.dart';
 import 'package:os_win_11/os_win_11.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:provider/provider.dart';
 
 
@@ -27,25 +28,27 @@ class FileExplorerApp extends App {
       isFocused: appController.isFocused,
       child: Column(
         children: [
-          AppTitleBar(
-              leading: CustomOverlayAnimated(
-                  barrierColor: Colors.transparent,
-                  overlayBuilder: (context) {
-                    return const PreferredSize(
-                      preferredSize: Size(100, 220),
-                      child: GlassBlurBg(),
-                    );
-                  },
-                  builder: (context, callback) {
-                    return GlassButton(
-                      onPressed: () {
-                        callback.showOverlay();
-                      },
-                      isFocused: false,
-                      child: const Text('19:32'),
-                    );
-                  }),
-              trailing: AppbarCornerButtons(isDark: context.isDark)),
+          PointerInterceptor(
+            child: AppTitleBar(
+                leading: CustomOverlayAnimated(
+                    barrierColor: Colors.transparent,
+                    overlayBuilder: (context) {
+                      return const PreferredSize(
+                        preferredSize: Size(100, 220),
+                        child: GlassBlurBg(),
+                      );
+                    },
+                    builder: (context, callback) {
+                      return GlassButton(
+                        onPressed: () {
+                          callback.showOverlay();
+                        },
+                        isFocused: false,
+                        child: const Text('19:32'),
+                      );
+                    }),
+                trailing: AppbarCornerButtons(isDark: context.isDark)),
+          ),
           const Expanded(child: ClipRect(child: mApp))
         ],
       ),
